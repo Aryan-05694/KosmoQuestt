@@ -311,36 +311,5 @@ for(let i=0;i<200;i++){
 }
 </script>
 
-<div class="shooting-star"></div>
-.shooting-star{
-    position:fixed;
-    top:-100px;
-    left:-100px;
-    width:3px;
-    height:120px;
-    background:linear-gradient(white,transparent);
-    transform:rotate(45deg);
-    animation:meteor 8s linear infinite;
-    z-index:0;
-}
-
-@keyframes meteor{
-    0%{
-        top:-100px;
-        left:-100px;
-        opacity:0;
-    }
-
-    10%{
-        opacity:1;
-    }
-
-    100%{
-        top:120vh;
-        left:120vw;
-        opacity:0;
-    }
-}
-
 </body>
 </html>
