@@ -102,6 +102,17 @@ body{
 .hero h1{
     font-size:64px;
     margin-bottom:20px;
+    animation: floatTitle 4s ease-in-out infinite;
+    text-shadow:0 0 20px rgba(96,165,250,.5);
+}
+
+@keyframes floatTitle{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-8px);
+    }
 }
 
 .hero p{
@@ -114,12 +125,19 @@ body{
 .btn{
     display:inline-block;
     margin-top:30px;
-    padding:14px 28px;
+    padding:16px 34px;
     background:#2563eb;
     color:white;
     text-decoration:none;
-    border-radius:8px;
+    border-radius:12px;
     font-weight:bold;
+    transition:.3s;
+    box-shadow:0 0 25px rgba(37,99,235,.45);
+}
+
+.btn:hover{
+    transform:translateY(-3px) scale(1.05);
+    box-shadow:0 0 40px rgba(37,99,235,.8);
 }
 
 .btn:hover{
@@ -142,6 +160,12 @@ body{
     padding:25px;
     border-radius:12px;
     text-align:center;
+    transition:.4s;
+}
+
+.stat:hover{
+    transform:translateY(-10px);
+    box-shadow:0 0 35px rgba(96,165,250,.35);
 }
 
 .stat h2{
@@ -286,6 +310,37 @@ for(let i=0;i<200;i++){
     stars.appendChild(star);
 }
 </script>
+
+<div class="shooting-star"></div>
+.shooting-star{
+    position:fixed;
+    top:-100px;
+    left:-100px;
+    width:3px;
+    height:120px;
+    background:linear-gradient(white,transparent);
+    transform:rotate(45deg);
+    animation:meteor 8s linear infinite;
+    z-index:0;
+}
+
+@keyframes meteor{
+    0%{
+        top:-100px;
+        left:-100px;
+        opacity:0;
+    }
+
+    10%{
+        opacity:1;
+    }
+
+    100%{
+        top:120vh;
+        left:120vw;
+        opacity:0;
+    }
+}
 
 </body>
 </html>
