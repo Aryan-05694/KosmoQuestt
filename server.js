@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 
 const app = express();
+app.use(express.static("public"));
 
 /* =======================
    DATABASE CONNECTION
