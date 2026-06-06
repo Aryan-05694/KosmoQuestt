@@ -104,10 +104,23 @@ body{
     display:block;
 }
 
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
 .nav-links a{
     color:#cbd5e1;
     text-decoration:none;
-    margin-left:20px;
+    padding:10px 16px;
+    border-radius:10px;
+    margin:0;
+}
+
+.nav-links a:hover{
+    background:rgba(255,255,255,.08);
 }
 
 .nav-links a:hover{
@@ -230,14 +243,20 @@ button:hover{
 }
 
 #themeToggle{
-    background:none;
+    background:rgba(255,255,255,.08);
     border:none;
     color:white;
-    font-size:22px;
+    font-size:18px;
     cursor:pointer;
     width:auto;
-    padding:0;
-    margin-right:20px;
+    padding:10px 16px;
+    border-radius:10px;
+    margin:0;
+    transition:.3s;
+}
+
+#themeToggle:hover{
+    background:rgba(255,255,255,.15);
 }
 
 </style>
