@@ -13,12 +13,30 @@
     padding:0;
     box-sizing:border-box;
 }
+:root{
+    --bg:#050814;
+    --text:white;
+    --header-bg:rgba(0,0,0,.6);
+    --card-bg:rgba(15,23,42,.85);
+    --border:rgba(255,255,255,.08);
+    --input-bg:#111827;
+}
+
+.light-theme{
+    --bg:#f5f7ff;
+    --text:#111827;
+    --header-bg:rgba(255,255,255,.9);
+    --card-bg:#ffffff;
+    --border:rgba(0,0,0,.08);
+    --input-bg:#e5e7eb;
+}
 
 body{
     font-family:Segoe UI,sans-serif;
-    background:#050814;
-    color:white;
+    background:var(--bg);
+    color:var(--text);
     overflow-x:hidden;
+    transition:.3s;
 }
 
 /* Moving Stars */
@@ -67,7 +85,7 @@ body{
     justify-content:space-between;
     align-items:center;
     padding:18px 40px;
-    background:rgba(0,0,0,.6);
+    background:var(--header-bg);
     backdrop-filter:blur(12px);
     border-bottom:1px solid rgba(255,255,255,.08);
 }
@@ -121,8 +139,8 @@ body{
     margin:25px auto;
     padding:25px;
     border-radius:18px;
-    background:rgba(15,23,42,.85);
-    border:1px solid rgba(255,255,255,.08);
+    background:var(--card-bg);
+    border:1px solid var(--border);
 }
 
 .upload-box h3{
@@ -136,7 +154,7 @@ input{
     margin-top:10px;
     border:none;
     border-radius:10px;
-    background:#111827;
+    background:var(--input-bg);
     color:white;
 }
 
@@ -180,10 +198,10 @@ button:hover{
 }
 
 .card{
-    background:rgba(15,23,42,.85);
+    background:var(--card-bg);
     border-radius:15px;
     overflow:hidden;
-    border:1px solid rgba(255,255,255,.05);
+    border:1px solid var(--border);
     transition:.3s;
 }
 
@@ -210,6 +228,17 @@ button:hover{
     color:#94a3b8;
 }
 
+#themeToggle{
+    background:none;
+    border:none;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+    width:auto;
+    padding:0;
+    margin-right:20px;
+}
+
 </style>
 
 </head>
@@ -228,6 +257,7 @@ button:hover{
 </a>
 
 <div class="nav-links">
+    <button id="themeToggle">🌙</button>
     <a href="/">Home</a>
     <a href="/logout">Logout</a>
 </div>
@@ -383,6 +413,29 @@ fetch("/images")
 
 });
 
+</script>
+
+<script>
+const toggleBtn = document.getElementById("themeToggle");
+
+if(localStorage.getItem("theme")==="light"){
+    document.body.classList.add("light-theme");
+    toggleBtn.textContent="☀️";
+}
+
+toggleBtn.addEventListener("click",()=>{
+
+    document.body.classList.toggle("light-theme");
+
+    if(document.body.classList.contains("light-theme")){
+        localStorage.setItem("theme","light");
+        toggleBtn.textContent="☀️";
+    }else{
+        localStorage.setItem("theme","dark");
+        toggleBtn.textContent="🌙";
+    }
+
+});
 </script>
 
 </body>

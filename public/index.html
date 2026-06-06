@@ -11,12 +11,28 @@
     padding:0;
     box-sizing:border-box;
 }
+:root{
+    --bg:#050814;
+    --text:white;
+    --nav-bg:rgba(5,8,20,.9);
+    --card-bg:rgba(17,24,39,.75);
+    --card-border:rgba(255,255,255,.06);
+}
+
+.light-theme{
+    --bg:#f5f7ff;
+    --text:#111827;
+    --nav-bg:rgba(255,255,255,.9);
+    --card-bg:#ffffff;
+    --card-border:rgba(0,0,0,.08);
+}
 
 body{
     font-family:"Segoe UI",sans-serif;
-    background:#050814;
-    color:white;
+    background:var(--bg);
+    color:var(--text);
     overflow-x:hidden;
+    transition:0.3s ease;
 }
 
 /* STAR BACKGROUND */
@@ -63,7 +79,7 @@ body{
     justify-content:space-between;
     align-items:center;
     padding:18px 40px;
-    background:rgba(5,8,20,.9);
+    background:var(--nav-bg);
     backdrop-filter:blur(12px);
     border-bottom:1px solid rgba(255,255,255,.08);
 }
@@ -155,8 +171,8 @@ body{
 }
 
 .stat{
-    background:rgba(17,24,39,.7);
-    border:1px solid rgba(255,255,255,.06);
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
     padding:25px;
     border-radius:12px;
     text-align:center;
@@ -184,8 +200,8 @@ body{
 }
 
 .card{
-    background:rgba(17,24,39,.75);
-    border:1px solid rgba(255,255,255,.06);
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
     padding:25px;
     border-radius:14px;
     transition:.3s;
