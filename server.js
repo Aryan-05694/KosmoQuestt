@@ -122,12 +122,18 @@ function isLoggedIn(req, res, next) {
     res.redirect("/");
 }
 
+const fs = require("fs");
+
+const uploadPath = "public/uploads";
+
+fs.mkdirSync(uploadPath, { recursive: true });
+
 /* =======================
    MULTER CONFIG
 ======================= */
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/uploads");
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
