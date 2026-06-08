@@ -7,9 +7,17 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const multer = require("multer");
 const mongoose = require("mongoose");
 const path = require("path");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 const app = express();
 app.use(express.static("public"));
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 /* =======================
    DATABASE CONNECTION
@@ -22,7 +30,7 @@ mongoose.connect(process.env.MONGO_URI)
    IMAGE MODEL
 ======================= */
 const imageSchema = new mongoose.Schema({
-    filename: String,
+    imageUrl: req.file.path,
     caption: String,
     userId: String,
     uploadTime: {
@@ -131,13 +139,12 @@ fs.mkdirSync(uploadPath, { recursive: true });
 /* =======================
    MULTER CONFIG
 ======================= */
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadPath);
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  }
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "kosmoquestt",
+        allowed_formats: ["jpg", "jpeg", "png", "webp"]
+    }
 });
 
 const upload = multer({ storage });
@@ -158,9 +165,9 @@ app.post(
             }
 
             await Image.create({
-                filename: req.file.filename,
-                caption: req.body.caption || "",
-                userId: req.user.id
+               imageUrl: req.file.path,
+               caption: req.body.caption || "",
+               userId: req.user.id
             });
 
             res.redirect("/dashboard.html");
