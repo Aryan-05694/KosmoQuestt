@@ -30,7 +30,7 @@ mongoose.connect(process.env.MONGO_URI)
    IMAGE MODEL
 ======================= */
 const imageSchema = new mongoose.Schema({
-    imageUrl: req.file.path,
+    imageUrl: String,
     caption: String,
     userId: String,
     uploadTime: {
@@ -130,11 +130,6 @@ function isLoggedIn(req, res, next) {
     res.redirect("/");
 }
 
-const fs = require("fs");
-
-const uploadPath = "public/uploads";
-
-fs.mkdirSync(uploadPath, { recursive: true });
 
 /* =======================
    MULTER CONFIG
