@@ -209,7 +209,8 @@ app.delete("/images/:id", isLoggedIn, async (req, res) => {
             });
         }
 
-        if (image.userId !== req.user.id) {
+        if (image.userId !== req.user.id &&
+    req.user.email !== ADMIN_EMAIL) {
             return res.status(403).json({
                 success: false,
                 message: "Not authorized"
