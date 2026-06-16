@@ -8,11 +8,9 @@
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <!-- FAVICON START -->
-
 <link rel="icon" href="/favicon.ico?v=2">
-
-
 <!-- FAVICON END -->
+
 <style>
 *{
     margin:0;
@@ -132,12 +130,8 @@ body{
 }
 
 @keyframes floatTitle{
-    0%,100%{
-        transform:translateY(0);
-    }
-    50%{
-        transform:translateY(-8px);
-    }
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-8px);}
 }
 
 .hero p{
@@ -163,9 +157,6 @@ body{
 .btn:hover{
     transform:translateY(-3px) scale(1.05);
     box-shadow:0 0 40px rgba(37,99,235,.8);
-}
-
-.btn:hover{
     background:#1d4ed8;
 }
 
@@ -229,6 +220,189 @@ body{
     color:#94a3b8;
 }
 
+/* ===================== */
+/* APOD SECTION          */
+/* ===================== */
+.apod-section{
+    max-width:1100px;
+    margin:0 auto 60px;
+    padding:0 40px;
+}
+
+.section-title{
+    font-size:36px;
+    font-weight:700;
+    margin-bottom:8px;
+    text-align:center;
+    text-shadow:0 0 15px rgba(96,165,250,.4);
+}
+
+.section-subtitle{
+    text-align:center;
+    color:#94a3b8;
+    margin-bottom:36px;
+    font-size:16px;
+}
+
+.apod-card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:20px;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
+    box-shadow:0 0 60px rgba(37,99,235,.12);
+    transition:.3s;
+}
+
+.apod-card:hover{
+    box-shadow:0 0 80px rgba(37,99,235,.25);
+}
+
+.apod-media{
+    position:relative;
+    min-height:380px;
+    background:#0a0f1e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.apod-media img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.apod-media iframe{
+    width:100%;
+    height:100%;
+    min-height:380px;
+    border:none;
+}
+
+.apod-media-loader{
+    color:#60a5fa;
+    font-size:14px;
+    text-align:center;
+    padding:20px;
+    animation:pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse{
+    0%,100%{opacity:1;}
+    50%{opacity:.4;}
+}
+
+.apod-info{
+    padding:36px 32px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:16px;
+}
+
+.apod-date-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    background:rgba(37,99,235,.18);
+    border:1px solid rgba(37,99,235,.35);
+    color:#93c5fd;
+    font-size:13px;
+    font-weight:600;
+    padding:6px 14px;
+    border-radius:999px;
+    width:fit-content;
+    letter-spacing:.03em;
+}
+
+.apod-title{
+    font-size:22px;
+    font-weight:700;
+    line-height:1.35;
+    color:var(--text);
+}
+
+.apod-copyright{
+    font-size:13px;
+    color:#64748b;
+}
+
+.apod-explanation{
+    font-size:15px;
+    line-height:1.75;
+    color:#94a3b8;
+    max-height:200px;
+    overflow-y:auto;
+    padding-right:6px;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(96,165,250,.3) transparent;
+}
+
+.apod-explanation::-webkit-scrollbar{width:4px;}
+.apod-explanation::-webkit-scrollbar-track{background:transparent;}
+.apod-explanation::-webkit-scrollbar-thumb{background:rgba(96,165,250,.3);border-radius:4px;}
+
+.apod-actions{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:4px;
+}
+
+.apod-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 20px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    text-decoration:none;
+    transition:.25s;
+    cursor:pointer;
+    border:none;
+}
+
+.apod-btn-primary{
+    background:#2563eb;
+    color:white;
+    box-shadow:0 0 20px rgba(37,99,235,.4);
+}
+
+.apod-btn-primary:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+.apod-btn-secondary{
+    background:transparent;
+    color:#93c5fd;
+    border:1px solid rgba(37,99,235,.4);
+}
+
+.apod-btn-secondary:hover{
+    background:rgba(37,99,235,.12);
+    transform:translateY(-2px);
+}
+
+.apod-error{
+    text-align:center;
+    padding:60px 20px;
+    color:#94a3b8;
+}
+
+.apod-error i{
+    font-size:48px;
+    color:#475569;
+    margin-bottom:16px;
+    display:block;
+}
+
 /* FOOTER */
 .footer{
     text-align:center;
@@ -253,6 +427,7 @@ body{
 .social-links a:hover{
     transform:translateY(-3px);
 }
+
 .footer a{
     color:#60a5fa;
     text-decoration:none;
@@ -273,40 +448,48 @@ body{
     margin-left:0;
 }
 
-@media (max-width:768px){
+@media(max-width:900px){
+    .apod-card{
+        grid-template-columns:1fr;
+    }
+    .apod-media{
+        min-height:260px;
+    }
+}
 
+@media(max-width:768px){
     .navbar{
         flex-direction:column;
         gap:15px;
         padding:15px;
     }
-
     .logo{
         justify-content:center;
         text-align:center;
     }
-
     .nav-links{
         justify-content:center;
     }
-
     .hero h1{
         font-size:42px;
     }
-
     .hero p{
         font-size:16px;
         padding:0 15px;
     }
-
     .features{
         padding:30px 20px;
     }
-
     .stats{
         padding:20px;
     }
-} 
+    .apod-section{
+        padding:0 20px;
+    }
+    .apod-info{
+        padding:24px 20px;
+    }
+}
 </style>
 </head>
 <body>
@@ -319,43 +502,25 @@ body{
 <div class="navbar">
      <div class="logo">
        <img src="/logo_1.png" alt="KosmoQuestt Logo">
-
        <div class="logo-text">
           <h2>KosmoQuestt</h2>
-          <span class="tagline">
-             Exploring Beyond The Horizon!
-          </span>
+          <span class="tagline">Exploring Beyond The Horizon!</span>
        </div>
      </div>
-
      <div class="nav-links">
        <a href="/">Home</a>
        <a href="/dashboard.html">Gallery</a>
        <a href="/about.html">About</a>
-
-       <a href="https://youtube.com/@KosmoQuestt" target="_blank">
-          <i class="fab fa-youtube"></i>
-       </a>
-
-       <a href="https://x.com/KosmoQuestt" target="_blank">
-          <i class="fa-brands fa-x-twitter"></i>
-       </a>
-
+       <a href="https://youtube.com/@KosmoQuestt" target="_blank"><i class="fab fa-youtube"></i></a>
+       <a href="https://x.com/KosmoQuestt" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
        <a href="/auth/google">Login</a>
      </div>
 </div>
 
 <section class="hero">
     <h1>Explore The Universe</h1>
-
-    <p>
-        Upload, discover and share breathtaking cosmic imagery
-        from around the world through the KosmoQuestt space archive.
-    </p>
-
-    <a href="/auth/google" class="btn">
-        Login With Google
-    </a>
+    <p>Upload, discover and share breathtaking cosmic imagery from around the world through the KosmoQuestt space archive.</p>
+    <a href="/auth/google" class="btn">Login With Google</a>
 </section>
 
 <section class="stats">
@@ -363,12 +528,10 @@ body{
         <h2>∞</h2>
         <p>Cosmic Discoveries</p>
     </div>
-
     <div class="stat">
         <h2>24/7</h2>
         <p>Space Exploration</p>
     </div>
-
     <div class="stat">
         <h2>Global</h2>
         <p>Community Access</p>
@@ -376,55 +539,124 @@ body{
 </section>
 
 <section class="features">
-
     <div class="card">
         <h3>🌌 Space Gallery</h3>
         <p>View beautiful cosmic images uploaded by explorers.</p>
     </div>
-
     <div class="card">
         <h3>🚀 Fast Uploads</h3>
         <p>Upload images instantly with descriptions and captions.</p>
     </div>
-
     <div class="card">
         <h3>🔐 Secure Login</h3>
         <p>Google authentication keeps your account protected.</p>
     </div>
+</section>
 
+<!-- ===================== -->
+<!-- APOD SECTION          -->
+<!-- ===================== -->
+<section class="apod-section" id="apod">
+    <h2 class="section-title">🔭 Astronomy Picture of the Day</h2>
+    <p class="section-subtitle">Brought to you by NASA — a new cosmic wonder every day.</p>
+
+    <div class="apod-card" id="apod-card">
+        <div class="apod-media" id="apod-media">
+            <div class="apod-media-loader">
+                <i class="fas fa-spinner fa-spin" style="font-size:28px;display:block;margin-bottom:10px;"></i>
+                Loading today's image…
+            </div>
+        </div>
+        <div class="apod-info" id="apod-info">
+            <div class="apod-media-loader">Fetching cosmic data…</div>
+        </div>
+    </div>
 </section>
 
 <div class="footer">
     <p>© 2026 KosmoQuestt • Exploring Beyond The Horizon!</p>
-
     <div class="social-links">
-        <a href="https://youtube.com/@KosmoQuestt" target="_blank">
-            <i class="fab fa-youtube"></i>
-        </a>
-
-        <a href="https://x.com/KosmoQuestt" target="_blank">
-            <i class="fa-brands fa-x-twitter"></i>
-        </a>
+        <a href="https://youtube.com/@KosmoQuestt" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://x.com/KosmoQuestt" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
     </div>
 </div>
 
 </div>
 
 <script>
+/* STARS */
 const stars = document.getElementById("stars");
-
 for(let i=0;i<200;i++){
     const star=document.createElement("div");
-
     star.className="star";
-
     star.style.left=Math.random()*100+"vw";
     star.style.top=Math.random()*100+"vh";
-
     star.style.opacity=Math.random();
-
     stars.appendChild(star);
 }
+
+/* NASA APOD */
+const NASA_API_KEY = "DEMO_KEY"; // Replace with your free key from https://api.nasa.gov/
+
+async function loadAPOD(){
+    const mediaEl  = document.getElementById("apod-media");
+    const infoEl   = document.getElementById("apod-info");
+
+    try{
+        const res  = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`);
+        if(!res.ok) throw new Error("NASA API error: "+res.status);
+        const data = await res.json();
+
+        /* ---- MEDIA ---- */
+        if(data.media_type === "video"){
+            mediaEl.innerHTML = `<iframe src="${data.url}" allowfullscreen title="${data.title}"></iframe>`;
+        } else {
+            mediaEl.innerHTML = `<img src="${data.hdurl || data.url}" alt="${data.title}" loading="lazy">`;
+        }
+
+        /* ---- INFO ---- */
+        const dateFormatted = new Date(data.date).toLocaleDateString("en-IN",{
+            year:"numeric", month:"long", day:"numeric"
+        });
+
+        infoEl.innerHTML = `
+            <span class="apod-date-badge">
+                <i class="fas fa-calendar-star"></i> ${dateFormatted}
+            </span>
+
+            <div class="apod-title">${data.title}</div>
+
+            ${data.copyright ? `<div class="apod-copyright">📷 ${data.copyright.replace(/\n/g," ")}</div>` : ""}
+
+            <p class="apod-explanation">${data.explanation}</p>
+
+            <div class="apod-actions">
+                <a href="${data.hdurl || data.url}" target="_blank" class="apod-btn apod-btn-primary">
+                    <i class="fas fa-expand"></i> Full Resolution
+                </a>
+                <a href="https://apod.nasa.gov/apod/astropix.html" target="_blank" class="apod-btn apod-btn-secondary">
+                    <i class="fas fa-external-link-alt"></i> NASA APOD
+                </a>
+            </div>
+        `;
+
+    } catch(err){
+        console.error(err);
+        mediaEl.innerHTML = ``;
+        infoEl.innerHTML  = `
+            <div class="apod-error">
+                <i class="fas fa-satellite-dish"></i>
+                <p>Could not load today's picture.</p>
+                <p style="font-size:13px;margin-top:8px;">Check your NASA API key or try again later.</p>
+                <a href="https://api.nasa.gov/" target="_blank" class="apod-btn apod-btn-secondary" style="margin-top:16px;">
+                    Get a free API key
+                </a>
+            </div>
+        `;
+    }
+}
+
+loadAPOD();
 </script>
 
 </body>
