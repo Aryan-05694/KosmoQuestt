@@ -193,6 +193,44 @@ app.get("/images", async (req, res) => {
         res.status(500).send("Error loading images");
     }
 });
+/* =======================
+   DELETE IMAGE
+======================= */
+app.delete("/images/:id", isLoggedIn, async (req, res) => {
+
+    try {
+
+        const image = await Image.findById(req.params.id);
+
+        if (!image) {
+            return res.status(404).json({
+                success: false,
+                message: "Image not found"
+            });
+        }
+
+        if (image.userId !== req.user.id) {
+            return res.status(403).json({
+                success: false,
+                message: "Not authorized"
+            });
+        }
+
+        await Image.findByIdAndDelete(req.params.id);
+
+        res.json({
+            success: true
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            success: false
+        });
+    }
+});
 
 /* =======================
    USER API

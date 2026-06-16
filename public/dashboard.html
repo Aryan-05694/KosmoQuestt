@@ -245,6 +245,23 @@ button:hover{
     color:#d1d5db;
 }
 
+.delete-btn{
+    width:90%;
+    margin:12px auto 15px;
+    display:block;
+    background:#dc2626;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.delete-btn:hover{
+    background:#b91c1c;
+}
+
 .loading{
     text-align:center;
     margin:25px;
@@ -428,6 +445,12 @@ fetch("/images")
         ${img.caption || "No caption"}
         </div>
 
+        <button
+        class="delete-btn"
+        onclick="deleteImage('${img._id}')">
+        🗑 Delete
+        </button>
+
         `;
 
         gallery.appendChild(card);
@@ -442,6 +465,44 @@ fetch("/images")
 
 });
 
+</script>
+
+<script>
+async function deleteImage(id) {
+
+    if (!confirm("Delete this image?")) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `/images/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const data = await response.json();
+
+        if (data.success) {
+
+            alert("Image deleted");
+
+            location.reload();
+
+        } else {
+
+            alert(data.message || "Delete failed");
+        }
+
+    } catch (err) {
+
+        console.log(err);
+
+        alert("Error deleting image");
+    }
+}
 </script>
 
 <script>
