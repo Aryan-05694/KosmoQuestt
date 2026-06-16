@@ -199,7 +199,7 @@ app.get("/images", async (req, res) => {
 app.delete("/images/:id", isLoggedIn, async (req, res) => {
 
     try {
-
+        const ADMIN_EMAIL = "aryanverma05694@gmail.com";
         const image = await Image.findById(req.params.id);
 
         if (!image) {
