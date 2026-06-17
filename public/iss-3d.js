@@ -29,7 +29,7 @@ globe
     .htmlElement(() => {
         const img = document.createElement('img');
 
-        img.src = 'images/iss.png'; // change path if needed
+        img.src = 'iss.png'; // change path if needed
 
         img.style.width = '50px';
         img.style.height = '50px';
