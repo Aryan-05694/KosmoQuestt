@@ -26,7 +26,7 @@ globe.htmlElementsData([issMarker]);
 
 globe.htmlElement(() => {
   const img = document.createElement('img');
-  img.src = 'iss1.png';
+  img.src = 'iss.png';
   img.style.width = '50px';
   img.style.height = '50px';
   return img;
