@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGO_URI)
 .catch(err => console.log("MongoDB Error:", err));
 
 /* =======================
-   IMAGE MODEL
+   SCHEMAS
 ======================= */
 const imageSchema = new mongoose.Schema({
     imageUrl: String,
@@ -39,7 +39,47 @@ const imageSchema = new mongoose.Schema({
     }
 });
 
+const likeSchema = new mongoose.Schema({
+    imageId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Image",
+        required: true
+    },
+    userId: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+const commentSchema = new mongoose.Schema({
+    imageId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Image",
+        required: true
+    },
+    userId: {
+        type: String,
+        required: true
+    },
+    userName: String,
+    userPhoto: String,
+    commentText: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+
 const Image = mongoose.model("Image", imageSchema);
+const Like = mongoose.model("Like", likeSchema);
+const Comment = mongoose.model("Comment", commentSchema);
 
 /* =======================
    MIDDLEWARE
@@ -240,6 +280,10 @@ app.delete("/images/:id", isLoggedIn, async (req, res) => {
         }
 
         await Image.findByIdAndDelete(req.params.id);
+        
+        // Delete associated likes and comments
+        await Like.deleteMany({ imageId: req.params.id });
+        await Comment.deleteMany({ imageId: req.params.id });
 
         res.json({
             success: true
@@ -252,6 +296,121 @@ app.delete("/images/:id", isLoggedIn, async (req, res) => {
         res.status(500).json({
             success: false
         });
+    }
+});
+
+/* =======================
+   LIKE ENDPOINTS
+======================= */
+
+// Add/Remove Like
+app.post("/api/images/:id/like", isLoggedIn, async (req, res) => {
+    try {
+        const imageId = req.params.id;
+        const userId = req.user.id;
+
+        // Check if already liked
+        const existingLike = await Like.findOne({ imageId, userId });
+
+        if (existingLike) {
+            // Remove like
+            await Like.deleteOne({ imageId, userId });
+            const likeCount = await Like.countDocuments({ imageId });
+            return res.json({ liked: false, likeCount });
+        } else {
+            // Add like
+            await Like.create({ imageId, userId });
+            const likeCount = await Like.countDocuments({ imageId });
+            return res.json({ liked: true, likeCount });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Like failed" });
+    }
+});
+
+// Get Like Count
+app.get("/api/images/:id/likes", async (req, res) => {
+    try {
+        const likeCount = await Like.countDocuments({ imageId: req.params.id });
+        let userLiked = false;
+
+        if (req.user) {
+            const userLike = await Like.findOne({
+                imageId: req.params.id,
+                userId: req.user.id
+            });
+            userLiked = !!userLike;
+        }
+
+        res.json({ likeCount, userLiked });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ likeCount: 0, userLiked: false });
+    }
+});
+
+/* =======================
+   COMMENT ENDPOINTS
+======================= */
+
+// Add Comment
+app.post("/api/images/:id/comment", isLoggedIn, async (req, res) => {
+    try {
+        const { commentText } = req.body;
+        const imageId = req.params.id;
+
+        if (!commentText || commentText.trim() === "") {
+            return res.status(400).json({ error: "Comment cannot be empty" });
+        }
+
+        const comment = await Comment.create({
+            imageId,
+            userId: req.user.id,
+            userName: req.user.displayName,
+            userPhoto: req.user.photo,
+            commentText
+        });
+
+        res.json(comment);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Comment failed" });
+    }
+});
+
+// Get Comments
+app.get("/api/images/:id/comments", async (req, res) => {
+    try {
+        const comments = await Comment.find({ imageId: req.params.id })
+            .sort({ createdAt: -1 });
+
+        res.json(comments);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Failed to load comments" });
+    }
+});
+
+// Delete Comment
+app.delete("/api/images/:imageId/comment/:commentId", isLoggedIn, async (req, res) => {
+    try {
+        const { commentId } = req.params;
+        const comment = await Comment.findById(commentId);
+
+        if (!comment) {
+            return res.status(404).json({ error: "Comment not found" });
+        }
+
+        if (comment.userId !== req.user.id && req.user.email !== "aryanverma05694@gmail.com") {
+            return res.status(403).json({ error: "Not authorized" });
+        }
+
+        await Comment.findByIdAndDelete(commentId);
+        res.json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Delete failed" });
     }
 });
 
@@ -295,6 +454,8 @@ app.get("/clear-images", async (req, res) => {
     try {
 
         await Image.deleteMany({});
+        await Like.deleteMany({});
+        await Comment.deleteMany({});
 
         res.send(
             "All image records removed from database"

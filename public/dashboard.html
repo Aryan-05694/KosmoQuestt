@@ -181,6 +181,10 @@ input{
     color:white;
 }
 
+input::placeholder{
+    color:#6b7280;
+}
+
 button{
     width:100%;
     padding:12px;
@@ -243,6 +247,121 @@ button:hover{
 .caption{
     padding:12px;
     color:#d1d5db;
+}
+
+/* Like and Comment Section */
+
+.engagement-section{
+    padding:12px;
+    border-top:1px solid var(--border);
+}
+
+.like-section{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:12px;
+}
+
+.like-btn{
+    background:none;
+    border:none;
+    color:#60a5fa;
+    font-size:20px;
+    cursor:pointer;
+    padding:8px;
+    transition:.2s;
+    width:auto;
+    margin:0;
+}
+
+.like-btn:hover{
+    color:#3b82f6;
+    transform:scale(1.1);
+}
+
+.like-btn.liked{
+    color:#ef4444;
+}
+
+.like-count{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.comment-form{
+    display:flex;
+    gap:8px;
+    margin-bottom:12px;
+}
+
+.comment-input{
+    flex:1;
+    padding:8px 12px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:var(--input-bg);
+    color:white;
+    font-size:13px;
+    margin:0;
+}
+
+.comment-submit{
+    width:auto;
+    padding:8px 16px;
+    margin:0;
+    font-size:13px;
+}
+
+.comments-list{
+    max-height:200px;
+    overflow-y:auto;
+    margin-top:8px;
+}
+
+.comment{
+    padding:8px 0;
+    border-top:1px solid var(--border);
+    font-size:13px;
+}
+
+.comment-header{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:4px;
+}
+
+.comment-avatar{
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.comment-name{
+    color:#60a5fa;
+    font-weight:bold;
+}
+
+.comment-text{
+    color:#d1d5db;
+    margin:4px 0;
+}
+
+.comment-delete{
+    background:none;
+    border:none;
+    color:#ef4444;
+    cursor:pointer;
+    font-size:12px;
+    padding:0;
+    margin-top:4px;
+    width:auto;
+}
+
+.comment-delete:hover{
+    text-decoration:underline;
 }
 
 .delete-btn{
@@ -457,6 +576,35 @@ fetch("/images")
         ${img.caption || "No caption"}
         </div>
 
+        <div class="engagement-section">
+        
+            <div class="like-section">
+                <button class="like-btn" onclick="toggleLike('${img._id}', event)">
+                    ♡
+                </button>
+                <span class="like-count" id="like-count-${img._id}">Loading...</span>
+            </div>
+
+            <div class="comment-form">
+                <input 
+                    type="text" 
+                    class="comment-input" 
+                    placeholder="Add a comment..." 
+                    id="comment-input-${img._id}"
+                >
+                <button 
+                    class="comment-submit" 
+                    onclick="addComment('${img._id}')">
+                    Post
+                </button>
+            </div>
+
+            <div class="comments-list" id="comments-${img._id}">
+                Loading comments...
+            </div>
+
+        </div>
+
         <button
         class="delete-btn"
         onclick="deleteImage('${img._id}')">
@@ -467,6 +615,10 @@ fetch("/images")
 
         gallery.appendChild(card);
 
+        // Load likes and comments
+        loadLikes(img._id);
+        loadComments(img._id);
+
     });
 
 })
@@ -476,6 +628,155 @@ fetch("/images")
     .innerText = "Failed to load images";
 
 });
+
+</script>
+
+<script>
+
+async function toggleLike(imageId, event) {
+    try {
+        const response = await fetch(`/api/images/${imageId}/like`, {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            alert("Please login to like");
+            return;
+        }
+
+        const data = await response.json();
+
+        // Update button state
+        const btn = event.target;
+        if (data.liked) {
+            btn.classList.add("liked");
+            btn.textContent = "❤";
+        } else {
+            btn.classList.remove("liked");
+            btn.textContent = "♡";
+        }
+
+        // Update count
+        document.getElementById(`like-count-${imageId}`).textContent = 
+            `${data.likeCount} ${data.likeCount === 1 ? "like" : "likes"}`;
+
+    } catch (err) {
+        console.log(err);
+        alert("Error liking image");
+    }
+}
+
+async function loadLikes(imageId) {
+    try {
+        const response = await fetch(`/api/images/${imageId}/likes`);
+        const data = await response.json();
+
+        document.getElementById(`like-count-${imageId}`).textContent = 
+            `${data.likeCount} ${data.likeCount === 1 ? "like" : "likes"}`;
+
+        // Update button state if user liked it
+        if (data.userLiked) {
+            const btn = document.querySelector(`[onclick="toggleLike('${imageId}', event)"]`);
+            if (btn) {
+                btn.classList.add("liked");
+                btn.textContent = "❤";
+            }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function addComment(imageId) {
+    const input = document.getElementById(`comment-input-${imageId}`);
+    const commentText = input.value.trim();
+
+    if (!commentText) {
+        alert("Comment cannot be empty");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/images/${imageId}/comment`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ commentText })
+        });
+
+        if (!response.ok) {
+            if (response.status === 401) {
+                alert("Please login to comment");
+            } else {
+                alert("Error posting comment");
+            }
+            return;
+        }
+
+        input.value = "";
+        loadComments(imageId);
+
+    } catch (err) {
+        console.log(err);
+        alert("Error posting comment");
+    }
+}
+
+async function loadComments(imageId) {
+    try {
+        const response = await fetch(`/api/images/${imageId}/comments`);
+        const comments = await response.json();
+
+        const commentsList = document.getElementById(`comments-${imageId}`);
+        commentsList.innerHTML = "";
+
+        if (comments.length === 0) {
+            commentsList.innerHTML = "<p style='color:#6b7280;font-size:13px;'>No comments yet</p>";
+            return;
+        }
+
+        comments.forEach(comment => {
+            const commentDiv = document.createElement("div");
+            commentDiv.className = "comment";
+            commentDiv.innerHTML = `
+                <div class="comment-header">
+                    <img class="comment-avatar" src="${comment.userPhoto}?sz=24" alt="avatar" onerror="this.src='/logo_1.png'">
+                    <span class="comment-name">${comment.userName}</span>
+                </div>
+                <div class="comment-text">${comment.commentText}</div>
+                <button class="comment-delete" onclick="deleteComment('${imageId}', '${comment._id}')">
+                    Delete
+                </button>
+            `;
+            commentsList.appendChild(commentDiv);
+        });
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function deleteComment(imageId, commentId) {
+    if (!confirm("Delete this comment?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/images/${imageId}/comment/${commentId}`, {
+            method: "DELETE"
+        });
+
+        if (response.ok) {
+            loadComments(imageId);
+        } else {
+            alert("Error deleting comment");
+        }
+    } catch (err) {
+        console.log(err);
+        alert("Error deleting comment");
+    }
+}
 
 </script>
 
