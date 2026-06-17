@@ -1,62 +1,60 @@
 const globe = Globe()(document.getElementById('globeViz'))
-
-.globeImageUrl(
+  .globeImageUrl(
     'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg'
-)
-
-.backgroundImageUrl(
+  )
+  .backgroundImageUrl(
     'https://unpkg.com/three-globe/example/img/night-sky.png'
-);
+  );
 
+// Controls
 globe.controls().autoRotate = true;
 globe.controls().autoRotateSpeed = 0.5;
 
 globe
-    .showAtmosphere(true)
-    .atmosphereAltitude(0.2);
+  .showAtmosphere(true)
+  .atmosphereAltitude(0.2);
 
-// Orbit path storage
-const orbitPath = [];
-
-// ISS marker
+// -------------------------
+// ISS Marker (initialized once)
+// -------------------------
 const issMarker = {
-    lat: 0,
-    lng: 0
+  lat: 0,
+  lng: 0
 };
 
-globe
-    .htmlElementsData([issMarker])
-    .htmlElement(() => {
-        const img = document.createElement('img');
+globe.htmlElementsData([issMarker]);
 
-        img.src = 'iss1.png'; // change path if needed
+globe.htmlElement(() => {
+  const img = document.createElement('img');
+  img.src = 'iss1.png';
+  img.style.width = '50px';
+  img.style.height = '50px';
+  return img;
+});
 
-        img.style.width = '50px';
-        img.style.height = '50px';
+// -------------------------
+// Orbit path storage
+// -------------------------
+const orbitPath = [];
 
-        return img;
-    });
+// -------------------------
+// Camera tracking control
+// -------------------------
+let firstUpdate = true;
 
+// -------------------------
+// Update function
+// -------------------------
 async function updateISS() {
-
-    const res = await fetch(
-        'https://api.wheretheiss.at/v1/satellites/25544'
-    );
-
+  try {
+    const res = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
     const data = await res.json();
 
-    // Update stats
-    document.getElementById("lat").textContent =
-        data.latitude.toFixed(2);
-
-    document.getElementById("lon").textContent =
-        data.longitude.toFixed(2);
-
-    document.getElementById("alt").textContent =
-        data.altitude.toFixed(2);
-
-    document.getElementById("vel").textContent =
-        Math.round(data.velocity);
+    // UI updates
+    document.getElementById("lat").textContent = data.latitude.toFixed(2);
+    document.getElementById("lon").textContent = data.longitude.toFixed(2);
+    document.getElementById("alt").textContent = data.altitude.toFixed(2);
+    document.getElementById("vel").textContent = Math.round(data.velocity);
 
     // Update ISS marker position
     issMarker.lat = data.latitude;
@@ -64,37 +62,57 @@ async function updateISS() {
 
     globe.htmlElementsData([issMarker]);
 
-    // Save orbit positions
+    // Save orbit path
     orbitPath.push({
-        lat: data.latitude,
-        lng: data.longitude
+      lat: data.latitude,
+      lng: data.longitude
     });
 
     if (orbitPath.length > 200) {
-        orbitPath.shift();
+      orbitPath.shift();
     }
 
-    // Orbit trail
     globe
-        .pathsData([
-            {
-                coords: orbitPath
-            }
-        ])
-        .pathColor(() => '#00ffff')
-        .pathStroke(1);
-
-    // Camera follow
-    globe.pointOfView(
+      .pathsData([
         {
-            lat: data.latitude,
-            lng: data.longitude,
-            altitude: 2
+          coords: orbitPath
+        }
+      ])
+      .pathColor(() => '#00ffff')
+      .pathStroke(1);
+
+    // -------------------------
+    // Camera follow (FIXED)
+    // -------------------------
+    if (firstUpdate) {
+      globe.pointOfView(
+        {
+          lat: data.latitude,
+          lng: data.longitude,
+          altitude: 2
         },
-        1000
+        0 // no animation on first load
+      );
+      firstUpdate = false;
+    }
+
+    // Optional smooth follow (slower updates prevent “reset feel”)
+    globe.pointOfView(
+      {
+        lat: data.latitude,
+        lng: data.longitude,
+        altitude: 2
+      },
+      1500 // smoother transition
     );
+
+  } catch (err) {
+    console.error("ISS update failed:", err);
+  }
 }
 
+// Initial call
 updateISS();
 
+// Update every 5 seconds
 setInterval(updateISS, 5000);
