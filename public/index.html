@@ -220,6 +220,13 @@ body{
     color:#94a3b8;
 }
 
+.card-link{
+    cursor:pointer;
+    text-decoration:none;
+    color:inherit;
+    display:block;
+}
+
 /* ===================== */
 /* APOD SECTION          */
 /* ===================== */
@@ -510,6 +517,7 @@ body{
      <div class="nav-links">
        <a href="/">Home</a>
        <a href="/dashboard.html">Gallery</a>
+       <a href="/solar-system.html">Solar System</a>
        <a href="/about.html">About</a>
        <a href="https://youtube.com/@KosmoQuestt" target="_blank"><i class="fab fa-youtube"></i></a>
        <a href="https://x.com/KosmoQuestt" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
@@ -551,6 +559,10 @@ body{
         <h3>🔐 Secure Login</h3>
         <p>Google authentication keeps your account protected.</p>
     </div>
+    <a href="/solar-system.html" class="card card-link">
+        <h3>🪐 Solar System Explorer</h3>
+        <p>Explore all 8 planets with real NASA images, stats and fun facts.</p>
+    </a>
 </section>
 
 <!-- ===================== -->
@@ -596,7 +608,7 @@ for(let i=0;i<200;i++){
 }
 
 /* NASA APOD */
-const NASA_API_KEY = "ZSyixlW1G5TCw16WtmlwsoFf7dtFeUfU88Rcgce0"; // Replace with your free key from https://api.nasa.gov/
+const NASA_API_KEY = "ZSyixlW1G5TCw16WtmlwsoFf7dtFeUfU88Rcgce0";
 
 async function loadAPOD(){
     const mediaEl  = document.getElementById("apod-media");
