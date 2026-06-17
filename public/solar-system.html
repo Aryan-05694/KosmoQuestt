@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar System Explorer | KosmoQuestt</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="icon" href="/favicon.ico?v=2">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+    --bg:#050814;
+    --text:white;
+    --nav-bg:rgba(5,8,20,.9);
+    --card-bg:rgba(17,24,39,.75);
+    --card-border:rgba(255,255,255,.06);
+    --accent:#2563eb;
+}
+
+body{
+    font-family:"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+    min-height:100vh;
+}
+
+/* STARS */
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.star{
+    position:absolute;width:2px;height:2px;
+    background:white;border-radius:50%;
+    opacity:0.5;
+}
+
+/* GLOW */
+.glow{
+    position:fixed;top:-200px;left:50%;
+    transform:translateX(-50%);
+    width:700px;height:700px;
+    background:radial-gradient(circle,rgba(37,99,235,.2),transparent 70%);
+    filter:blur(100px);z-index:0;pointer-events:none;
+}
+
+.content{position:relative;z-index:1;}
+
+/* NAVBAR */
+.navbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 40px;
+    background:var(--nav-bg);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:white;}
+.logo img{height:40px;width:auto;}
+.logo h2{font-size:24px;}
+.nav-links{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.nav-links a{text-decoration:none;color:#cbd5e1;font-size:15px;transition:.2s;}
+.nav-links a:hover{color:white;}
+
+/* PAGE HEADER */
+.page-header{
+    text-align:center;
+    padding:70px 20px 30px;
+}
+.page-header h1{
+    font-size:52px;font-weight:800;
+    background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+    margin-bottom:14px;
+    animation:floatTitle 4s ease-in-out infinite;
+}
+@keyframes floatTitle{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
+}
+.page-header p{color:#94a3b8;font-size:17px;max-width:580px;margin:auto;}
+
+/* SOLAR ORRERY (orbit diagram) */
+.orrery-wrap{
+    display:flex;justify-content:center;align-items:center;
+    padding:10px 20px 20px;
+    overflow:hidden;
+}
+.orrery{
+    position:relative;
+    width:520px;height:520px;
+    flex-shrink:0;
+}
+.sun{
+    position:absolute;
+    width:60px;height:60px;
+    background:url('/planets/sun.jpg') center/cover, radial-gradient(circle,#fff7c0,#fbbf24);
+    border-radius:50%;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    box-shadow:0 0 40px #fbbf24,0 0 80px rgba(251,191,36,.4);
+    cursor:pointer;
+    z-index:10;
+    transition:.2s;
+    overflow:hidden;
+}
+.sun:hover{box-shadow:0 0 60px #fbbf24,0 0 120px rgba(251,191,36,.6);}
+
+.orbit{
+    position:absolute;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.08);
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+}
+
+.planet-orbit{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+}
+
+.planet-dot{
+    position:absolute;
+    border-radius:50%;
+    cursor:pointer;
+    transition:transform .2s,box-shadow .2s;
+    top:50%;left:50%;
+}
+.planet-dot:hover{
+    transform:translate(-50%,-50%) scale(1.4)!important;
+}
+.planet-dot.active{
+    box-shadow:0 0 0 3px white;
+}
+
+/* PLANET INFO PANEL */
+.explorer-layout{
+    display:grid;
+    grid-template-columns:520px 1fr;
+    gap:0;
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 30px 60px;
+    align-items:start;
+}
+
+.planet-panel{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:20px;
+    padding:32px;
+    min-height:420px;
+    transition:.4s;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.planet-panel-header{
+    display:flex;align-items:center;gap:20px;
+}
+
+.planet-icon{
+    width:90px;height:90px;
+    border-radius:50%;
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:36px;
+}
+
+.planet-panel-title h2{
+    font-size:28px;font-weight:700;margin-bottom:4px;
+}
+.planet-panel-title .planet-type{
+    font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;
+}
+
+.planet-description{
+    font-size:15px;line-height:1.75;color:#94a3b8;
+}
+
+.planet-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.stat-item{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:10px;
+    padding:14px 16px;
+}
+.stat-item .stat-label{
+    font-size:12px;color:#64748b;text-transform:uppercase;
+    letter-spacing:.06em;margin-bottom:5px;
+}
+.stat-item .stat-value{
+    font-size:16px;font-weight:600;color:#e2e8f0;
+}
+
+.planet-fun-fact{
+    background:rgba(37,99,235,.1);
+    border:1px solid rgba(37,99,235,.25);
+    border-radius:12px;
+    padding:16px;
+    font-size:14px;color:#93c5fd;
+    line-height:1.65;
+}
+.planet-fun-fact strong{
+    display:block;margin-bottom:4px;color:#60a5fa;
+    font-size:12px;text-transform:uppercase;letter-spacing:.06em;
+}
+
+/* PLANET LIST */
+.planet-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    padding:0 0 0 20px;
+}
+.planet-list-item{
+    display:flex;align-items:center;gap:14px;
+    padding:12px 16px;
+    border-radius:12px;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:.2s;
+}
+.planet-list-item:hover{background:rgba(255,255,255,.05);}
+.planet-list-item.active{
+    background:rgba(37,99,235,.12);
+    border-color:rgba(37,99,235,.3);
+}
+.planet-list-dot{
+    width:36px;height:36px;border-radius:50%;flex-shrink:0;
+}
+.planet-list-name{font-size:15px;font-weight:500;}
+.planet-list-sub{font-size:12px;color:#64748b;}
+
+/* FOOTER */
+.footer{
+    text-align:center;padding:40px;color:#64748b;
+    border-top:1px solid rgba(255,255,255,.05);
+}
+.footer a{color:#60a5fa;text-decoration:none;}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+    .explorer-layout{grid-template-columns:1fr;gap:20px;}
+    .orrery-wrap{padding:10px;}
+    .planet-list{flex-direction:row;flex-wrap:wrap;padding:0;justify-content:center;}
+    .planet-list-item{flex-direction:column;text-align:center;gap:6px;padding:10px 14px;}
+}
+@media(max-width:600px){
+    .navbar{flex-direction:column;gap:12px;padding:14px;}
+    .page-header h1{font-size:36px;}
+    .orrery{width:320px;height:320px;}
+    .planet-stats{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="glow" id="glow"></div>
+
+<div class="content">
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="/" class="logo">
+        <img src="/logo_1.png" alt="KosmoQuestt Logo">
+        <h2>KosmoQuestt</h2>
+    </a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/dashboard.html">Gallery</a>
+        <a href="/solar-system.html" style="color:white;font-weight:600;">Solar System</a>
+        <a href="/about.html">About</a>
+        <a href="https://youtube.com/@KosmoQuestt" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://x.com/KosmoQuestt" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="/auth/google">Login</a>
+    </div>
+</nav>
+
+<!-- HEADER -->
+<div class="page-header">
+    <h1>🪐 Solar System Explorer</h1>
+    <p>Click any planet in the orrery or the list below to explore its secrets.</p>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="explorer-layout">
+
+    <!-- LEFT: ORRERY + LIST -->
+    <div>
+        <div class="orrery-wrap">
+            <div class="orrery" id="orrery">
+                <div class="sun" id="sun-btn" title="The Sun"></div>
+                <!-- orbits and planets injected by JS -->
+            </div>
+        </div>
+        <div class="planet-list" id="planet-list"></div>
+    </div>
+
+    <!-- RIGHT: INFO PANEL -->
+    <div class="planet-panel" id="planet-panel">
+        <p style="color:#475569;text-align:center;margin:auto;">
+            <i class="fas fa-hand-pointer" style="font-size:28px;display:block;margin-bottom:12px;"></i>
+            Select a planet to explore it.
+        </p>
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>© 2026 KosmoQuestt • <a href="/">Back to Home</a></p>
+</div>
+
+</div>
+
+<script>
+/* ---- STARS ---- */
+const starsEl = document.getElementById("stars");
+for(let i=0;i<200;i++){
+    const s=document.createElement("div");
+    s.className="star";
+    s.style.left=Math.random()*100+"vw";
+    s.style.top=Math.random()*100+"vh";
+    s.style.opacity=Math.random()*.7+.1;
+    starsEl.appendChild(s);
+}
+
+/* ---- PLANET DATA ---- */
+/* Real NASA/JPL planet image URLs (public domain) */
+const IMG = {
+    sun:     "/planets/sun.jpg",
+    mercury: "/planets/mercury.jpg",
+    venus:   "/planets/venus.jpg",
+    earth:   "/planets/earth.jpg",
+    mars:    "/planets/mars.jpg",
+    jupiter: "/planets/jupiter.jpg",
+    saturn:  "/planets/saturn.jpg",
+    uranus:  "/planets/uranus.jpg",
+    neptune: "/planets/neptune.jpg"
+};
+
+const planets = [
+    {
+        id:"mercury",name:"Mercury",type:"Terrestrial Planet",
+        color:"#a8a29e",emoji:"⬛",
+        orbitRadius:52,size:7,speed:4.1,startAngle:0,
+        gradient:"radial-gradient(circle at 35% 35%,#d6d3d1,#a8a29e 50%,#78716c)",
+        description:"Mercury is the smallest planet and closest to the Sun. It has extreme temperature swings — scorching hot during the day and freezing cold at night — because it has almost no atmosphere to retain heat.",
+        stats:{
+            "Distance from Sun":"57.9M km",
+            "Orbital Period":"88 Earth days",
+            "Day Length":"59 Earth days",
+            "Moons":"0",
+            "Surface Temp":"−180°C to 430°C",
+            "Diameter":"4,879 km"
+        },
+        fact:"Mercury has no atmosphere, so the sky there is always pitch black — even during the day!"
+    },
+    {
+        id:"venus",name:"Venus",type:"Terrestrial Planet",
+        color:"#fbbf24",emoji:"🟡",
+        orbitRadius:78,size:10,speed:1.6,startAngle:45,
+        gradient:"radial-gradient(circle at 35% 35%,#fde68a,#fbbf24 50%,#d97706)",
+        description:"Venus is the hottest planet in the solar system despite not being closest to the Sun. Its thick carbon dioxide atmosphere creates a runaway greenhouse effect that keeps surface temperatures high enough to melt lead.",
+        stats:{
+            "Distance from Sun":"108.2M km",
+            "Orbital Period":"225 Earth days",
+            "Day Length":"243 Earth days",
+            "Moons":"0",
+            "Surface Temp":"465°C (avg)",
+            "Diameter":"12,104 km"
+        },
+        fact:"Venus spins backwards compared to most planets! If you stood on Venus, the Sun would rise in the west and set in the east."
+    },
+    {
+        id:"earth",name:"Earth",type:"Terrestrial Planet",
+        color:"#3b82f6",emoji:"🌍",
+        orbitRadius:108,size:11,speed:1.0,startAngle:120,
+        gradient:"radial-gradient(circle at 35% 35%,#93c5fd,#3b82f6 40%,#1d4ed8 70%,#1e3a8a)",
+        description:"Earth is the only known planet to harbor life. Its liquid water oceans, breathable nitrogen-oxygen atmosphere, and magnetic field create a rare combination of conditions that make complex life possible.",
+        stats:{
+            "Distance from Sun":"149.6M km",
+            "Orbital Period":"365.25 days",
+            "Day Length":"24 hours",
+            "Moons":"1 (The Moon)",
+            "Surface Temp":"−88°C to 58°C",
+            "Diameter":"12,742 km"
+        },
+        fact:"Earth is the densest planet in the Solar System and the only one not named after a Roman or Greek deity — its name comes from Old English."
+    },
+    {
+        id:"mars",name:"Mars",type:"Terrestrial Planet",
+        color:"#ef4444",emoji:"🔴",
+        orbitRadius:138,size:8,speed:0.53,startAngle:200,
+        gradient:"radial-gradient(circle at 35% 35%,#fca5a5,#ef4444 50%,#b91c1c)",
+        description:"Mars, the Red Planet, has the tallest volcano (Olympus Mons) and the longest canyon (Valles Marineris) in the Solar System. Its thin atmosphere and evidence of ancient river valleys make it the prime target in the search for extraterrestrial life.",
+        stats:{
+            "Distance from Sun":"227.9M km",
+            "Orbital Period":"687 Earth days",
+            "Day Length":"24h 37min",
+            "Moons":"2 (Phobos, Deimos)",
+            "Surface Temp":"−125°C to 20°C",
+            "Diameter":"6,779 km"
+        },
+        fact:"Olympus Mons on Mars is nearly 3 times the height of Mount Everest — so wide that you couldn't see the edge if you stood at its centre."
+    },
+    {
+        id:"jupiter",name:"Jupiter",type:"Gas Giant",
+        color:"#d97706",emoji:"🟠",
+        orbitRadius:185,size:22,speed:0.084,startAngle:300,
+        gradient:"radial-gradient(circle at 35% 35%,#fde68a,#d97706 40%,#92400e)",
+        description:"Jupiter is the largest planet — so massive that all other planets combined could fit inside it twice over. Its iconic Great Red Spot is a storm that has raged for over 350 years, wider than Earth itself.",
+        stats:{
+            "Distance from Sun":"778.5M km",
+            "Orbital Period":"11.86 Earth years",
+            "Day Length":"9h 56min",
+            "Moons":"95 known",
+            "Cloud Top Temp":"−145°C",
+            "Diameter":"139,820 km"
+        },
+        fact:"Jupiter's moon Ganymede is larger than the planet Mercury and is the biggest moon in the entire Solar System."
+    },
+    {
+        id:"saturn",name:"Saturn",type:"Gas Giant",
+        color:"#ca8a04",emoji:"🪐",
+        orbitRadius:228,size:19,speed:0.034,startAngle:60,
+        gradient:"radial-gradient(circle at 35% 35%,#fef08a,#ca8a04 50%,#713f12)",
+        description:"Saturn is famous for its stunning ring system — made of ice and rock particles ranging from tiny grains to chunks as large as houses. It is the least dense planet; it would float in water if you had a big enough ocean.",
+        stats:{
+            "Distance from Sun":"1.43B km",
+            "Orbital Period":"29.46 Earth years",
+            "Day Length":"10h 42min",
+            "Moons":"146 known",
+            "Cloud Top Temp":"−178°C",
+            "Diameter":"116,460 km"
+        },
+        fact:"Saturn's rings are incredibly thin relative to their width — about 20 metres thick but up to 282,000 km wide."
+    },
+    {
+        id:"uranus",name:"Uranus",type:"Ice Giant",
+        color:"#67e8f9",emoji:"🔵",
+        orbitRadius:268,size:14,speed:0.012,startAngle:150,
+        gradient:"radial-gradient(circle at 35% 35%,#cffafe,#67e8f9 50%,#0891b2)",
+        description:"Uranus is an ice giant that rotates on its side — its axial tilt is 98°, so it essentially orbits the Sun rolling like a ball. This gives it extreme 42-year-long seasons where one pole is bathed in sunlight while the other is in total darkness.",
+        stats:{
+            "Distance from Sun":"2.87B km",
+            "Orbital Period":"84 Earth years",
+            "Day Length":"17h 14min",
+            "Moons":"28 known",
+            "Cloud Top Temp":"−224°C",
+            "Diameter":"50,724 km"
+        },
+        fact:"Uranus is the coldest planet in the Solar System despite not being the farthest — its interior gives off almost no internal heat."
+    },
+    {
+        id:"neptune",name:"Neptune",type:"Ice Giant",
+        color:"#3b82f6",emoji:"🔵",
+        orbitRadius:304,size:13,speed:0.006,startAngle:240,
+        gradient:"radial-gradient(circle at 35% 35%,#bfdbfe,#3b82f6 50%,#1e3a8a)",
+        description:"Neptune is the windiest planet, with storms reaching 2,100 km/h — the fastest recorded in the Solar System. Its largest moon, Triton, orbits backwards and is slowly spiralling inward, destined to be torn apart in about 3.6 billion years.",
+        stats:{
+            "Distance from Sun":"4.5B km",
+            "Orbital Period":"165 Earth years",
+            "Day Length":"16h 6min",
+            "Moons":"16 known",
+            "Cloud Top Temp":"−218°C",
+            "Diameter":"49,244 km"
+        },
+        fact:"Neptune was the first planet discovered through mathematical prediction rather than direct observation — scientists calculated where it must be before anyone saw it."
+    }
+];
+
+const sunData = {
+    id:"sun",name:"The Sun",type:"G-type Main Sequence Star",
+    color:"#fbbf24",
+    gradient:"radial-gradient(circle at 35% 35%,#fff7c0,#fbbf24 40%,#d97706)",
+    description:"The Sun contains 99.86% of all the mass in the Solar System. It is a giant ball of plasma powered by nuclear fusion, converting 600 million tonnes of hydrogen into helium every second — releasing the energy that drives all life on Earth.",
+    stats:{
+        "Age":"4.6 billion years",
+        "Diameter":"1,392,700 km",
+        "Surface Temp":"5,500°C",
+        "Core Temp":"15 million °C",
+        "Rotation Period":"25 days (equator)",
+        "Distance from Earth":"149.6M km"
+    },
+    fact:"Light from the Sun takes about 8 minutes and 20 seconds to reach Earth. The energy it produces started its journey from the core 100,000 years ago."
+};
+
+/* ---- BUILD ORRERY ---- */
+const orrery = document.getElementById("orrery");
+const W = orrery.offsetWidth || 520;
+const CX = W/2, CY = W/2;
+
+/* scale orbits to fit the orrery size */
+const scale = W/520;
+
+planets.forEach(p => {
+    const r = p.orbitRadius * scale;
+    const orb = document.createElement("div");
+    orb.className = "orbit";
+    orb.style.width = r*2+"px";
+    orb.style.height = r*2+"px";
+    orrery.appendChild(orb);
+});
+
+/* animate planets */
+const dotEls = {};
+planets.forEach(p => {
+    const r = p.orbitRadius * scale;
+    const sz = Math.max(p.size * scale * 1.8, 10);
+    const dot = document.createElement("div");
+    dot.className = "planet-dot";
+    dot.id = "dot-"+p.id;
+    dot.title = p.name;
+    dot.style.cssText = `
+        width:${sz}px;height:${sz}px;
+        margin-left:${-sz/2}px;margin-top:${-sz/2}px;
+        background:url('${IMG[p.id]}') center/cover, ${p.gradient};
+        box-shadow:0 0 ${sz*1.5}px ${p.color}88;
+        transform:translate(-50%,-50%);
+        z-index:5;
+        overflow:hidden;
+    `;
+    dot.addEventListener("click", () => showPlanet(p.id));
+    orrery.appendChild(dot);
+    dotEls[p.id] = {el:dot, r, angle:p.startAngle*(Math.PI/180), speed:p.speed};
+});
+
+/* Saturn rings overlay */
+const saturnRing = document.createElement("div");
+saturnRing.id = "saturn-ring";
+saturnRing.style.cssText = `
+    position:absolute;border-radius:50%;
+    border:3px solid rgba(202,138,4,.5);
+    pointer-events:none;z-index:4;
+    transform:translate(-50%,-50%) rotateX(70deg);
+    display:none;
+`;
+orrery.appendChild(saturnRing);
+
+function animate(){
+    const now = Date.now()/1000;
+    planets.forEach(p => {
+        const d = dotEls[p.id];
+        const angle = d.angle + now * d.speed * 0.3;
+        const x = CX + d.r * Math.cos(angle);
+        const y = CY + d.r * Math.sin(angle);
+        const sz = parseInt(d.el.style.width);
+        d.el.style.left = x+"px";
+        d.el.style.top  = y+"px";
+
+        /* move saturn ring */
+        if(p.id==="saturn"){
+            saturnRing.style.left = x+"px";
+            saturnRing.style.top  = y+"px";
+            saturnRing.style.width = sz*3.2+"px";
+            saturnRing.style.height= sz*3.2+"px";
+            saturnRing.style.display="block";
+        }
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+/* ---- PLANET LIST ---- */
+const listEl = document.getElementById("planet-list");
+planets.forEach(p => {
+    const item = document.createElement("div");
+    item.className = "planet-list-item";
+    item.id = "list-"+p.id;
+    item.innerHTML = `
+        <div class="planet-list-dot" style="background:url('${IMG[p.id]}') center/cover,${p.gradient};box-shadow:0 0 8px ${p.color}88;overflow:hidden;"></div>
+        <div>
+            <div class="planet-list-name">${p.name}</div>
+            <div class="planet-list-sub">${p.type}</div>
+        </div>
+    `;
+    item.addEventListener("click", () => showPlanet(p.id));
+    listEl.appendChild(item);
+});
+
+/* Sun button */
+document.getElementById("sun-btn").addEventListener("click", () => showPlanet("sun"));
+
+/* ---- SHOW PLANET ---- */
+function showPlanet(id){
+    /* clear active states */
+    document.querySelectorAll(".planet-dot").forEach(d=>d.classList.remove("active"));
+    document.querySelectorAll(".planet-list-item").forEach(d=>d.classList.remove("active"));
+
+    const data = id==="sun" ? sunData : planets.find(p=>p.id===id);
+    if(!data) return;
+
+    if(id!=="sun"){
+        const dot = document.getElementById("dot-"+id);
+        if(dot) dot.classList.add("active");
+        const listItem = document.getElementById("list-"+id);
+        if(listItem) listItem.classList.add("active");
+    }
+
+    /* update glow color */
+    document.getElementById("glow").style.background =
+        `radial-gradient(circle,${data.color}33,transparent 70%)`;
+
+    const panel = document.getElementById("planet-panel");
+    const statsHTML = Object.entries(data.stats).map(([k,v])=>`
+        <div class="stat-item">
+            <div class="stat-label">${k}</div>
+            <div class="stat-value">${v}</div>
+        </div>
+    `).join("");
+
+    panel.style.opacity="0";
+    setTimeout(()=>{
+        const imgSrc = IMG[data.id] || "";
+        panel.innerHTML = `
+            <div class="planet-panel-header">
+                <div class="planet-icon" style="
+                    background:url('${imgSrc}') center/cover, ${data.gradient};
+                    box-shadow:0 0 25px ${data.color}66;
+                    overflow:hidden;
+                "></div>
+                <div class="planet-panel-title">
+                    <h2>${data.name}</h2>
+                    <div class="planet-type">${data.type}</div>
+                </div>
+            </div>
+            <div style="border-radius:14px;overflow:hidden;height:180px;background:#0a0f1e;">
+                <img src="${imgSrc}" alt="${data.name}"
+                    style="width:100%;height:100%;object-fit:cover;display:block;"
+                    onerror="this.style.display='none'">
+            </div>
+            <p class="planet-description">${data.description}</p>
+            <div class="planet-stats">${statsHTML}</div>
+            <div class="planet-fun-fact">
+                <strong>💡 Fun Fact</strong>
+                ${data.fact}
+            </div>
+        `;
+        panel.style.opacity="1";
+        panel.style.transition="opacity .3s";
+    },150);
+}
+
+/* auto-select Earth on load */
+showPlanet("earth");
+</script>
+
+</body>
+</html>
