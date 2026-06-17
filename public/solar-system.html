@@ -526,26 +526,29 @@ planets.forEach(p => {
         margin-left:${-sz/2}px;margin-top:${-sz/2}px;
         background:url('${IMG[p.id]}') center/cover, ${p.gradient};
         box-shadow:0 0 ${sz*1.5}px ${p.color}88;
+        border-radius:${p.id === "saturn" ? "30%" : "50%"};
         transform:translate(-50%,-50%);
         z-index:5;
-        overflow:hidden;
+        overflow:visible;
+        ${p.id === "saturn" ? `width:${sz*2.8}px;height:${sz}px;margin-left:${-sz*1.4}px;background-size:contain;background-repeat:no-repeat;background-color:transparent;box-shadow:none;` : "overflow:hidden;"}
     `;
     dot.addEventListener("click", () => showPlanet(p.id));
     orrery.appendChild(dot);
     dotEls[p.id] = {el:dot, r, angle:p.startAngle*(Math.PI/180), speed:p.speed};
 });
 
-/* Saturn rings overlay */
-const saturnRing = document.createElement("div");
-saturnRing.id = "saturn-ring";
-saturnRing.style.cssText = `
-    position:absolute;border-radius:50%;
-    border:3px solid rgba(202,138,4,.5);
-    pointer-events:none;z-index:4;
-    transform:translate(-50%,-50%) rotateX(70deg);
-    display:none;
+/* Saturn rings overlay — SVG ellipse for realistic tilt */
+const saturnSVG = document.createElementNS("http://www.w3.org/2000/svg","svg");
+saturnSVG.id = "saturn-ring";
+saturnSVG.style.cssText = `position:absolute;pointer-events:none;z-index:6;overflow:visible;display:none;`;
+saturnSVG.setAttribute("width","0");
+saturnSVG.setAttribute("height","0");
+saturnSVG.innerHTML = `
+    <ellipse id="sr-outer" fill="none" stroke="rgba(202,138,4,0.35)" stroke-width="4"/>
+    <ellipse id="sr-mid"   fill="none" stroke="rgba(234,179,8,0.55)"  stroke-width="6"/>
+    <ellipse id="sr-inner" fill="none" stroke="rgba(202,138,4,0.25)" stroke-width="3"/>
 `;
-orrery.appendChild(saturnRing);
+orrery.appendChild(saturnSVG);
 
 function animate(){
     const now = Date.now()/1000;
@@ -558,13 +561,9 @@ function animate(){
         d.el.style.left = x+"px";
         d.el.style.top  = y+"px";
 
-        /* move saturn ring */
+        /* Saturn image already has rings — hide SVG overlay */
         if(p.id==="saturn"){
-            saturnRing.style.left = x+"px";
-            saturnRing.style.top  = y+"px";
-            saturnRing.style.width = sz*3.2+"px";
-            saturnRing.style.height= sz*3.2+"px";
-            saturnRing.style.display="block";
+            saturnSVG.style.display = "none";
         }
     });
     requestAnimationFrame(animate);
