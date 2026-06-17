@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ISS Live Tracker | KosmoQuestt</title>
+
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<style>
+body{
+    margin:0;
+    background:#050816;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+header{
+    text-align:center;
+    padding:20px;
+}
+
+#map{
+    height:70vh;
+    width:100%;
+}
+
+.stats{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    padding:20px;
+}
+
+.card{
+    background:#111827;
+    padding:15px;
+    border-radius:12px;
+    min-width:180px;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🛰️ ISS Live Tracker</h1>
+    <p>Track the International Space Station in real time</p>
+</header>
+
+<div id="map"></div>
+
+<div class="stats">
+    <div class="card">
+        <h3>Latitude</h3>
+        <p id="lat">--</p>
+    </div>
+
+    <div class="card">
+        <h3>Longitude</h3>
+        <p id="lon">--</p>
+    </div>
+
+    <div class="card">
+        <h3>Altitude</h3>
+        <p id="alt">-- km</p>
+    </div>
+
+    <div class="card">
+        <h3>Velocity</h3>
+        <p id="vel">-- km/h</p>
+    </div>
+
+    <div class="card">
+        <h3>Astronauts</h3>
+        <p id="crew">Loading...</p>
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="iss.js"></script>
+
+</body>
+</html>
