@@ -193,6 +193,28 @@ app.get("/images", async (req, res) => {
         res.status(500).send("Error loading images");
     }
 });
+
+/* =======================
+   IMAGE COUNT
+======================= */
+app.get("/image-count", async (req, res) => {
+
+    try {
+
+        const count = await Image.countDocuments();
+
+        res.json({
+            count
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            count: 0
+        });
+    }
+});
+
 /* =======================
    DELETE IMAGE
 ======================= */

@@ -268,6 +268,14 @@ button:hover{
     color:#94a3b8;
 }
 
+.image-counter{
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+    color:#60a5fa;
+    margin-bottom:20px;
+}
+
 #themeToggle{
     background:rgba(255,255,255,.08);
     border:none;
@@ -340,6 +348,10 @@ Upload Image
 <h2 class="section-title">
 Latest Space Uploads
 </h2>
+
+<div id="imageCounter" class="image-counter">
+    🚀 Total Images Uploaded: Loading...
+</div>
 
 <div id="gallery" class="gallery"></div>
 
@@ -528,5 +540,23 @@ toggleBtn.addEventListener("click",()=>{
 });
 </script>
 
+<script>
+
+fetch("/image-count")
+.then(res => res.json())
+.then(data => {
+
+    document.getElementById("imageCounter").innerHTML =
+        `🚀 Total Images Uploaded: ${data.count}`;
+
+})
+.catch(() => {
+
+    document.getElementById("imageCounter").innerHTML =
+        "🚀 Total Images Uploaded: 0";
+
+});
+
+</script>
 </body>
 </html>
