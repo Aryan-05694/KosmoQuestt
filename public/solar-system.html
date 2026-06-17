@@ -88,7 +88,7 @@ body{
 }
 .orrery{
     position:relative;
-    width:520px;height:520px;
+    width:700px;height:700px;
     flex-shrink:0;
 }
 .sun{
@@ -138,9 +138,9 @@ body{
 /* PLANET INFO PANEL */
 .explorer-layout{
     display:grid;
-    grid-template-columns:520px 1fr;
-    gap:0;
-    max-width:1100px;
+    grid-template-columns:700px 1fr;
+    gap:20px;
+    max-width:1400px;
     margin:0 auto;
     padding:0 30px 60px;
     align-items:start;
@@ -352,7 +352,7 @@ const planets = [
     {
         id:"mercury",name:"Mercury",type:"Terrestrial Planet",
         color:"#a8a29e",emoji:"⬛",
-        orbitRadius:52,size:7,speed:4.1,startAngle:0,
+        orbitRadius:45,size:7,speed:4.1,startAngle:0,
         gradient:"radial-gradient(circle at 35% 35%,#d6d3d1,#a8a29e 50%,#78716c)",
         description:"Mercury is the smallest planet and closest to the Sun. It has extreme temperature swings — scorching hot during the day and freezing cold at night — because it has almost no atmosphere to retain heat.",
         stats:{
@@ -368,7 +368,7 @@ const planets = [
     {
         id:"venus",name:"Venus",type:"Terrestrial Planet",
         color:"#fbbf24",emoji:"🟡",
-        orbitRadius:78,size:10,speed:1.6,startAngle:45,
+        orbitRadius:65,size:10,speed:1.6,startAngle:45,
         gradient:"radial-gradient(circle at 35% 35%,#fde68a,#fbbf24 50%,#d97706)",
         description:"Venus is the hottest planet in the solar system despite not being closest to the Sun. Its thick carbon dioxide atmosphere creates a runaway greenhouse effect that keeps surface temperatures high enough to melt lead.",
         stats:{
@@ -384,7 +384,7 @@ const planets = [
     {
         id:"earth",name:"Earth",type:"Terrestrial Planet",
         color:"#3b82f6",emoji:"🌍",
-        orbitRadius:108,size:11,speed:1.0,startAngle:120,
+        orbitRadius:90,size:11,speed:1.0,startAngle:120,
         gradient:"radial-gradient(circle at 35% 35%,#93c5fd,#3b82f6 40%,#1d4ed8 70%,#1e3a8a)",
         description:"Earth is the only known planet to harbor life. Its liquid water oceans, breathable nitrogen-oxygen atmosphere, and magnetic field create a rare combination of conditions that make complex life possible.",
         stats:{
@@ -400,7 +400,7 @@ const planets = [
     {
         id:"mars",name:"Mars",type:"Terrestrial Planet",
         color:"#ef4444",emoji:"🔴",
-        orbitRadius:138,size:8,speed:0.53,startAngle:200,
+        orbitRadius:115,size:8,speed:0.53,startAngle:200,
         gradient:"radial-gradient(circle at 35% 35%,#fca5a5,#ef4444 50%,#b91c1c)",
         description:"Mars, the Red Planet, has the tallest volcano (Olympus Mons) and the longest canyon (Valles Marineris) in the Solar System. Its thin atmosphere and evidence of ancient river valleys make it the prime target in the search for extraterrestrial life.",
         stats:{
@@ -416,7 +416,7 @@ const planets = [
     {
         id:"jupiter",name:"Jupiter",type:"Gas Giant",
         color:"#d97706",emoji:"🟠",
-        orbitRadius:185,size:22,speed:0.084,startAngle:300,
+        orbitRadius:145,size:22,speed:0.084,startAngle:300,
         gradient:"radial-gradient(circle at 35% 35%,#fde68a,#d97706 40%,#92400e)",
         description:"Jupiter is the largest planet — so massive that all other planets combined could fit inside it twice over. Its iconic Great Red Spot is a storm that has raged for over 350 years, wider than Earth itself.",
         stats:{
@@ -432,7 +432,7 @@ const planets = [
     {
         id:"saturn",name:"Saturn",type:"Gas Giant",
         color:"#ca8a04",emoji:"🪐",
-        orbitRadius:228,size:19,speed:0.034,startAngle:60,
+        orbitRadius:180,size:19,speed:0.034,startAngle:60,
         gradient:"radial-gradient(circle at 35% 35%,#fef08a,#ca8a04 50%,#713f12)",
         description:"Saturn is famous for its stunning ring system — made of ice and rock particles ranging from tiny grains to chunks as large as houses. It is the least dense planet; it would float in water if you had a big enough ocean.",
         stats:{
@@ -448,7 +448,7 @@ const planets = [
     {
         id:"uranus",name:"Uranus",type:"Ice Giant",
         color:"#67e8f9",emoji:"🔵",
-        orbitRadius:268,size:14,speed:0.012,startAngle:150,
+        orbitRadius:215,size:14,speed:0.012,startAngle:150,
         gradient:"radial-gradient(circle at 35% 35%,#cffafe,#67e8f9 50%,#0891b2)",
         description:"Uranus is an ice giant that rotates on its side — its axial tilt is 98°, so it essentially orbits the Sun rolling like a ball. This gives it extreme 42-year-long seasons where one pole is bathed in sunlight while the other is in total darkness.",
         stats:{
@@ -464,7 +464,7 @@ const planets = [
     {
         id:"neptune",name:"Neptune",type:"Ice Giant",
         color:"#3b82f6",emoji:"🔵",
-        orbitRadius:304,size:13,speed:0.006,startAngle:240,
+        orbitRadius:245,size:13,speed:0.006,startAngle:240,
         gradient:"radial-gradient(circle at 35% 35%,#bfdbfe,#3b82f6 50%,#1e3a8a)",
         description:"Neptune is the windiest planet, with storms reaching 2,100 km/h — the fastest recorded in the Solar System. Its largest moon, Triton, orbits backwards and is slowly spiralling inward, destined to be torn apart in about 3.6 billion years.",
         stats:{
