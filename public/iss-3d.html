@@ -10,6 +10,18 @@
             overflow:hidden;
         }
 
+        #info{
+         position:absolute;
+         top:20px;
+         right:20px;
+         background:rgba(0,0,0,0.7);
+         color:white;
+         padding:15px;
+         border-radius:12px;
+         border:1px solid cyan;
+         z-index:1000;
+        }
+
         #globeViz{
             width:100vw;
             height:100vh;
@@ -20,6 +32,13 @@
 <body>
 
 <div id="globeViz"></div>
+
+<div id="info">
+    <p>Latitude: <span id="lat">--</span></p>
+    <p>Longitude: <span id="lon">--</span></p>
+    <p>Altitude: <span id="alt">--</span> km</p>
+    <p>Velocity: <span id="vel">--</span> km/h</p>
+</div>
 
 <script src="//unpkg.com/three"></script>
 <script src="//unpkg.com/globe.gl"></script>
