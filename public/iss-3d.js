@@ -1,23 +1,41 @@
-const globe = Globe()
-(document.getElementById('globeViz'))
+const globe = Globe()(document.getElementById('globeViz'))
 
 .globeImageUrl(
-'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg'
+    'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg'
 )
 
 .backgroundImageUrl(
-'https://unpkg.com/three-globe/example/img/night-sky.png'
+    'https://unpkg.com/three-globe/example/img/night-sky.png'
 );
 
 globe.controls().autoRotate = true;
 globe.controls().autoRotateSpeed = 0.5;
 
 globe
-  .showAtmosphere(true)
-  .atmosphereAltitude(0.2);
+    .showAtmosphere(true)
+    .atmosphereAltitude(0.2);
 
-// Store ISS path
+// Orbit path storage
 const orbitPath = [];
+
+// ISS marker
+const issMarker = {
+    lat: 0,
+    lng: 0
+};
+
+globe
+    .htmlElementsData([issMarker])
+    .htmlElement(() => {
+        const img = document.createElement('img');
+
+        img.src = 'images/iss.png'; // change path if needed
+
+        img.style.width = '50px';
+        img.style.height = '50px';
+
+        return img;
+    });
 
 async function updateISS() {
 
@@ -40,26 +58,21 @@ async function updateISS() {
     document.getElementById("vel").textContent =
         Math.round(data.velocity);
 
+    // Update ISS marker position
+    issMarker.lat = data.latitude;
+    issMarker.lng = data.longitude;
+
+    globe.htmlElementsData([issMarker]);
+
     // Save orbit positions
     orbitPath.push({
         lat: data.latitude,
         lng: data.longitude
     });
 
-    // Keep last 200 points
     if (orbitPath.length > 200) {
         orbitPath.shift();
     }
-
-    // ISS marker
-    globe.pointsData([
-        {
-            lat: data.latitude,
-            lng: data.longitude,
-            size: 1,
-            color: 'red'
-        }
-    ]);
 
     // Orbit trail
     globe
