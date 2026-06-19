@@ -292,33 +292,48 @@ button:hover{
 /* Comment Input - YouTube Style */
 
 .comment-form{
-    display:flex;
+    display:none;
     gap:12px;
     margin-bottom:20px;
     align-items:flex-start;
 }
 
+.engagement-section:hover .comment-form{
+    display:flex;
+}
+
+.comment-form.active{
+    display:flex !important;
+}
+
 .comment-form-avatar{
-    width:36px;
-    height:36px;
+    width:36px !important;
+    height:36px !important;
+    min-width:36px !important;
+    min-height:36px !important;
     border-radius:50%;
     object-fit:cover;
-    flex-shrink:0;
+    flex-shrink:0 !important;
+    display:block;
 }
 
 .comment-input-wrapper{
     flex:1;
+    display:flex;
+    flex-direction:column;
 }
 
 .comment-input{
-    width:100%;
-    padding:10px 12px;
-    border:1px solid var(--border);
-    border-radius:6px;
-    background:var(--input-bg);
-    color:white;
-    font-size:13px;
-    margin:0;
+    width:100% !important;
+    padding:10px 12px !important;
+    border:1px solid var(--border) !important;
+    border-radius:6px !important;
+    background:var(--input-bg) !important;
+    color:white !important;
+    font-size:13px !important;
+    margin:0 !important;
+    min-height:36px !important;
+    max-height:36px !important;
 }
 
 .comment-submit{
@@ -774,6 +789,16 @@ async function addComment(imageId) {
         alert("Error posting comment");
     }
 }
+
+// Show comment form on input focus
+document.addEventListener('focus', function(e) {
+    if (e.target.classList.contains('comment-input')) {
+        const form = e.target.closest('.comment-form');
+        if (form) {
+            form.classList.add('active');
+        }
+    }
+}, true);
 
 async function loadComments(imageId) {
     try {
