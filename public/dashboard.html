@@ -356,6 +356,7 @@ button:hover{
 
 .comment{
     display:flex;
+    align-items:flex-start;
     gap:12px;
     padding:15px 0;
     border-top:1px solid var(--border);
@@ -365,16 +366,31 @@ button:hover{
     border-top:none;
 }
 
+.comment:first-child{
+    border-top:none;
+}
+
 .comment-avatar{
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    object-fit:cover;
-    flex-shrink:0;
+    width:40px !important;
+    height:40px !important;
+    min-width:40px !important;
+    min-height:40px !important;
+    max-width:40px !important;
+    max-height:40px !important;
+
+    border-radius:50% !important;
+    object-fit:cover !important;
+
+    display:block !important;
+    flex:none !important;
+    overflow:hidden !important;
+
+    aspect-ratio:1/1 !important;
 }
 
 .comment-content{
     flex:1;
+    min-width:0;
 }
 
 .comment-header{
@@ -825,7 +841,13 @@ async function loadComments(imageId) {
             const timeText = getTimeAgo(commentTime);
             
             commentDiv.innerHTML = `
-                <img class="comment-avatar" src="${comment.userPhoto}?sz=40" alt="avatar" onerror="this.src='/logo_1.png'">
+                <img
+                  class="comment-avatar"
+                  src="${comment.userPhoto || '/logo_1.png'}"
+                  alt="avatar"
+                  width="40"
+                  height="40"
+                  onerror="this.src='/logo_1.png'">
                 <div class="comment-content">
                     <div class="comment-header">
                         <span class="comment-name">${comment.userName}</span>
