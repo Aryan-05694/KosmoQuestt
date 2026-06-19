@@ -289,17 +289,32 @@ button:hover{
     font-size:14px;
 }
 
+/* Comment Input - YouTube Style */
+
 .comment-form{
     display:flex;
-    gap:8px;
-    margin-bottom:12px;
+    gap:12px;
+    margin-bottom:20px;
+    align-items:flex-start;
+}
+
+.comment-form-avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    object-fit:cover;
+    flex-shrink:0;
+}
+
+.comment-input-wrapper{
+    flex:1;
 }
 
 .comment-input{
-    flex:1;
-    padding:8px 12px;
+    width:100%;
+    padding:10px 12px;
     border:1px solid var(--border);
-    border-radius:8px;
+    border-radius:6px;
     background:var(--input-bg);
     color:white;
     font-size:13px;
@@ -308,21 +323,40 @@ button:hover{
 
 .comment-submit{
     width:auto;
-    padding:8px 16px;
+    padding:8px 18px;
     margin:0;
     font-size:13px;
-}
-
-.comments-list{
-    max-height:200px;
-    overflow-y:auto;
     margin-top:8px;
 }
 
+/* Comments List - YouTube Style */
+
+.comments-list{
+    max-height:400px;
+    overflow-y:auto;
+}
+
 .comment{
-    padding:8px 0;
+    display:flex;
+    gap:12px;
+    padding:15px 0;
     border-top:1px solid var(--border);
-    font-size:13px;
+}
+
+.comment:first-child{
+    border-top:none;
+}
+
+.comment-avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    object-fit:cover;
+    flex-shrink:0;
+}
+
+.comment-content{
+    flex:1;
 }
 
 .comment-header{
@@ -332,24 +366,27 @@ button:hover{
     margin-bottom:4px;
 }
 
-.comment-avatar{
-    width:24px;
-    height:24px;
-    min-width:24px;
-    min-height:24px;
-    border-radius:50%;
-    object-fit:cover;
-    display:block;
-}
-
 .comment-name{
     color:#60a5fa;
-    font-weight:bold;
+    font-weight:600;
+    font-size:13px;
+}
+
+.comment-time{
+    color:#6b7280;
+    font-size:12px;
 }
 
 .comment-text{
     color:#d1d5db;
-    margin:4px 0;
+    margin:6px 0 8px 0;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.comment-actions{
+    display:flex;
+    gap:12px;
 }
 
 .comment-delete{
@@ -359,11 +396,13 @@ button:hover{
     cursor:pointer;
     font-size:12px;
     padding:0;
-    margin-top:4px;
     width:auto;
+    font-weight:500;
+    transition:.2s;
 }
 
 .comment-delete:hover{
+    color:#dc2626;
     text-decoration:underline;
 }
 
@@ -536,6 +575,13 @@ fetch("/user")
     </p>
 
     `;
+    
+    // Set user avatar in comment forms (loaded after gallery)
+    setTimeout(() => {
+        document.querySelectorAll('[id^="your-avatar-"]').forEach(avatar => {
+            avatar.src = `${user.photo}?sz=36`;
+        });
+    }, 500);
 });
 
 </script>
@@ -588,18 +634,21 @@ fetch("/images")
                 <span class="like-count" id="like-count-${img._id}">Loading...</span>
             </div>
 
-            <div class="comment-form">
-                <input 
-                    type="text" 
-                    class="comment-input" 
-                    placeholder="Add a comment..." 
-                    id="comment-input-${img._id}"
-                >
-                <button 
-                    class="comment-submit" 
-                    onclick="addComment('${img._id}')">
-                    Post
-                </button>
+            <div class="comment-form" id="comment-form-${img._id}">
+                <img class="comment-form-avatar" src="" alt="Your avatar" id="your-avatar-${img._id}" onerror="this.src='/logo_1.png'">
+                <div class="comment-input-wrapper">
+                    <input 
+                        type="text" 
+                        class="comment-input" 
+                        placeholder="Add a comment..." 
+                        id="comment-input-${img._id}"
+                    >
+                    <button 
+                        class="comment-submit" 
+                        onclick="addComment('${img._id}')">
+                        Post
+                    </button>
+                </div>
             </div>
 
             <div class="comments-list" id="comments-${img._id}">
@@ -735,22 +784,32 @@ async function loadComments(imageId) {
         commentsList.innerHTML = "";
 
         if (comments.length === 0) {
-            commentsList.innerHTML = "<p style='color:#6b7280;font-size:13px;'>No comments yet</p>";
+            commentsList.innerHTML = "<p style='color:#6b7280;font-size:13px;padding:10px 0;'>No comments yet</p>";
             return;
         }
 
         comments.forEach(comment => {
             const commentDiv = document.createElement("div");
             commentDiv.className = "comment";
+            
+            // Format time
+            const commentTime = new Date(comment.createdAt);
+            const timeText = getTimeAgo(commentTime);
+            
             commentDiv.innerHTML = `
-                <div class="comment-header">
-                    <img class="comment-avatar" src="${comment.userPhoto}?sz=24" alt="avatar" onerror="this.src='/logo_1.png'">
-                    <span class="comment-name">${comment.userName}</span>
+                <img class="comment-avatar" src="${comment.userPhoto}?sz=40" alt="avatar" onerror="this.src='/logo_1.png'">
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <span class="comment-name">${comment.userName}</span>
+                        <span class="comment-time">${timeText}</span>
+                    </div>
+                    <div class="comment-text">${comment.commentText}</div>
+                    <div class="comment-actions">
+                        <button class="comment-delete" onclick="deleteComment('${imageId}', '${comment._id}')">
+                            Delete
+                        </button>
+                    </div>
                 </div>
-                <div class="comment-text">${comment.commentText}</div>
-                <button class="comment-delete" onclick="deleteComment('${imageId}', '${comment._id}')">
-                    Delete
-                </button>
             `;
             commentsList.appendChild(commentDiv);
         });
@@ -758,6 +817,21 @@ async function loadComments(imageId) {
     } catch (err) {
         console.log(err);
     }
+}
+
+function getTimeAgo(date) {
+    const now = new Date();
+    const diff = now - date;
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    
+    if (seconds < 60) return "just now";
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 7) return `${days}d ago`;
+    return date.toLocaleDateString();
 }
 
 async function deleteComment(imageId, commentId) {
