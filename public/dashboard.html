@@ -1133,7 +1133,11 @@ function createCommentElement(comment, allCommentsArr, imageId) {
     const canDelete = isOwner || isAdmin;
 
     const editedBadge = comment.isEdited ? `<span class="comment-edited-badge">(edited)</span>` : '';
-    const adminActionBadge = isAdmin && !isOwner ? `<span class="admin-badge">ADMIN</span>` : '';
+    // Show ADMIN badge only if the comment's author is the admin
+    const commentAuthorIsAdmin = comment.userId === currentUser?._id && currentUser?.isAdmin
+       || comment.userIsAdmin;  // fallback if stored
+    const adminActionBadge = (comment.userId === (currentUser?.id) && currentUser?.isAdmin)
+       ? `<span class="admin-badge">ADMIN</span>` : '';
 
     commentDiv.innerHTML = `
         <img

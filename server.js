@@ -83,6 +83,11 @@ const commentSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    // store whether comment author is admin at time of posting
+    userIsAdmin: {
+        type: Boolean,
+        default: false
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -414,7 +419,9 @@ app.post("/api/images/:id/comment", isLoggedIn, async (req, res) => {
             userPhoto: req.user.photo,
             commentText,
             // FIX: save parentCommentId if it's a reply
-            parentCommentId: parentCommentId || null
+            parentCommentId: parentCommentId || null,
+            // store admin status of author at time of posting
+            userIsAdmin: req.user.email === ADMIN_EMAIL
         });
 
         res.json(comment);
