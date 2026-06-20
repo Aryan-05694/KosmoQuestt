@@ -132,9 +132,6 @@ body{
 
 .nav-links a:hover{
     background:rgba(255,255,255,.08);
-}
-
-.nav-links a:hover{
     color:white;
 }
 
@@ -215,14 +212,9 @@ button:hover{
     max-width:1400px;
     margin:auto;
     padding:20px;
-
     display:grid;
-
-    grid-template-columns:
-    repeat(auto-fill,minmax(320px,320px));
-
+    grid-template-columns:repeat(auto-fill,minmax(320px,320px));
     justify-content:center;
-
     gap:20px;
 }
 
@@ -253,7 +245,7 @@ button:hover{
     color:#d1d5db;
 }
 
-/* Like and Comment Section */
+/* Engagement Section */
 
 .engagement-section{
     padding:12px;
@@ -318,10 +310,6 @@ button:hover{
     color:#3b82f6;
 }
 
-.comments-icon{
-    font-size:16px;
-}
-
 .comment-count-badge{
     background:rgba(96,165,250,.2);
     padding:2px 8px;
@@ -371,12 +359,8 @@ button:hover{
 }
 
 @keyframes fadeIn{
-    from{
-        opacity:0;
-    }
-    to{
-        opacity:1;
-    }
+    from{ opacity:0; }
+    to{ opacity:1; }
 }
 
 .modal{
@@ -384,7 +368,7 @@ button:hover{
     border-radius:16px;
     border:1px solid var(--border);
     width:90%;
-    max-width:500px;
+    max-width:540px;
     max-height:80vh;
     display:flex;
     flex-direction:column;
@@ -436,76 +420,40 @@ button:hover{
     background:rgba(255,255,255,.08);
 }
 
-.modal-content{
-    flex:1;
-    overflow-y:auto;
-    padding:20px;
-}
+/* Search Box */
 
-.modal-footer{
-    padding:20px;
-    border-top:1px solid var(--border);
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
-}
-
-.comment-form-modal{
-    display:flex;
-    gap:12px;
-    width:100%;
-}
-
-.comment-form-avatar-modal{
-    width:40px !important;
-    height:40px !important;
-    min-width:40px !important;
-    min-height:40px !important;
-    border-radius:50% !important;
-    object-fit:cover !important;
-    flex-shrink:0 !important;
-    display:block !important;
-}
-
-.comment-input-wrapper-modal{
-    flex:1;
+.modal-search{
+    padding:0 20px 12px 20px;
     display:flex;
     gap:8px;
 }
 
-.comment-input-modal{
+.modal-search input{
     flex:1;
     padding:10px 12px !important;
     border:1px solid var(--border) !important;
     border-radius:8px !important;
     background:var(--input-bg) !important;
     color:white !important;
-    font-size:14px !important;
-    margin:0 !important;
-    min-height:40px !important;
-}
-
-.comment-submit-modal{
-    padding:10px 20px !important;
-    width:auto !important;
-    margin:0 !important;
     font-size:13px !important;
-    background:#2563eb;
-    border:none;
-    border-radius:8px;
-    color:white;
-    font-weight:600;
-    cursor:pointer;
-    transition:.2s;
+    margin:0 !important;
 }
 
-.comment-submit-modal:hover{
-    background:#1d4ed8;
+.modal-search input::placeholder{
+    color:#6b7280;
 }
 
-/* Comments List in Modal */
+/* Modal Content */
 
-.comments-list-modal{
+.modal-content{
+    flex:1;
+    overflow-y:auto;
+    padding:20px;
+}
+
+/* Comments Thread */
+
+.comments-thread{
     display:flex;
     flex-direction:column;
     gap:16px;
@@ -515,6 +463,12 @@ button:hover{
     display:flex;
     align-items:flex-start;
     gap:12px;
+}
+
+.comment.reply{
+    margin-left:40px;
+    border-left:2px solid rgba(96,165,250,.3);
+    padding-left:12px;
 }
 
 .comment-avatar{
@@ -560,26 +514,127 @@ button:hover{
     word-break:break-word;
 }
 
+.comment-text.editing{
+    display:none;
+}
+
+.comment-input-edit{
+    width:100% !important;
+    padding:10px 12px !important;
+    border:1px solid var(--border) !important;
+    border-radius:6px !important;
+    background:var(--input-bg) !important;
+    color:white !important;
+    font-size:13px !important;
+    margin:0 0 8px 0 !important;
+    min-height:36px !important;
+    display:none;
+}
+
+.comment-input-edit.editing{
+    display:block !important;
+}
+
 .comment-actions{
     display:flex;
     gap:12px;
+    font-size:12px;
 }
 
-.comment-delete{
+.comment-action-btn{
     background:none;
     border:none;
-    color:#ef4444;
+    color:#60a5fa;
     cursor:pointer;
-    font-size:12px;
     padding:0;
     width:auto;
     font-weight:500;
     transition:.2s;
 }
 
-.comment-delete:hover{
+.comment-action-btn:hover{
+    color:#3b82f6;
+}
+
+.comment-action-btn.delete{
+    color:#ef4444;
+}
+
+.comment-action-btn.delete:hover{
     color:#dc2626;
-    text-decoration:underline;
+}
+
+.comment-action-btn.like{
+    color:#94a3b8;
+}
+
+.comment-action-btn.like.liked{
+    color:#ef4444;
+}
+
+.comment-meta{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    color:#6b7280;
+    margin-top:4px;
+}
+
+.reply-btn{
+    background:none;
+    border:none;
+    color:#60a5fa;
+    cursor:pointer;
+    font-size:12px;
+    padding:0;
+    font-weight:500;
+    transition:.2s;
+}
+
+.reply-btn:hover{
+    color:#3b82f6;
+}
+
+.reply-count{
+    background:rgba(96,165,250,.15);
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:11px;
+    color:#60a5fa;
+    cursor:pointer;
+}
+
+.reply-form{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,.05);
+    display:flex;
+    gap:8px;
+}
+
+.reply-input{
+    flex:1;
+    padding:8px 12px !important;
+    border:1px solid var(--border) !important;
+    border-radius:6px !important;
+    background:var(--input-bg) !important;
+    color:white !important;
+    font-size:12px !important;
+    margin:0 !important;
+}
+
+.reply-submit{
+    padding:8px 16px !important;
+    background:#2563eb !important;
+    color:white !important;
+    border:none !important;
+    border-radius:6px !important;
+    font-size:12px !important;
+    font-weight:600 !important;
+    cursor:pointer !important;
+    width:auto !important;
+    margin:0 !important;
 }
 
 .empty-comments{
@@ -587,6 +642,64 @@ button:hover{
     font-size:14px;
     text-align:center;
     padding:40px 20px;
+}
+
+/* Modal Footer */
+
+.modal-footer{
+    padding:20px;
+    border-top:1px solid var(--border);
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+}
+
+.comment-form-modal{
+    display:flex;
+    gap:12px;
+    width:100%;
+}
+
+.comment-form-avatar-modal{
+    width:40px !important;
+    height:40px !important;
+    min-width:40px !important;
+    min-height:40px !important;
+    border-radius:50% !important;
+    object-fit:cover !important;
+    flex-shrink:0 !important;
+    display:block !important;
+}
+
+.comment-input-wrapper-modal{
+    flex:1;
+    display:flex;
+    gap:8px;
+}
+
+.comment-input-modal{
+    flex:1;
+    padding:10px 12px !important;
+    border:1px solid var(--border) !important;
+    border-radius:8px !important;
+    background:var(--input-bg) !important;
+    color:white !important;
+    font-size:13px !important;
+    margin:0 !important;
+    min-height:40px !important;
+}
+
+.comment-submit-modal{
+    padding:10px 20px !important;
+    width:auto !important;
+    margin:0 !important;
+    font-size:13px !important;
+    background:#2563eb !important;
+    border:none !important;
+    border-radius:8px !important;
+    color:white !important;
+    font-weight:600 !important;
+    cursor:pointer !important;
 }
 
 .loading{
@@ -694,8 +807,17 @@ Loading images...
             <button class="modal-close" onclick="closeCommentsModal()">✕</button>
         </div>
         
+        <div class="modal-search">
+            <input 
+                type="text" 
+                id="comment-search" 
+                placeholder="Search comments..." 
+                onkeyup="searchComments()"
+            >
+        </div>
+        
         <div class="modal-content">
-            <div class="comments-list-modal" id="modalCommentsList">
+            <div class="comments-thread" id="modalCommentsList">
                 Loading comments...
             </div>
         </div>
@@ -777,7 +899,6 @@ fetch("/user")
 
     `;
     
-    // Set user avatar in modal comment form
     setTimeout(() => {
         document.getElementById("modal-your-avatar").src = `${user.photo}?sz=40`;
     }, 500);
@@ -787,8 +908,8 @@ fetch("/user")
 
 <script>
 
-// Store current modal image ID
 let currentModalImageId = null;
+let allComments = {};
 
 fetch("/images")
 .then(res => res.json())
@@ -837,7 +958,7 @@ fetch("/images")
             </div>
 
             <button class="comments-btn" onclick="openCommentsModal('${img._id}')">
-                <span class="comments-icon">💬</span>
+                <span>💬</span>
                 <span class="comment-count-badge" id="comment-count-${img._id}">0</span>
             </button>
 
@@ -853,7 +974,6 @@ fetch("/images")
 
         gallery.appendChild(card);
 
-        // Load likes and comments
         loadLikes(img._id);
         loadComments(img._id);
 
@@ -884,7 +1004,6 @@ async function toggleLike(imageId, event) {
 
         const data = await response.json();
 
-        // Update button state
         const btn = event.target;
         if (data.liked) {
             btn.classList.add("liked");
@@ -894,7 +1013,6 @@ async function toggleLike(imageId, event) {
             btn.textContent = "♡";
         }
 
-        // Update count
         document.getElementById(`like-count-${imageId}`).textContent = 
             `${data.likeCount} ${data.likeCount === 1 ? "like" : "likes"}`;
 
@@ -912,7 +1030,6 @@ async function loadLikes(imageId) {
         document.getElementById(`like-count-${imageId}`).textContent = 
             `${data.likeCount} ${data.likeCount === 1 ? "like" : "likes"}`;
 
-        // Update button state if user liked it
         if (data.userLiked) {
             const btn = document.querySelector(`[onclick="toggleLike('${imageId}', event)"]`);
             if (btn) {
@@ -930,10 +1047,8 @@ async function openCommentsModal(imageId) {
     const modal = document.getElementById("commentsModal");
     modal.classList.add("active");
     
-    // Load comments for this image
+    document.getElementById("comment-search").value = "";
     loadCommentsForModal(imageId);
-    
-    // Clear input
     document.getElementById("modal-comment-input").value = "";
 }
 
@@ -943,80 +1058,17 @@ function closeCommentsModal() {
     currentModalImageId = null;
 }
 
-// Close modal when clicking overlay
 document.getElementById("commentsModal").addEventListener("click", function(e) {
     if (e.target === this) {
         closeCommentsModal();
     }
 });
 
-// Close modal with Escape key
 document.addEventListener("keydown", function(e) {
     if (e.key === "Escape") {
         closeCommentsModal();
     }
 });
-
-async function loadCommentsForModal(imageId) {
-    try {
-        const response = await fetch(`/api/images/${imageId}/comments`);
-        const comments = await response.json();
-
-        const commentsList = document.getElementById("modalCommentsList");
-        commentsList.innerHTML = "";
-
-        if (comments.length === 0) {
-            commentsList.innerHTML = "<div class='empty-comments'>No comments yet. Be the first to comment!</div>";
-            return;
-        }
-
-        comments.forEach(comment => {
-            const commentDiv = document.createElement("div");
-            commentDiv.className = "comment";
-            
-            // Format time
-            const commentTime = new Date(comment.createdAt);
-            const timeText = getTimeAgo(commentTime);
-            
-            commentDiv.innerHTML = `
-                <img
-                  class="comment-avatar"
-                  src="${comment.userPhoto || '/logo_1.png'}"
-                  alt="avatar"
-                  onerror="this.src='/logo_1.png'">
-                <div class="comment-content">
-                    <div class="comment-header">
-                        <span class="comment-name">${comment.userName}</span>
-                        <span class="comment-time">${timeText}</span>
-                    </div>
-                    <div class="comment-text">${comment.commentText}</div>
-                    <div class="comment-actions">
-                        <button class="comment-delete" onclick="deleteComment('${imageId}', '${comment._id}')">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            `;
-            commentsList.appendChild(commentDiv);
-        });
-
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-async function loadComments(imageId) {
-    try {
-        const response = await fetch(`/api/images/${imageId}/comments`);
-        const comments = await response.json();
-
-        // Update comment count badge on card
-        document.getElementById(`comment-count-${imageId}`).textContent = comments.length;
-
-    } catch (err) {
-        console.log(err);
-    }
-}
 
 function getTimeAgo(date) {
     const now = new Date();
@@ -1031,6 +1083,248 @@ function getTimeAgo(date) {
     if (hours < 24) return `${hours}h ago`;
     if (days < 7) return `${days}d ago`;
     return date.toLocaleDateString();
+}
+
+async function loadCommentsForModal(imageId) {
+    try {
+        const response = await fetch(`/api/images/${imageId}/comments`);
+        const comments = await response.json();
+
+        allComments[imageId] = comments;
+        renderComments(comments, imageId);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+function renderComments(comments, imageId) {
+    const commentsList = document.getElementById("modalCommentsList");
+    commentsList.innerHTML = "";
+
+    if (comments.length === 0) {
+        commentsList.innerHTML = "<div class='empty-comments'>No comments yet. Be the first to comment!</div>";
+        return;
+    }
+
+    // Filter top-level comments only (no parentCommentId)
+    const topLevelComments = comments.filter(c => !c.parentCommentId);
+
+    topLevelComments.forEach(comment => {
+        const commentDiv = createCommentElement(comment, comments, imageId);
+        commentsList.appendChild(commentDiv);
+    });
+}
+
+function createCommentElement(comment, allComments, imageId) {
+    const commentDiv = document.createElement("div");
+    commentDiv.className = comment.parentCommentId ? "comment reply" : "comment";
+    commentDiv.id = `comment-${comment._id}`;
+    
+    const commentTime = new Date(comment.createdAt);
+    const timeText = getTimeAgo(commentTime);
+    
+    const replies = allComments.filter(c => c.parentCommentId === comment._id) || [];
+    const userLiked = comment.userLiked || false;
+
+    commentDiv.innerHTML = `
+        <img
+          class="comment-avatar"
+          src="${comment.userPhoto || '/logo_1.png'}"
+          alt="avatar"
+          onerror="this.src='/logo_1.png'">
+        <div class="comment-content">
+            <div class="comment-header">
+                <span class="comment-name">${comment.userName}</span>
+                <span class="comment-time">${timeText}</span>
+            </div>
+            <div class="comment-text" id="text-${comment._id}">${escapeHtml(comment.commentText)}</div>
+            <input 
+                type="text" 
+                class="comment-input-edit" 
+                id="edit-${comment._id}"
+                value="${comment.commentText}"
+            >
+            <div class="comment-meta">
+                <button class="comment-action-btn like ${userLiked ? 'liked' : ''}" onclick="toggleCommentLike('${imageId}', '${comment._id}', this)">
+                    ♡ <span id="like-count-comment-${comment._id}">${comment.likeCount || 0}</span>
+                </button>
+                <button class="reply-btn" onclick="toggleReplyForm('${comment._id}')">Reply</button>
+                ${comment.isOwner ? `<button class="comment-action-btn" onclick="toggleEditMode('${comment._id}')">Edit</button>` : ''}
+                ${comment.isOwner ? `<button class="comment-action-btn delete" onclick="deleteComment('${imageId}', '${comment._id}')">Delete</button>` : ''}
+            </div>
+            ${replies.length > 0 ? `<div style="margin-top:12px;"><span class="reply-count" onclick="toggleReplies('${comment._id}')">${replies.length} ${replies.length === 1 ? 'reply' : 'replies'}</span></div>` : ''}
+            <div id="replies-${comment._id}" style="display:none;margin-top:12px;"></div>
+            <div class="reply-form" id="reply-form-${comment._id}" style="display:none;">
+                <input 
+                    type="text" 
+                    class="reply-input" 
+                    placeholder="Write a reply..." 
+                    id="reply-input-${comment._id}"
+                >
+                <button class="reply-submit" onclick="submitReply('${imageId}', '${comment._id}')">Reply</button>
+            </div>
+        </div>
+    `;
+
+    return commentDiv;
+}
+
+function toggleReplies(commentId) {
+    const repliesDiv = document.getElementById(`replies-${commentId}`);
+    const isVisible = repliesDiv.style.display !== 'none';
+    
+    if (isVisible) {
+        repliesDiv.style.display = 'none';
+    } else {
+        // Populate replies if not already done
+        if (repliesDiv.innerHTML === '') {
+            const replies = allComments[currentModalImageId].filter(c => c.parentCommentId === commentId);
+            replies.forEach(reply => {
+                const replyElement = createCommentElement(reply, allComments[currentModalImageId], currentModalImageId);
+                repliesDiv.appendChild(replyElement);
+            });
+        }
+        repliesDiv.style.display = 'block';
+    }
+}
+
+function toggleReplyForm(commentId) {
+    const form = document.getElementById(`reply-form-${commentId}`);
+    form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+    if (form.style.display === 'flex') {
+        document.getElementById(`reply-input-${commentId}`).focus();
+    }
+}
+
+function toggleEditMode(commentId) {
+    const textDiv = document.getElementById(`text-${commentId}`);
+    const input = document.getElementById(`edit-${commentId}`);
+    
+    if (input.classList.contains('editing')) {
+        input.classList.remove('editing');
+        textDiv.classList.remove('editing');
+        document.querySelector(`#comment-${commentId} .comment-action-btn:nth-of-type(2)`).textContent = 'Edit';
+    } else {
+        input.classList.add('editing');
+        textDiv.classList.add('editing');
+        document.querySelector(`#comment-${commentId} .comment-action-btn:nth-of-type(2)`).textContent = 'Cancel';
+        input.focus();
+    }
+}
+
+async function submitReply(imageId, parentCommentId) {
+    const input = document.getElementById(`reply-input-${parentCommentId}`);
+    const replyText = input.value.trim();
+
+    if (!replyText) {
+        alert("Reply cannot be empty");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/images/${imageId}/comment`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ 
+                commentText: replyText,
+                parentCommentId: parentCommentId
+            })
+        });
+
+        if (!response.ok) {
+            alert("Error posting reply");
+            return;
+        }
+
+        input.value = "";
+        loadCommentsForModal(imageId);
+
+    } catch (err) {
+        console.log(err);
+        alert("Error posting reply");
+    }
+}
+
+async function toggleCommentLike(imageId, commentId, button) {
+    try {
+        const response = await fetch(`/api/images/${imageId}/comment/${commentId}/like`, {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            alert("Please login to like");
+            return;
+        }
+
+        const data = await response.json();
+
+        if (data.liked) {
+            button.classList.add('liked');
+        } else {
+            button.classList.remove('liked');
+        }
+
+        document.getElementById(`like-count-comment-${commentId}`).textContent = data.likeCount;
+
+    } catch (err) {
+        console.log(err);
+        alert("Error liking comment");
+    }
+}
+
+async function deleteComment(imageId, commentId) {
+    if (!confirm("Delete this comment?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/images/${imageId}/comment/${commentId}`, {
+            method: "DELETE"
+        });
+
+        if (response.ok) {
+            loadCommentsForModal(imageId);
+            loadComments(imageId);
+        } else {
+            alert("Error deleting comment");
+        }
+    } catch (err) {
+        console.log(err);
+        alert("Error deleting comment");
+    }
+}
+
+function searchComments() {
+    const searchTerm = document.getElementById("comment-search").value.toLowerCase();
+    const comments = allComments[currentModalImageId] || [];
+
+    if (searchTerm === '') {
+        renderComments(comments, currentModalImageId);
+        return;
+    }
+
+    const filtered = comments.filter(c => 
+        c.commentText.toLowerCase().includes(searchTerm) ||
+        c.userName.toLowerCase().includes(searchTerm)
+    );
+
+    renderComments(filtered, currentModalImageId);
+}
+
+async function loadComments(imageId) {
+    try {
+        const response = await fetch(`/api/images/${imageId}/comments`);
+        const comments = await response.json();
+
+        const topLevelCount = comments.filter(c => !c.parentCommentId).length;
+        document.getElementById(`comment-count-${imageId}`).textContent = topLevelCount;
+
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 async function submitCommentFromModal() {
@@ -1070,26 +1364,10 @@ async function submitCommentFromModal() {
     }
 }
 
-async function deleteComment(imageId, commentId) {
-    if (!confirm("Delete this comment?")) {
-        return;
-    }
-
-    try {
-        const response = await fetch(`/api/images/${imageId}/comment/${commentId}`, {
-            method: "DELETE"
-        });
-
-        if (response.ok) {
-            loadCommentsForModal(imageId);
-            loadComments(imageId);
-        } else {
-            alert("Error deleting comment");
-        }
-    } catch (err) {
-        console.log(err);
-        alert("Error deleting comment");
-    }
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 </script>
