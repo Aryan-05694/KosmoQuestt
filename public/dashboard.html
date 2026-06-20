@@ -81,10 +81,13 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:18px 40px;
+    padding:14px 40px;
     background:var(--header-bg);
     backdrop-filter:blur(12px);
     border-bottom:1px solid rgba(255,255,255,.08);
+    position:sticky;
+    top:0;
+    z-index:50;
 }
 
 .logo{
@@ -92,33 +95,105 @@ body{
     align-items:center;
     gap:12px;
     text-decoration:none;
-    color:white;
+    color:var(--text);
 }
 
 .logo img{
-    height:45px;
+    height:40px;
     width:auto;
     display:block;
+}
+
+.logo h2{
+    font-size:20px;
+    white-space:nowrap;
 }
 
 .nav-links{
     display:flex;
     align-items:center;
-    gap:12px;
-    flex-wrap:wrap;
+    gap:6px;
+    flex-wrap:nowrap;
 }
 
 .nav-links a{
     color:#cbd5e1;
     text-decoration:none;
-    padding:10px 16px;
+    padding:8px 14px;
     border-radius:10px;
     margin:0;
+    font-size:14px;
+    white-space:nowrap;
 }
 
 .nav-links a:hover{
     background:rgba(255,255,255,.08);
     color:white;
+}
+
+/* Mobile hamburger */
+.hamburger{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    cursor:pointer;
+    padding:8px;
+    border-radius:8px;
+    background:rgba(255,255,255,.08);
+    border:none;
+    margin:0;
+    width:auto;
+}
+
+.hamburger span{
+    display:block;
+    width:22px;
+    height:2px;
+    background:white;
+    border-radius:2px;
+    transition:.3s;
+}
+
+.nav-links.open{
+    display:flex;
+}
+
+@media(max-width:640px){
+    .header{
+        padding:12px 16px;
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+    .hamburger{
+        display:flex;
+    }
+
+    .nav-links{
+        display:none;
+        width:100%;
+        flex-direction:column;
+        align-items:stretch;
+        gap:4px;
+        padding-bottom:8px;
+    }
+
+    .nav-links a{
+        padding:12px 14px;
+        border-radius:8px;
+        background:rgba(255,255,255,.04);
+        text-align:center;
+    }
+
+    .nav-links a:hover{
+        background:rgba(255,255,255,.1);
+    }
+
+    #themeToggle{
+        width:100%;
+        text-align:center;
+        padding:12px;
+    }
 }
 
 /* Profile */
@@ -787,7 +862,13 @@ button:hover{
     <h2>KosmoQuestt</h2>
 </a>
 
-<div class="nav-links">
+<button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<div class="nav-links" id="navLinks">
     <button id="themeToggle">🌙</button>
     <a href="/">Home</a>
     <a href="/logout">Logout</a>
@@ -1133,11 +1214,7 @@ function createCommentElement(comment, allCommentsArr, imageId) {
     const canDelete = isOwner || isAdmin;
 
     const editedBadge = comment.isEdited ? `<span class="comment-edited-badge">(edited)</span>` : '';
-    // Show ADMIN badge only if the comment's author is the admin
-    const commentAuthorIsAdmin = comment.userId === currentUser?._id && currentUser?.isAdmin
-       || comment.userIsAdmin;  // fallback if stored
-    const adminActionBadge = (comment.userId === (currentUser?.id) && currentUser?.isAdmin)
-       ? `<span class="admin-badge">ADMIN</span>` : '';
+    const adminActionBadge = isAdmin && !isOwner ? `<span class="admin-badge">ADMIN</span>` : '';
 
     commentDiv.innerHTML = `
         <img
