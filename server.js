@@ -29,9 +29,29 @@ mongoose.connect(process.env.MONGO_URI)
 /* =======================
    SCHEMAS
 ======================= */
+
+// FIX: New Admin schema for flexible admin management
+const adminSchema = new mongoose.Schema({
+    userId: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    displayName: String,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+
 const imageSchema = new mongoose.Schema({
     imageUrl: String,
-    publicId: String,       // FIX: store Cloudinary public_id for deletion
+    publicId: String,       // store Cloudinary public_id for deletion
     caption: String,
     userId: String,
     uploadTime: {
@@ -72,18 +92,16 @@ const commentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // FIX: added parentCommentId for nested replies
     parentCommentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment",
         default: null
     },
-    // FIX: added isEdited flag
     isEdited: {
         type: Boolean,
         default: false
     },
-    // store whether comment author is admin at time of posting
+    // FIX: store whether comment author is admin at time of posting
     userIsAdmin: {
         type: Boolean,
         default: false
@@ -94,7 +112,6 @@ const commentSchema = new mongoose.Schema({
     }
 });
 
-// FIX: new schema for comment likes
 const commentLikeSchema = new mongoose.Schema({
     commentId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -115,11 +132,57 @@ const Image = mongoose.model("Image", imageSchema);
 const Like = mongoose.model("Like", likeSchema);
 const Comment = mongoose.model("Comment", commentSchema);
 const CommentLike = mongoose.model("CommentLike", commentLikeSchema);
+const Admin = mongoose.model("Admin", adminSchema);
 
 /* =======================
-   ADMIN CONFIG
+   HELPER FUNCTIONS
 ======================= */
-const ADMIN_EMAIL = "aryanverma05694@gmail.com";
+
+// Check if user is admin (queries database)
+async function isUserAdmin(userId) {
+    try {
+        const admin = await Admin.findOne({ userId });
+        return !!admin;
+    } catch (err) {
+        console.log("Error checking admin status:", err);
+        return false;
+    }
+}
+
+// Add user as admin
+async function makeUserAdmin(userId, email, displayName) {
+    try {
+        const existingAdmin = await Admin.findOne({ userId });
+        if (existingAdmin) {
+            return { success: false, message: "User is already an admin" };
+        }
+
+        await Admin.create({
+            userId,
+            email,
+            displayName
+        });
+
+        return { success: true, message: "User promoted to admin" };
+    } catch (err) {
+        console.log("Error making user admin:", err);
+        return { success: false, message: "Error promoting user" };
+    }
+}
+
+// Remove user as admin
+async function removeUserAdmin(userId) {
+    try {
+        const result = await Admin.findOneAndDelete({ userId });
+        if (!result) {
+            return { success: false, message: "User is not an admin" };
+        }
+        return { success: true, message: "User removed from admin" };
+    } catch (err) {
+        console.log("Error removing admin:", err);
+        return { success: false, message: "Error removing admin" };
+    }
+}
 
 /* =======================
    MIDDLEWARE
@@ -162,18 +225,19 @@ passport.use(
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: process.env.CALLBACK_URL
         },
-        (accessToken, refreshToken, profile, done) => {
+        async (accessToken, refreshToken, profile, done) => {
+            // FIX: Check admin status from database instead of hardcoded email
+            const isAdmin = await isUserAdmin(profile.id);
 
             const user = {
                 id: profile.id,
                 displayName: profile.displayName,
                 email: profile.emails?.[0]?.value || "",
                 photo: profile.photos?.[0]?.value || "",
-                // FIX: expose isAdmin on user object
-                isAdmin: profile.emails?.[0]?.value === ADMIN_EMAIL
+                isAdmin: isAdmin
             };
 
-            console.log("Google Login:", user.displayName);
+            console.log("Google Login:", user.displayName, "Admin:", user.isAdmin);
 
             return done(null, user);
         }
@@ -212,7 +276,6 @@ function isLoggedIn(req, res, next) {
     res.redirect("/");
 }
 
-
 /* =======================
    MULTER CONFIG
 ======================= */
@@ -243,7 +306,6 @@ app.post(
 
             await Image.create({
                imageUrl: req.file.path,
-               // FIX: save public_id for Cloudinary deletion later
                publicId: req.file.filename,
                caption: req.body.caption || "",
                userId: req.user.id
@@ -314,14 +376,16 @@ app.delete("/images/:id", isLoggedIn, async (req, res) => {
             });
         }
 
-        if (image.userId !== req.user.id && req.user.email !== ADMIN_EMAIL) {
+        // FIX: Check admin status from database
+        const isAdmin = await isUserAdmin(req.user.id);
+        if (image.userId !== req.user.id && !isAdmin) {
             return res.status(403).json({
                 success: false,
                 message: "Not authorized"
             });
         }
 
-        // FIX: delete from Cloudinary too
+        // delete from Cloudinary too
         if (image.publicId) {
             await cloudinary.uploader.destroy(image.publicId);
         }
@@ -412,16 +476,18 @@ app.post("/api/images/:id/comment", isLoggedIn, async (req, res) => {
             return res.status(400).json({ error: "Comment cannot be empty" });
         }
 
+        // FIX: Check admin status from database
+        const isAdmin = await isUserAdmin(req.user.id);
+
         const comment = await Comment.create({
             imageId,
             userId: req.user.id,
             userName: req.user.displayName,
             userPhoto: req.user.photo,
             commentText,
-            // FIX: save parentCommentId if it's a reply
             parentCommentId: parentCommentId || null,
-            // store admin status of author at time of posting
-            userIsAdmin: req.user.email === ADMIN_EMAIL
+            // FIX: store admin status from database check
+            userIsAdmin: isAdmin
         });
 
         res.json(comment);
@@ -437,7 +503,7 @@ app.get("/api/images/:id/comments", async (req, res) => {
         const comments = await Comment.find({ imageId: req.params.id })
             .sort({ createdAt: -1 });
 
-        // FIX: attach likeCount and userLiked to each comment
+        // attach likeCount and userLiked to each comment
         const enriched = await Promise.all(comments.map(async (c) => {
             const likeCount = await CommentLike.countDocuments({ commentId: c._id });
             let userLiked = false;
@@ -459,7 +525,7 @@ app.get("/api/images/:id/comments", async (req, res) => {
     }
 });
 
-// FIX: Edit Comment (PUT)
+// Edit Comment (PUT)
 app.put("/api/images/:imageId/comment/:commentId", isLoggedIn, async (req, res) => {
     try {
         const { commentId } = req.params;
@@ -475,7 +541,9 @@ app.put("/api/images/:imageId/comment/:commentId", isLoggedIn, async (req, res) 
             return res.status(404).json({ error: "Comment not found" });
         }
 
-        if (comment.userId !== req.user.id && req.user.email !== ADMIN_EMAIL) {
+        // FIX: Check admin status from database
+        const isAdmin = await isUserAdmin(req.user.id);
+        if (comment.userId !== req.user.id && !isAdmin) {
             return res.status(403).json({ error: "Not authorized" });
         }
 
@@ -500,11 +568,13 @@ app.delete("/api/images/:imageId/comment/:commentId", isLoggedIn, async (req, re
             return res.status(404).json({ error: "Comment not found" });
         }
 
-        if (comment.userId !== req.user.id && req.user.email !== ADMIN_EMAIL) {
+        // FIX: Check admin status from database
+        const isAdmin = await isUserAdmin(req.user.id);
+        if (comment.userId !== req.user.id && !isAdmin) {
             return res.status(403).json({ error: "Not authorized" });
         }
 
-        // FIX: also delete replies and their likes when parent comment is deleted
+        // also delete replies and their likes when parent comment is deleted
         const replies = await Comment.find({ parentCommentId: commentId });
         const replyIds = replies.map(r => r._id);
         await CommentLike.deleteMany({ commentId: { $in: [...replyIds, commentId] } });
@@ -518,7 +588,7 @@ app.delete("/api/images/:imageId/comment/:commentId", isLoggedIn, async (req, re
     }
 });
 
-// FIX: Comment Like endpoint
+// Comment Like endpoint
 app.post("/api/images/:imageId/comment/:commentId/like", isLoggedIn, async (req, res) => {
     try {
         const { commentId } = req.params;
@@ -550,14 +620,112 @@ app.get("/user", (req, res) => {
         return res.json(null);
     }
 
-    // FIX: include isAdmin in response
     res.json({
         id: req.user.id,
         displayName: req.user.displayName,
         email: req.user.email,
         photo: req.user.photo,
-        isAdmin: req.user.email === ADMIN_EMAIL
+        isAdmin: req.user.isAdmin
     });
+});
+
+/* =======================
+   ADMIN MANAGEMENT ENDPOINTS (Protected)
+======================= */
+
+// FIX: Promote user to admin (only current admins can do this)
+app.post("/api/admin/promote", isLoggedIn, async (req, res) => {
+    try {
+        // Check if requester is admin
+        const requesterIsAdmin = await isUserAdmin(req.user.id);
+        if (!requesterIsAdmin) {
+            return res.status(403).json({ error: "Only admins can promote users" });
+        }
+
+        const { userId, email, displayName } = req.body;
+
+        if (!userId || !email) {
+            return res.status(400).json({ error: "Missing userId or email" });
+        }
+
+        const result = await makeUserAdmin(userId, email, displayName);
+        res.json(result);
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Promotion failed" });
+    }
+});
+
+// FIX: Remove user from admin (only current admins can do this)
+app.post("/api/admin/demote", isLoggedIn, async (req, res) => {
+    try {
+        // Check if requester is admin
+        const requesterIsAdmin = await isUserAdmin(req.user.id);
+        if (!requesterIsAdmin) {
+            return res.status(403).json({ error: "Only admins can demote users" });
+        }
+
+        const { userId } = req.body;
+
+        if (!userId) {
+            return res.status(400).json({ error: "Missing userId" });
+        }
+
+        const result = await removeUserAdmin(userId);
+        res.json(result);
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Demotion failed" });
+    }
+});
+
+// FIX: Get all admins (only admins can view)
+app.get("/api/admin/list", isLoggedIn, async (req, res) => {
+    try {
+        const requesterIsAdmin = await isUserAdmin(req.user.id);
+        if (!requesterIsAdmin) {
+            return res.status(403).json({ error: "Only admins can view admin list" });
+        }
+
+        const admins = await Admin.find().select("userId email displayName createdAt");
+        res.json(admins);
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Failed to fetch admin list" });
+    }
+});
+
+// FIX: Fix comments with incorrect admin status
+app.post("/api/admin/fix-comments", isLoggedIn, async (req, res) => {
+    try {
+        const requesterIsAdmin = await isUserAdmin(req.user.id);
+        if (!requesterIsAdmin) {
+            return res.status(403).json({ error: "Only admins can fix comments" });
+        }
+
+        // Get all comments
+        const comments = await Comment.find();
+        let fixed = 0;
+
+        // Check each comment and fix admin status if needed
+        for (let comment of comments) {
+            const isAdmin = await isUserAdmin(comment.userId);
+            if (comment.userIsAdmin !== isAdmin) {
+                comment.userIsAdmin = isAdmin;
+                await comment.save();
+                fixed++;
+            }
+        }
+
+        res.json({ success: true, message: `Fixed ${fixed} comments` });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Failed to fix comments" });
+    }
 });
 
 /* =======================
