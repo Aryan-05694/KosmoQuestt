@@ -4,19 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KosmoQuestt | Explore the Universe</title>
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-<!-- FAVICON START -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="icon" href="/favicon.ico?v=2">
-<!-- FAVICON END -->
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+*{ margin:0; padding:0; box-sizing:border-box; }
+
 :root{
     --bg:#050814;
     --text:white;
@@ -41,97 +34,130 @@ body{
     transition:0.3s ease;
 }
 
-/* STAR BACKGROUND */
-.stars{
-    position:fixed;
-    inset:0;
-    z-index:0;
-}
-
+/* STARS */
+.stars{ position:fixed; inset:0; z-index:0; }
 .star{
     position:absolute;
-    width:2px;
-    height:2px;
+    width:2px; height:2px;
     background:white;
     border-radius:50%;
     opacity:0.6;
     box-shadow:0 0 8px white;
+    animation:twinkle linear infinite;
+}
+@keyframes twinkle{
+    0%,100%{ opacity:.2; }
+    50%{ opacity:1; }
 }
 
 /* GLOW */
 .glow{
     position:fixed;
-    top:-200px;
-    left:50%;
+    top:-200px; left:50%;
     transform:translateX(-50%);
-    width:600px;
-    height:600px;
-    background:radial-gradient(circle,
-    rgba(37,99,235,.25),
-    transparent 70%);
+    width:600px; height:600px;
+    background:radial-gradient(circle, rgba(37,99,235,.25), transparent 70%);
     filter:blur(100px);
     z-index:0;
 }
 
-/* CONTENT */
-.content{
-    position:relative;
-    z-index:1;
-}
+.content{ position:relative; z-index:1; }
 
 /* NAVBAR */
 .navbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:18px 40px;
+    padding:16px 40px;
     background:var(--nav-bg);
     backdrop-filter:blur(12px);
     border-bottom:1px solid rgba(255,255,255,.08);
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
 .logo{
     display:flex;
     align-items:center;
     gap:12px;
+    text-decoration:none;
+    color:var(--text);
 }
 
-.logo img{
-    height:45px;
-    width:auto;
+.logo img{ height:45px; width:auto; display:block; }
+
+.logo-text h2{ font-size:24px; line-height:1.1; }
+
+.tagline{
+    font-size:11px;
+    color:#60a5fa;
+    letter-spacing:.06em;
     display:block;
+    margin-top:2px;
 }
 
-.logo h2{
-    font-size:28px;
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
 }
 
 .nav-links a{
     text-decoration:none;
     color:#cbd5e1;
-    margin-left:25px;
+    padding:8px 12px;
+    border-radius:8px;
+    font-size:14px;
+    transition:.2s;
 }
 
-.nav-links a:hover{
-    color:white;
+.nav-links a:hover{ background:rgba(255,255,255,.08); color:white; }
+
+.nav-links .login-btn{
+    background:#2563eb;
+    color:white !important;
+    padding:8px 18px;
+    border-radius:8px;
+    font-weight:600;
 }
+
+.nav-links .login-btn:hover{ background:#1d4ed8; }
+
+#themeToggle{
+    background:rgba(255,255,255,.08);
+    border:none;
+    color:var(--text);
+    font-size:16px;
+    cursor:pointer;
+    padding:8px 12px;
+    border-radius:8px;
+    transition:.3s;
+}
+
+#themeToggle:hover{ background:rgba(255,255,255,.15); }
 
 /* HERO */
 .hero{
     text-align:center;
-    padding:120px 20px;
+    padding:120px 20px 80px;
 }
 
 .hero h1{
     font-size:64px;
     margin-bottom:20px;
-    animation: floatTitle 4s ease-in-out infinite;
+    animation:floatTitle 4s ease-in-out infinite;
     text-shadow:0 0 20px rgba(96,165,250,.5);
+    background:linear-gradient(135deg, #fff 40%, #60a5fa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
 }
 
 @keyframes floatTitle{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-8px);}
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-8px); }
 }
 
 .hero p{
@@ -139,11 +165,21 @@ body{
     font-size:20px;
     max-width:700px;
     margin:auto;
+    line-height:1.7;
+}
+
+.hero-btns{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:36px;
 }
 
 .btn{
-    display:inline-block;
-    margin-top:30px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
     padding:16px 34px;
     background:#2563eb;
     color:white;
@@ -152,6 +188,7 @@ body{
     font-weight:bold;
     transition:.3s;
     box-shadow:0 0 25px rgba(37,99,235,.45);
+    font-size:16px;
 }
 
 .btn:hover{
@@ -160,12 +197,24 @@ body{
     background:#1d4ed8;
 }
 
+.btn-outline{
+    background:transparent;
+    border:1px solid rgba(37,99,235,.5);
+    color:#93c5fd;
+    box-shadow:none;
+}
+
+.btn-outline:hover{
+    background:rgba(37,99,235,.12);
+    box-shadow:none;
+}
+
 /* STATS */
 .stats{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:20px;
-    padding:40px;
+    padding:20px 40px 60px;
     max-width:1200px;
     margin:auto;
 }
@@ -173,66 +222,95 @@ body{
 .stat{
     background:var(--card-bg);
     border:1px solid var(--card-border);
-    padding:25px;
-    border-radius:12px;
+    padding:30px 25px;
+    border-radius:16px;
     text-align:center;
     transition:.4s;
+    position:relative;
+    overflow:hidden;
+}
+
+.stat::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 50% 0%, rgba(37,99,235,.08), transparent 70%);
 }
 
 .stat:hover{
-    transform:translateY(-10px);
-    box-shadow:0 0 35px rgba(96,165,250,.35);
+    transform:translateY(-8px);
+    box-shadow:0 0 35px rgba(96,165,250,.25);
+    border-color:rgba(96,165,250,.3);
 }
 
 .stat h2{
+    font-size:36px;
     color:#60a5fa;
+    margin-bottom:8px;
+    font-weight:800;
+}
+
+.stat p{ color:#94a3b8; font-size:14px; }
+
+/* SECTION LABEL */
+.section-label{
+    text-align:center;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.15em;
+    color:#60a5fa;
+    text-transform:uppercase;
     margin-bottom:10px;
 }
 
 /* FEATURES */
-.features{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:20px;
-    padding:60px 40px;
+.features-section{
+    padding:20px 40px 80px;
     max-width:1300px;
     margin:auto;
+}
+
+.features{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
 }
 
 .card{
     background:var(--card-bg);
     border:1px solid var(--card-border);
-    padding:25px;
-    border-radius:14px;
+    padding:28px;
+    border-radius:16px;
     transition:.3s;
+    position:relative;
+    overflow:hidden;
+}
+
+.card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 0% 0%, rgba(37,99,235,.06), transparent 60%);
 }
 
 .card:hover{
     transform:translateY(-8px);
-    box-shadow:0 10px 30px rgba(37,99,235,.25);
+    box-shadow:0 10px 40px rgba(37,99,235,.2);
+    border-color:rgba(96,165,250,.25);
 }
 
-.card h3{
-    margin-bottom:12px;
-}
+.card-icon{ font-size:32px; margin-bottom:14px; display:block; }
 
-.card p{
-    color:#94a3b8;
-}
+.card h3{ margin-bottom:10px; font-size:18px; }
 
-.card-link{
-    cursor:pointer;
-    text-decoration:none;
-    color:inherit;
-    display:block;
-}
+.card p{ color:#94a3b8; font-size:14px; line-height:1.7; }
 
-/* ===================== */
-/* APOD SECTION          */
-/* ===================== */
+.card-link{ cursor:pointer; text-decoration:none; color:inherit; display:block; }
+
+/* APOD SECTION */
 .apod-section{
     max-width:1100px;
-    margin:0 auto 60px;
+    margin:0 auto 80px;
     padding:0 40px;
 }
 
@@ -258,14 +336,11 @@ body{
     overflow:hidden;
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:0;
     box-shadow:0 0 60px rgba(37,99,235,.12);
     transition:.3s;
 }
 
-.apod-card:hover{
-    box-shadow:0 0 80px rgba(37,99,235,.25);
-}
+.apod-card:hover{ box-shadow:0 0 80px rgba(37,99,235,.25); }
 
 .apod-media{
     position:relative;
@@ -277,19 +352,9 @@ body{
     overflow:hidden;
 }
 
-.apod-media img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-}
+.apod-media img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-.apod-media iframe{
-    width:100%;
-    height:100%;
-    min-height:380px;
-    border:none;
-}
+.apod-media iframe{ width:100%; height:100%; min-height:380px; border:none; }
 
 .apod-media-loader{
     color:#60a5fa;
@@ -300,8 +365,8 @@ body{
 }
 
 @keyframes pulse{
-    0%,100%{opacity:1;}
-    50%{opacity:.4;}
+    0%,100%{ opacity:1; }
+    50%{ opacity:.4; }
 }
 
 .apod-info{
@@ -327,17 +392,9 @@ body{
     letter-spacing:.03em;
 }
 
-.apod-title{
-    font-size:22px;
-    font-weight:700;
-    line-height:1.35;
-    color:var(--text);
-}
+.apod-title{ font-size:22px; font-weight:700; line-height:1.35; color:var(--text); }
 
-.apod-copyright{
-    font-size:13px;
-    color:#64748b;
-}
+.apod-copyright{ font-size:13px; color:#64748b; }
 
 .apod-explanation{
     font-size:15px;
@@ -350,16 +407,11 @@ body{
     scrollbar-color:rgba(96,165,250,.3) transparent;
 }
 
-.apod-explanation::-webkit-scrollbar{width:4px;}
-.apod-explanation::-webkit-scrollbar-track{background:transparent;}
-.apod-explanation::-webkit-scrollbar-thumb{background:rgba(96,165,250,.3);border-radius:4px;}
+.apod-explanation::-webkit-scrollbar{ width:4px; }
+.apod-explanation::-webkit-scrollbar-track{ background:transparent; }
+.apod-explanation::-webkit-scrollbar-thumb{ background:rgba(96,165,250,.3); border-radius:4px; }
 
-.apod-actions{
-    display:flex;
-    gap:12px;
-    flex-wrap:wrap;
-    margin-top:4px;
-}
+.apod-actions{ display:flex; gap:12px; flex-wrap:wrap; margin-top:4px; }
 
 .apod-btn{
     display:inline-flex;
@@ -381,10 +433,7 @@ body{
     box-shadow:0 0 20px rgba(37,99,235,.4);
 }
 
-.apod-btn-primary:hover{
-    background:#1d4ed8;
-    transform:translateY(-2px);
-}
+.apod-btn-primary:hover{ background:#1d4ed8; transform:translateY(-2px); }
 
 .apod-btn-secondary{
     background:transparent;
@@ -392,33 +441,25 @@ body{
     border:1px solid rgba(37,99,235,.4);
 }
 
-.apod-btn-secondary:hover{
-    background:rgba(37,99,235,.12);
-    transform:translateY(-2px);
-}
+.apod-btn-secondary:hover{ background:rgba(37,99,235,.12); transform:translateY(-2px); }
 
-.apod-error{
-    text-align:center;
-    padding:60px 20px;
-    color:#94a3b8;
-}
-
-.apod-error i{
-    font-size:48px;
-    color:#475569;
-    margin-bottom:16px;
-    display:block;
-}
+.apod-error{ text-align:center; padding:60px 20px; color:#94a3b8; }
+.apod-error i{ font-size:48px; color:#475569; margin-bottom:16px; display:block; }
 
 /* FOOTER */
 .footer{
     text-align:center;
-    padding:40px;
+    padding:50px 40px;
     color:#64748b;
+    border-top:1px solid rgba(255,255,255,.06);
 }
 
+.footer p{ margin-bottom:6px; }
+.footer a{ color:#60a5fa; text-decoration:none; }
+.footer a:hover{ text-decoration:underline; }
+
 .social-links{
-    margin-top:15px;
+    margin-top:20px;
     display:flex;
     justify-content:center;
     gap:20px;
@@ -429,73 +470,38 @@ body{
     font-size:24px;
     text-decoration:none;
     transition:.3s;
+    width:44px; height:44px;
+    border-radius:50%;
+    border:1px solid rgba(96,165,250,.2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 .social-links a:hover{
     transform:translateY(-3px);
+    background:rgba(96,165,250,.1);
+    border-color:rgba(96,165,250,.5);
 }
 
-.footer a{
-    color:#60a5fa;
-    text-decoration:none;
-}
-
-.footer a:hover{
-    text-decoration:underline;
-}
-
-.nav-links{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    flex-wrap:wrap;
-}
-
-.nav-links a{
-    margin-left:0;
-}
-
+/* RESPONSIVE */
 @media(max-width:900px){
-    .apod-card{
-        grid-template-columns:1fr;
-    }
-    .apod-media{
-        min-height:260px;
-    }
+    .apod-card{ grid-template-columns:1fr; }
+    .apod-media{ min-height:260px; }
+    .features{ grid-template-columns:repeat(2,1fr); }
 }
 
 @media(max-width:768px){
-    .navbar{
-        flex-direction:column;
-        gap:15px;
-        padding:15px;
-    }
-    .logo{
-        justify-content:center;
-        text-align:center;
-    }
-    .nav-links{
-        justify-content:center;
-    }
-    .hero h1{
-        font-size:42px;
-    }
-    .hero p{
-        font-size:16px;
-        padding:0 15px;
-    }
-    .features{
-        padding:30px 20px;
-    }
-    .stats{
-        padding:20px;
-    }
-    .apod-section{
-        padding:0 20px;
-    }
-    .apod-info{
-        padding:24px 20px;
-    }
+    .navbar{ flex-direction:column; gap:15px; padding:15px; }
+    .logo{ justify-content:center; }
+    .nav-links{ justify-content:center; }
+    .hero h1{ font-size:38px; }
+    .hero p{ font-size:16px; padding:0 15px; }
+    .features-section{ padding:20px; }
+    .features{ grid-template-columns:1fr; }
+    .stats{ padding:20px; }
+    .apod-section{ padding:0 20px; }
+    .apod-info{ padding:24px 20px; }
 }
 </style>
 </head>
@@ -506,37 +512,44 @@ body{
 
 <div class="content">
 
-<div class="navbar">
-     <div class="logo">
-       <img src="/logo_1.png" alt="KosmoQuestt Logo">
-       <div class="logo-text">
-          <h2>KosmoQuestt</h2>
-          <span class="tagline">Exploring Beyond The Horizon!</span>
-       </div>
-     </div>
-     <div class="nav-links">
-       <a href="/">Home</a>
-       <a href="/dashboard.html">Gallery</a>
-       <a href="/solar-system.html">Solar System</a>
-       <a href="iss.html">ISS Tracker</a>
-       <a href="iss-3d.html">ISS 3D</a>
-       <a href="/about.html">About</a>
-       <a href="https://youtube.com/@KosmoQuestt" target="_blank"><i class="fab fa-youtube"></i></a>
-       <a href="https://x.com/KosmoQuestt" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-       <a href="/auth/google">Login</a>
-     </div>
-</div>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="/" class="logo">
+        <img src="/logo_1.png" alt="KosmoQuestt Logo">
+        <div class="logo-text">
+            <h2>KosmoQuestt</h2>
+            <span class="tagline">Exploring Beyond The Horizon!</span>
+        </div>
+    </a>
+    <div class="nav-links">
+        <button id="themeToggle" title="Toggle theme">🌙</button>
+        <a href="/">Home</a>
+        <a href="/dashboard.html">Gallery</a>
+        <a href="/solar-system.html">Solar System</a>
+        <a href="/iss.html">ISS Tracker</a>
+        <a href="/iss-3d.html">ISS 3D</a>
+        <a href="/about.html">About</a>
+        <a href="https://youtube.com/@KosmoQuestt" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://x.com/KosmoQuestt" target="_blank" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="/auth/google" class="login-btn">Login</a>
+    </div>
+</nav>
 
+<!-- HERO -->
 <section class="hero">
     <h1>Explore The Universe</h1>
     <p>Upload, discover and share breathtaking cosmic imagery from around the world through the KosmoQuestt space archive.</p>
-    <a href="/auth/google" class="btn">Login With Google</a>
+    <div class="hero-btns">
+        <a href="/auth/google" class="btn"><i class="fab fa-google"></i> Login With Google</a>
+        <a href="/dashboard.html" class="btn btn-outline"><i class="fas fa-images"></i> View Gallery</a>
+    </div>
 </section>
 
+<!-- STATS -->
 <section class="stats">
     <div class="stat">
-        <h2>∞</h2>
-        <p>Cosmic Discoveries</p>
+        <h2 id="stat-images">—</h2>
+        <p>Images Uploaded</p>
     </div>
     <div class="stat">
         <h2>24/7</h2>
@@ -548,28 +561,44 @@ body{
     </div>
 </section>
 
-<section class="features">
-    <div class="card">
-        <h3>🌌 Space Gallery</h3>
-        <p>View beautiful cosmic images uploaded by explorers.</p>
+<!-- FEATURES -->
+<section class="features-section">
+    <p class="section-label">What's Inside</p>
+    <div class="features">
+        <a href="/dashboard.html" class="card card-link">
+            <span class="card-icon">🌌</span>
+            <h3>Space Gallery</h3>
+            <p>View beautiful cosmic images uploaded by explorers from around the world.</p>
+        </a>
+        <div class="card">
+            <span class="card-icon">🚀</span>
+            <h3>Fast Uploads</h3>
+            <p>Upload images instantly with descriptions and captions. Stored securely on the cloud.</p>
+        </div>
+        <div class="card">
+            <span class="card-icon">🔐</span>
+            <h3>Secure Login</h3>
+            <p>Google authentication keeps your account protected — no passwords needed.</p>
+        </div>
+        <a href="/solar-system.html" class="card card-link">
+            <span class="card-icon">🪐</span>
+            <h3>Solar System Explorer</h3>
+            <p>Explore all 8 planets with real NASA images, stats and fun facts.</p>
+        </a>
+        <a href="/iss.html" class="card card-link">
+            <span class="card-icon">🛰️</span>
+            <h3>ISS Tracker</h3>
+            <p>Track the International Space Station's live position on an interactive map.</p>
+        </a>
+        <a href="#apod" class="card card-link">
+            <span class="card-icon">🔭</span>
+            <h3>Astronomy Picture of the Day</h3>
+            <p>NASA's daily cosmic wonder — a new breathtaking image or video every day.</p>
+        </a>
     </div>
-    <div class="card">
-        <h3>🚀 Fast Uploads</h3>
-        <p>Upload images instantly with descriptions and captions.</p>
-    </div>
-    <div class="card">
-        <h3>🔐 Secure Login</h3>
-        <p>Google authentication keeps your account protected.</p>
-    </div>
-    <a href="/solar-system.html" class="card card-link">
-        <h3>🪐 Solar System Explorer</h3>
-        <p>Explore all 8 planets with real NASA images, stats and fun facts.</p>
-    </a>
 </section>
 
-<!-- ===================== -->
-<!-- APOD SECTION          -->
-<!-- ===================== -->
+<!-- APOD SECTION -->
 <section class="apod-section" id="apod">
     <h2 class="section-title">🔭 Astronomy Picture of the Day</h2>
     <p class="section-subtitle">Brought to you by NASA — a new cosmic wonder every day.</p>
@@ -587,48 +616,86 @@ body{
     </div>
 </section>
 
-<div class="footer">
-    <p>© 2026 KosmoQuestt • Exploring Beyond The Horizon!</p>
+<!-- FOOTER -->
+<footer class="footer">
+    <p>© 2026 <a href="/">KosmoQuestt</a> • Exploring Beyond The Horizon!</p>
+    <p style="font-size:13px;margin-top:4px;">Made with ❤️ for space lovers everywhere</p>
     <div class="social-links">
-        <a href="https://youtube.com/@KosmoQuestt" target="_blank"><i class="fab fa-youtube"></i></a>
-        <a href="https://x.com/KosmoQuestt" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://youtube.com/@KosmoQuestt" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://x.com/KosmoQuestt" target="_blank" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
     </div>
-</div>
+</footer>
 
 </div>
 
 <script>
-/* STARS */
-const stars = document.getElementById("stars");
-for(let i=0;i<200;i++){
-    const star=document.createElement("div");
-    star.className="star";
-    star.style.left=Math.random()*100+"vw";
-    star.style.top=Math.random()*100+"vh";
-    star.style.opacity=Math.random();
-    stars.appendChild(star);
+/* STARS with twinkle */
+const starsEl = document.getElementById("stars");
+for(let i = 0; i < 220; i++){
+    const star = document.createElement("div");
+    star.className = "star";
+    star.style.left = Math.random()*100 + "vw";
+    star.style.top = Math.random()*100 + "vh";
+    star.style.animationDuration = (Math.random()*6 + 3) + "s";
+    star.style.animationDelay = (Math.random()*5) + "s";
+    starsEl.appendChild(star);
 }
 
-/* NASA APOD */
-const NASA_API_KEY = "ZSyixlW1G5TCw16WtmlwsoFf7dtFeUfU88Rcgce0";
+/* THEME TOGGLE */
+const toggleBtn = document.getElementById("themeToggle");
+if(localStorage.getItem("theme") === "light"){
+    document.body.classList.add("light-theme");
+    toggleBtn.textContent = "☀️";
+}
+toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light-theme");
+    const isLight = document.body.classList.contains("light-theme");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+    toggleBtn.textContent = isLight ? "☀️" : "🌙";
+});
 
+/* LIVE IMAGE COUNT */
+fetch("/image-count")
+.then(res => res.json())
+.then(data => {
+    const el = document.getElementById("stat-images");
+    if(data.count !== undefined){
+        // Animate count up
+        let current = 0;
+        const target = data.count;
+        if(target === 0){ el.textContent = "0"; return; }
+        const step = Math.ceil(target / 40);
+        const timer = setInterval(() => {
+            current = Math.min(current + step, target);
+            el.textContent = current.toLocaleString();
+            if(current >= target) clearInterval(timer);
+        }, 40);
+    } else {
+        el.textContent = "∞";
+    }
+})
+.catch(() => {
+    document.getElementById("stat-images").textContent = "∞";
+});
+
+/* NASA APOD — fetched from backend proxy to hide API key */
 async function loadAPOD(){
-    const mediaEl  = document.getElementById("apod-media");
-    const infoEl   = document.getElementById("apod-info");
+    const mediaEl = document.getElementById("apod-media");
+    const infoEl  = document.getElementById("apod-info");
 
     try{
-        const res  = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`);
-        if(!res.ok) throw new Error("NASA API error: "+res.status);
+        const res  = await fetch("/api/apod");
+        if(!res.ok) throw new Error("APOD fetch error: " + res.status);
         const data = await res.json();
 
-        /* ---- MEDIA ---- */
+        /* MEDIA */
         if(data.media_type === "video"){
             mediaEl.innerHTML = `<iframe src="${data.url}" allowfullscreen title="${data.title}"></iframe>`;
         } else {
             mediaEl.innerHTML = `<img src="${data.hdurl || data.url}" alt="${data.title}" loading="lazy">`;
         }
 
-        /* ---- INFO ---- */
+        /* INFO */
         const dateFormatted = new Date(data.date).toLocaleDateString("en-IN",{
             year:"numeric", month:"long", day:"numeric"
         });
@@ -637,13 +704,9 @@ async function loadAPOD(){
             <span class="apod-date-badge">
                 <i class="fas fa-calendar-star"></i> ${dateFormatted}
             </span>
-
             <div class="apod-title">${data.title}</div>
-
             ${data.copyright ? `<div class="apod-copyright">📷 ${data.copyright.replace(/\n/g," ")}</div>` : ""}
-
             <p class="apod-explanation">${data.explanation}</p>
-
             <div class="apod-actions">
                 <a href="${data.hdurl || data.url}" target="_blank" class="apod-btn apod-btn-primary">
                     <i class="fas fa-expand"></i> Full Resolution
@@ -657,14 +720,11 @@ async function loadAPOD(){
     } catch(err){
         console.error(err);
         mediaEl.innerHTML = ``;
-        infoEl.innerHTML  = `
+        infoEl.innerHTML = `
             <div class="apod-error">
                 <i class="fas fa-satellite-dish"></i>
                 <p>Could not load today's picture.</p>
-                <p style="font-size:13px;margin-top:8px;">Check your NASA API key or try again later.</p>
-                <a href="https://api.nasa.gov/" target="_blank" class="apod-btn apod-btn-secondary" style="margin-top:16px;">
-                    Get a free API key
-                </a>
+                <p style="font-size:13px;margin-top:8px;">Try again later.</p>
             </div>
         `;
     }

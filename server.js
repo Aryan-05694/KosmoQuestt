@@ -592,6 +592,29 @@ app.get("/clear-images", async (req, res) => {
 });
 
 /* =======================
+   NASA APOD PROXY
+   Add to .env: NASA_API_KEY=your_key
+======================= */
+app.get("/api/apod", async (req, res) => {
+    try {
+        const response = await fetch(
+            `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`
+        );
+
+        if (!response.ok) {
+            return res.status(response.status).json({ error: "NASA API error" });
+        }
+
+        const data = await response.json();
+        res.json(data);
+
+    } catch (err) {
+        console.log("APOD error:", err);
+        res.status(500).json({ error: "Failed to fetch APOD" });
+    }
+});
+
+/* =======================
    HOME PAGE
 ======================= */
 app.get("/", (req, res) => {
