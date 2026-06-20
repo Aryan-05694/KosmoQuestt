@@ -461,14 +461,16 @@ button:hover{
 
 .comment{
     display:flex;
-    align-items:flex-start;
     gap:12px;
+    padding:12px;
+    background:rgba(255,255,255,.02);
+    border-radius:8px;
+    border:1px solid var(--border);
 }
 
 .comment.reply{
-    margin-left:40px;
-    border-left:2px solid rgba(96,165,250,.3);
-    padding-left:12px;
+    margin-left:30px;
+    border-left:3px solid rgba(96,165,250,.4);
 }
 
 .comment-avatar{
@@ -492,7 +494,8 @@ button:hover{
     display:flex;
     align-items:center;
     gap:8px;
-    margin-bottom:4px;
+    margin-bottom:6px;
+    flex-wrap:wrap;
 }
 
 .comment-name{
@@ -506,9 +509,26 @@ button:hover{
     font-size:12px;
 }
 
+.comment-edited-badge{
+    background:rgba(156,163,175,.2);
+    color:#d1d5db;
+    font-size:11px;
+    padding:2px 6px;
+    border-radius:4px;
+}
+
+.admin-badge{
+    background:rgba(239,68,68,.2);
+    color:#fca5a5;
+    font-size:10px;
+    padding:2px 6px;
+    border-radius:4px;
+    font-weight:600;
+}
+
 .comment-text{
     color:#d1d5db;
-    margin:6px 0 8px 0;
+    margin:8px 0;
     font-size:13px;
     line-height:1.5;
     word-break:break-word;
@@ -535,13 +555,53 @@ button:hover{
     display:block !important;
 }
 
-.comment-actions{
-    display:flex;
-    gap:12px;
-    font-size:12px;
+.edit-actions{
+    display:none;
+    gap:8px;
+    margin-bottom:8px;
 }
 
-.comment-action-btn{
+.edit-actions.editing{
+    display:flex !important;
+}
+
+.edit-save, .edit-cancel{
+    padding:6px 12px !important;
+    font-size:12px !important;
+    border-radius:4px !important;
+    border:none !important;
+    cursor:pointer !important;
+    width:auto !important;
+    margin:0 !important;
+}
+
+.edit-save{
+    background:#10b981 !important;
+    color:white !important;
+}
+
+.edit-save:hover{
+    background:#059669 !important;
+}
+
+.edit-cancel{
+    background:#6b7280 !important;
+    color:white !important;
+}
+
+.edit-cancel:hover{
+    background:#4b5563 !important;
+}
+
+.comment-actions{
+    display:flex;
+    gap:16px;
+    font-size:12px;
+    margin-top:8px;
+    flex-wrap:wrap;
+}
+
+.action-btn{
     background:none;
     border:none;
     color:#60a5fa;
@@ -550,35 +610,34 @@ button:hover{
     width:auto;
     font-weight:500;
     transition:.2s;
+    display:flex;
+    align-items:center;
+    gap:4px;
 }
 
-.comment-action-btn:hover{
+.action-btn:hover{
     color:#3b82f6;
 }
 
-.comment-action-btn.delete{
-    color:#ef4444;
-}
-
-.comment-action-btn.delete:hover{
-    color:#dc2626;
-}
-
-.comment-action-btn.like{
+.action-btn.like{
     color:#94a3b8;
 }
 
-.comment-action-btn.like.liked{
+.action-btn.like.liked{
     color:#ef4444;
 }
 
-.comment-meta{
-    display:flex;
-    align-items:center;
-    gap:6px;
+.action-btn.delete{
+    color:#ef4444;
+}
+
+.action-btn.delete:hover{
+    color:#dc2626;
+}
+
+.like-count-inline{
+    color:#94a3b8;
     font-size:12px;
-    color:#6b7280;
-    margin-top:4px;
 }
 
 .reply-btn{
@@ -598,11 +657,16 @@ button:hover{
 
 .reply-count{
     background:rgba(96,165,250,.15);
-    padding:2px 8px;
+    padding:4px 8px;
     border-radius:6px;
     font-size:11px;
     color:#60a5fa;
     cursor:pointer;
+    transition:.2s;
+}
+
+.reply-count:hover{
+    background:rgba(96,165,250,.25);
 }
 
 .reply-form{
@@ -874,11 +938,15 @@ for(let i=0;i<220;i++){
 
 <script>
 
+let currentUser = null;
+
 fetch("/user")
 .then(res => res.json())
 .then(user => {
 
     if(!user) return;
+
+    currentUser = user;
 
     document.getElementById("profile").innerHTML = `
 
@@ -1107,7 +1175,6 @@ function renderComments(comments, imageId) {
         return;
     }
 
-    // Filter top-level comments only (no parentCommentId)
     const topLevelComments = comments.filter(c => !c.parentCommentId);
 
     topLevelComments.forEach(comment => {
@@ -1126,6 +1193,15 @@ function createCommentElement(comment, allComments, imageId) {
     
     const replies = allComments.filter(c => c.parentCommentId === comment._id) || [];
     const userLiked = comment.userLiked || false;
+    
+    // Check if current user can edit/delete
+    const isOwner = currentUser && comment.userId === currentUser._id;
+    const isAdmin = currentUser && (currentUser.role === 'admin' || currentUser.isAdmin);
+    const canEdit = isOwner || isAdmin;
+    const canDelete = isOwner || isAdmin;
+
+    const editedBadge = comment.isEdited ? `<span class="comment-edited-badge">(edited)</span>` : '';
+    const adminBadge = isAdmin && comment.userId !== currentUser._id ? `<span class="admin-badge">ADMIN</span>` : '';
 
     commentDiv.innerHTML = `
         <img
@@ -1137,6 +1213,8 @@ function createCommentElement(comment, allComments, imageId) {
             <div class="comment-header">
                 <span class="comment-name">${comment.userName}</span>
                 <span class="comment-time">${timeText}</span>
+                ${editedBadge}
+                ${adminBadge}
             </div>
             <div class="comment-text" id="text-${comment._id}">${escapeHtml(comment.commentText)}</div>
             <input 
@@ -1145,13 +1223,17 @@ function createCommentElement(comment, allComments, imageId) {
                 id="edit-${comment._id}"
                 value="${comment.commentText}"
             >
-            <div class="comment-meta">
-                <button class="comment-action-btn like ${userLiked ? 'liked' : ''}" onclick="toggleCommentLike('${imageId}', '${comment._id}', this)">
+            <div class="edit-actions" id="edit-actions-${comment._id}">
+                <button class="edit-save" onclick="saveCommentEdit('${imageId}', '${comment._id}')">Save</button>
+                <button class="edit-cancel" onclick="cancelCommentEdit('${comment._id}')">Cancel</button>
+            </div>
+            <div class="comment-actions">
+                <button class="action-btn like ${userLiked ? 'liked' : ''}" onclick="toggleCommentLike('${imageId}', '${comment._id}', this)">
                     ♡ <span id="like-count-comment-${comment._id}">${comment.likeCount || 0}</span>
                 </button>
                 <button class="reply-btn" onclick="toggleReplyForm('${comment._id}')">Reply</button>
-                ${comment.isOwner ? `<button class="comment-action-btn" onclick="toggleEditMode('${comment._id}')">Edit</button>` : ''}
-                ${comment.isOwner ? `<button class="comment-action-btn delete" onclick="deleteComment('${imageId}', '${comment._id}')">Delete</button>` : ''}
+                ${canEdit ? `<button class="action-btn" onclick="toggleEditMode('${comment._id}')">Edit</button>` : ''}
+                ${canDelete ? `<button class="action-btn delete" onclick="deleteComment('${imageId}', '${comment._id}')">Delete</button>` : ''}
             </div>
             ${replies.length > 0 ? `<div style="margin-top:12px;"><span class="reply-count" onclick="toggleReplies('${comment._id}')">${replies.length} ${replies.length === 1 ? 'reply' : 'replies'}</span></div>` : ''}
             <div id="replies-${comment._id}" style="display:none;margin-top:12px;"></div>
@@ -1177,7 +1259,6 @@ function toggleReplies(commentId) {
     if (isVisible) {
         repliesDiv.style.display = 'none';
     } else {
-        // Populate replies if not already done
         if (repliesDiv.innerHTML === '') {
             const replies = allComments[currentModalImageId].filter(c => c.parentCommentId === commentId);
             replies.forEach(reply => {
@@ -1200,16 +1281,52 @@ function toggleReplyForm(commentId) {
 function toggleEditMode(commentId) {
     const textDiv = document.getElementById(`text-${commentId}`);
     const input = document.getElementById(`edit-${commentId}`);
+    const actions = document.getElementById(`edit-actions-${commentId}`);
     
     if (input.classList.contains('editing')) {
         input.classList.remove('editing');
         textDiv.classList.remove('editing');
-        document.querySelector(`#comment-${commentId} .comment-action-btn:nth-of-type(2)`).textContent = 'Edit';
+        actions.classList.remove('editing');
     } else {
         input.classList.add('editing');
         textDiv.classList.add('editing');
-        document.querySelector(`#comment-${commentId} .comment-action-btn:nth-of-type(2)`).textContent = 'Cancel';
+        actions.classList.add('editing');
         input.focus();
+    }
+}
+
+function cancelCommentEdit(commentId) {
+    toggleEditMode(commentId);
+}
+
+async function saveCommentEdit(imageId, commentId) {
+    const input = document.getElementById(`edit-${commentId}`);
+    const newText = input.value.trim();
+
+    if (!newText) {
+        alert("Comment cannot be empty");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/images/${imageId}/comment/${commentId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ commentText: newText })
+        });
+
+        if (!response.ok) {
+            alert("Error updating comment");
+            return;
+        }
+
+        loadCommentsForModal(imageId);
+
+    } catch (err) {
+        console.log(err);
+        alert("Error updating comment");
     }
 }
 
