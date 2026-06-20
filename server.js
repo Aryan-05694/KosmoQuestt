@@ -31,6 +31,7 @@ mongoose.connect(process.env.MONGO_URI)
 ======================= */
 const imageSchema = new mongoose.Schema({
     imageUrl: String,
+    publicId: String,       // FIX: store Cloudinary public_id for deletion
     caption: String,
     userId: String,
     uploadTime: {
@@ -71,6 +72,34 @@ const commentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    // FIX: added parentCommentId for nested replies
+    parentCommentId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+        default: null
+    },
+    // FIX: added isEdited flag
+    isEdited: {
+        type: Boolean,
+        default: false
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+// FIX: new schema for comment likes
+const commentLikeSchema = new mongoose.Schema({
+    commentId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+        required: true
+    },
+    userId: {
+        type: String,
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -80,6 +109,12 @@ const commentSchema = new mongoose.Schema({
 const Image = mongoose.model("Image", imageSchema);
 const Like = mongoose.model("Like", likeSchema);
 const Comment = mongoose.model("Comment", commentSchema);
+const CommentLike = mongoose.model("CommentLike", commentLikeSchema);
+
+/* =======================
+   ADMIN CONFIG
+======================= */
+const ADMIN_EMAIL = "aryanverma05694@gmail.com";
 
 /* =======================
    MIDDLEWARE
@@ -128,7 +163,9 @@ passport.use(
                 id: profile.id,
                 displayName: profile.displayName,
                 email: profile.emails?.[0]?.value || "",
-                photo: profile.photos?.[0]?.value || ""
+                photo: profile.photos?.[0]?.value || "",
+                // FIX: expose isAdmin on user object
+                isAdmin: profile.emails?.[0]?.value === ADMIN_EMAIL
             };
 
             console.log("Google Login:", user.displayName);
@@ -201,6 +238,8 @@ app.post(
 
             await Image.create({
                imageUrl: req.file.path,
+               // FIX: save public_id for Cloudinary deletion later
+               publicId: req.file.filename,
                caption: req.body.caption || "",
                userId: req.user.id
             });
@@ -261,7 +300,6 @@ app.get("/image-count", async (req, res) => {
 app.delete("/images/:id", isLoggedIn, async (req, res) => {
 
     try {
-        const ADMIN_EMAIL = "aryanverma05694@gmail.com";
         const image = await Image.findById(req.params.id);
 
         if (!image) {
@@ -271,18 +309,26 @@ app.delete("/images/:id", isLoggedIn, async (req, res) => {
             });
         }
 
-        if (image.userId !== req.user.id &&
-    req.user.email !== ADMIN_EMAIL) {
+        if (image.userId !== req.user.id && req.user.email !== ADMIN_EMAIL) {
             return res.status(403).json({
                 success: false,
                 message: "Not authorized"
             });
         }
 
+        // FIX: delete from Cloudinary too
+        if (image.publicId) {
+            await cloudinary.uploader.destroy(image.publicId);
+        }
+
         await Image.findByIdAndDelete(req.params.id);
-        
+
         // Delete associated likes and comments
         await Like.deleteMany({ imageId: req.params.id });
+
+        const comments = await Comment.find({ imageId: req.params.id });
+        const commentIds = comments.map(c => c._id);
+        await CommentLike.deleteMany({ commentId: { $in: commentIds } });
         await Comment.deleteMany({ imageId: req.params.id });
 
         res.json({
@@ -300,7 +346,7 @@ app.delete("/images/:id", isLoggedIn, async (req, res) => {
 });
 
 /* =======================
-   LIKE ENDPOINTS
+   IMAGE LIKE ENDPOINTS
 ======================= */
 
 // Add/Remove Like
@@ -309,16 +355,13 @@ app.post("/api/images/:id/like", isLoggedIn, async (req, res) => {
         const imageId = req.params.id;
         const userId = req.user.id;
 
-        // Check if already liked
         const existingLike = await Like.findOne({ imageId, userId });
 
         if (existingLike) {
-            // Remove like
             await Like.deleteOne({ imageId, userId });
             const likeCount = await Like.countDocuments({ imageId });
             return res.json({ liked: false, likeCount });
         } else {
-            // Add like
             await Like.create({ imageId, userId });
             const likeCount = await Like.countDocuments({ imageId });
             return res.json({ liked: true, likeCount });
@@ -354,10 +397,10 @@ app.get("/api/images/:id/likes", async (req, res) => {
    COMMENT ENDPOINTS
 ======================= */
 
-// Add Comment
+// Add Comment (supports replies via parentCommentId)
 app.post("/api/images/:id/comment", isLoggedIn, async (req, res) => {
     try {
-        const { commentText } = req.body;
+        const { commentText, parentCommentId } = req.body;
         const imageId = req.params.id;
 
         if (!commentText || commentText.trim() === "") {
@@ -369,7 +412,9 @@ app.post("/api/images/:id/comment", isLoggedIn, async (req, res) => {
             userId: req.user.id,
             userName: req.user.displayName,
             userPhoto: req.user.photo,
-            commentText
+            commentText,
+            // FIX: save parentCommentId if it's a reply
+            parentCommentId: parentCommentId || null
         });
 
         res.json(comment);
@@ -379,16 +424,62 @@ app.post("/api/images/:id/comment", isLoggedIn, async (req, res) => {
     }
 });
 
-// Get Comments
+// Get Comments (with like counts and userLiked)
 app.get("/api/images/:id/comments", async (req, res) => {
     try {
         const comments = await Comment.find({ imageId: req.params.id })
             .sort({ createdAt: -1 });
 
-        res.json(comments);
+        // FIX: attach likeCount and userLiked to each comment
+        const enriched = await Promise.all(comments.map(async (c) => {
+            const likeCount = await CommentLike.countDocuments({ commentId: c._id });
+            let userLiked = false;
+            if (req.user) {
+                const ul = await CommentLike.findOne({ commentId: c._id, userId: req.user.id });
+                userLiked = !!ul;
+            }
+            return {
+                ...c.toObject(),
+                likeCount,
+                userLiked
+            };
+        }));
+
+        res.json(enriched);
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: "Failed to load comments" });
+    }
+});
+
+// FIX: Edit Comment (PUT)
+app.put("/api/images/:imageId/comment/:commentId", isLoggedIn, async (req, res) => {
+    try {
+        const { commentId } = req.params;
+        const { commentText } = req.body;
+
+        if (!commentText || commentText.trim() === "") {
+            return res.status(400).json({ error: "Comment cannot be empty" });
+        }
+
+        const comment = await Comment.findById(commentId);
+
+        if (!comment) {
+            return res.status(404).json({ error: "Comment not found" });
+        }
+
+        if (comment.userId !== req.user.id && req.user.email !== ADMIN_EMAIL) {
+            return res.status(403).json({ error: "Not authorized" });
+        }
+
+        comment.commentText = commentText.trim();
+        comment.isEdited = true;
+        await comment.save();
+
+        res.json(comment);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Edit failed" });
     }
 });
 
@@ -402,15 +493,44 @@ app.delete("/api/images/:imageId/comment/:commentId", isLoggedIn, async (req, re
             return res.status(404).json({ error: "Comment not found" });
         }
 
-        if (comment.userId !== req.user.id && req.user.email !== "aryanverma05694@gmail.com") {
+        if (comment.userId !== req.user.id && req.user.email !== ADMIN_EMAIL) {
             return res.status(403).json({ error: "Not authorized" });
         }
 
+        // FIX: also delete replies and their likes when parent comment is deleted
+        const replies = await Comment.find({ parentCommentId: commentId });
+        const replyIds = replies.map(r => r._id);
+        await CommentLike.deleteMany({ commentId: { $in: [...replyIds, commentId] } });
+        await Comment.deleteMany({ parentCommentId: commentId });
         await Comment.findByIdAndDelete(commentId);
+
         res.json({ success: true });
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: "Delete failed" });
+    }
+});
+
+// FIX: Comment Like endpoint
+app.post("/api/images/:imageId/comment/:commentId/like", isLoggedIn, async (req, res) => {
+    try {
+        const { commentId } = req.params;
+        const userId = req.user.id;
+
+        const existing = await CommentLike.findOne({ commentId, userId });
+
+        if (existing) {
+            await CommentLike.deleteOne({ commentId, userId });
+            const likeCount = await CommentLike.countDocuments({ commentId });
+            return res.json({ liked: false, likeCount });
+        } else {
+            await CommentLike.create({ commentId, userId });
+            const likeCount = await CommentLike.countDocuments({ commentId });
+            return res.json({ liked: true, likeCount });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Comment like failed" });
     }
 });
 
@@ -423,11 +543,13 @@ app.get("/user", (req, res) => {
         return res.json(null);
     }
 
+    // FIX: include isAdmin in response
     res.json({
         id: req.user.id,
         displayName: req.user.displayName,
         email: req.user.email,
-        photo: req.user.photo
+        photo: req.user.photo,
+        isAdmin: req.user.email === ADMIN_EMAIL
     });
 });
 
@@ -456,6 +578,7 @@ app.get("/clear-images", async (req, res) => {
         await Image.deleteMany({});
         await Like.deleteMany({});
         await Comment.deleteMany({});
+        await CommentLike.deleteMany({});
 
         res.send(
             "All image records removed from database"

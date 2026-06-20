@@ -10,9 +10,7 @@
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <!-- FAVICON START -->
-
 <link rel="icon" href="/favicon.ico?v=2">
-
 <!-- FAVICON END -->
 
 <style>
@@ -51,7 +49,6 @@ body{
 }
 
 /* Moving Stars */
-
 .stars{
     position:fixed;
     inset:0;
@@ -69,19 +66,9 @@ body{
 }
 
 @keyframes starMove{
-    0%{
-        transform:translateY(0);
-        opacity:.2;
-    }
-
-    50%{
-        opacity:1;
-    }
-
-    100%{
-        transform:translateY(-150px);
-        opacity:.2;
-    }
+    0%{ transform:translateY(0); opacity:.2; }
+    50%{ opacity:1; }
+    100%{ transform:translateY(-150px); opacity:.2; }
 }
 
 .content{
@@ -90,7 +77,6 @@ body{
 }
 
 /* Header */
-
 .header{
     display:flex;
     justify-content:space-between;
@@ -136,7 +122,6 @@ body{
 }
 
 /* Profile */
-
 #profile{
     text-align:center;
     margin-top:25px;
@@ -155,7 +140,6 @@ body{
 }
 
 /* Upload */
-
 .upload-box{
     max-width:600px;
     margin:25px auto;
@@ -201,7 +185,6 @@ button:hover{
 }
 
 /* Gallery */
-
 .section-title{
     text-align:center;
     margin-top:30px;
@@ -246,7 +229,6 @@ button:hover{
 }
 
 /* Engagement Section */
-
 .engagement-section{
     padding:12px;
     border-top:1px solid var(--border);
@@ -288,7 +270,6 @@ button:hover{
 }
 
 /* Comments Button */
-
 .comments-btn{
     background:none;
     border:none;
@@ -338,7 +319,6 @@ button:hover{
 }
 
 /* COMMENTS MODAL */
-
 .modal-overlay{
     display:none;
     position:fixed;
@@ -376,14 +356,8 @@ button:hover{
 }
 
 @keyframes slideUp{
-    from{
-        transform:translateY(40px);
-        opacity:0;
-    }
-    to{
-        transform:translateY(0);
-        opacity:1;
-    }
+    from{ transform:translateY(40px); opacity:0; }
+    to{ transform:translateY(0); opacity:1; }
 }
 
 .modal-header{
@@ -405,8 +379,6 @@ button:hover{
     color:var(--text);
     font-size:24px;
     cursor:pointer;
-    width:auto;
-    padding:0;
     width:40px;
     height:40px;
     display:flex;
@@ -414,6 +386,8 @@ button:hover{
     justify-content:center;
     border-radius:8px;
     transition:.2s;
+    padding:0;
+    margin:0;
 }
 
 .modal-close:hover{
@@ -421,7 +395,6 @@ button:hover{
 }
 
 /* Search Box */
-
 .modal-search{
     padding:0 20px 12px 20px;
     display:flex;
@@ -444,7 +417,6 @@ button:hover{
 }
 
 /* Modal Content */
-
 .modal-content{
     flex:1;
     overflow-y:auto;
@@ -452,7 +424,6 @@ button:hover{
 }
 
 /* Comments Thread */
-
 .comments-thread{
     display:flex;
     flex-direction:column;
@@ -613,6 +584,7 @@ button:hover{
     display:flex;
     align-items:center;
     gap:4px;
+    margin:0;
 }
 
 .action-btn:hover{
@@ -647,8 +619,10 @@ button:hover{
     cursor:pointer;
     font-size:12px;
     padding:0;
+    margin:0;
     font-weight:500;
     transition:.2s;
+    width:auto;
 }
 
 .reply-btn:hover{
@@ -709,7 +683,6 @@ button:hover{
 }
 
 /* Modal Footer */
-
 .modal-footer{
     padding:20px;
     border-top:1px solid var(--border);
@@ -895,6 +868,7 @@ Loading images...
                         class="comment-input-modal" 
                         placeholder="Add a comment..." 
                         id="modal-comment-input"
+                        onkeydown="if(event.key==='Enter') submitCommentFromModal()"
                     >
                     <button 
                         class="comment-submit-modal" 
@@ -911,26 +885,15 @@ Loading images...
 
 <script>
 
+// Stars
 const stars = document.getElementById("stars");
-
 for(let i=0;i<220;i++){
-
     const star = document.createElement("div");
-
     star.className = "star";
-
-    star.style.left =
-    Math.random()*100 + "vw";
-
-    star.style.top =
-    Math.random()*100 + "vh";
-
-    star.style.opacity =
-    Math.random();
-
-    star.style.animationDuration =
-    (Math.random()*12 + 5) + "s";
-
+    star.style.left = Math.random()*100 + "vw";
+    star.style.top = Math.random()*100 + "vh";
+    star.style.opacity = Math.random();
+    star.style.animationDuration = (Math.random()*12 + 5) + "s";
     stars.appendChild(star);
 }
 
@@ -949,22 +912,14 @@ fetch("/user")
     currentUser = user;
 
     document.getElementById("profile").innerHTML = `
-
     <img
     class="profile-image"
     src="${user.photo}?sz=200"
     alt="Profile"
     referrerpolicy="no-referrer"
     onerror="this.src='/logo_1.png'">
-
-    <h3 style="margin-top:12px;">
-        ${user.displayName}
-    </h3>
-
-    <p class="profile-email">
-        ${user.email}
-    </p>
-
+    <h3 style="margin-top:12px;">${user.displayName}</h3>
+    <p class="profile-email">${user.email}</p>
     `;
     
     setTimeout(() => {
@@ -983,76 +938,47 @@ fetch("/images")
 .then(res => res.json())
 .then(images => {
 
-    const gallery =
-    document.getElementById("gallery");
-
-    const loading =
-    document.getElementById("loading");
+    const gallery = document.getElementById("gallery");
+    const loading = document.getElementById("loading");
 
     loading.style.display = "none";
 
     if(images.length === 0){
-
         loading.style.display = "block";
-
-        loading.innerText =
-        "No images uploaded yet";
-
+        loading.innerText = "No images uploaded yet";
         return;
     }
 
     images.forEach(img => {
 
-        const card =
-        document.createElement("div");
-
+        const card = document.createElement("div");
         card.className = "card";
 
         card.innerHTML = `
-
-        <img src="${img.imageUrl}">
-
-        <div class="caption">
-        ${img.caption || "No caption"}
-        </div>
-
+        <img src="${img.imageUrl}" loading="lazy">
+        <div class="caption">${img.caption || "No caption"}</div>
         <div class="engagement-section">
-        
             <div class="like-section">
-                <button class="like-btn" onclick="toggleLike('${img._id}', event)">
-                    ♡
-                </button>
+                <button class="like-btn" onclick="toggleLike('${img._id}', event)">♡</button>
                 <span class="like-count" id="like-count-${img._id}">Loading...</span>
             </div>
-
             <button class="comments-btn" onclick="openCommentsModal('${img._id}')">
                 <span>💬</span>
                 <span class="comment-count-badge" id="comment-count-${img._id}">0</span>
             </button>
-
-            <button
-            class="delete-btn"
-            onclick="deleteImage('${img._id}')">
-            🗑 Delete
-            </button>
-
+            <button class="delete-btn" onclick="deleteImage('${img._id}')">🗑 Delete</button>
         </div>
-
         `;
 
         gallery.appendChild(card);
 
         loadLikes(img._id);
         loadComments(img._id);
-
     });
 
 })
 .catch(() => {
-
-    document.getElementById("loading")
-    .innerText = "Failed to load images";
-
+    document.getElementById("loading").innerText = "Failed to load images";
 });
 
 </script>
@@ -1071,8 +997,8 @@ async function toggleLike(imageId, event) {
         }
 
         const data = await response.json();
-
         const btn = event.target;
+
         if (data.liked) {
             btn.classList.add("liked");
             btn.textContent = "❤";
@@ -1114,10 +1040,11 @@ async function openCommentsModal(imageId) {
     currentModalImageId = imageId;
     const modal = document.getElementById("commentsModal");
     modal.classList.add("active");
-    
     document.getElementById("comment-search").value = "";
     loadCommentsForModal(imageId);
     document.getElementById("modal-comment-input").value = "";
+    // FIX: focus input when modal opens
+    setTimeout(() => document.getElementById("modal-comment-input").focus(), 300);
 }
 
 function closeCommentsModal() {
@@ -1154,6 +1081,9 @@ function getTimeAgo(date) {
 }
 
 async function loadCommentsForModal(imageId) {
+    const commentsList = document.getElementById("modalCommentsList");
+    commentsList.innerHTML = "<div class='empty-comments'>Loading...</div>";
+
     try {
         const response = await fetch(`/api/images/${imageId}/comments`);
         const comments = await response.json();
@@ -1163,6 +1093,7 @@ async function loadCommentsForModal(imageId) {
 
     } catch (err) {
         console.log(err);
+        commentsList.innerHTML = "<div class='empty-comments'>Failed to load comments.</div>";
     }
 }
 
@@ -1183,7 +1114,7 @@ function renderComments(comments, imageId) {
     });
 }
 
-function createCommentElement(comment, allComments, imageId) {
+function createCommentElement(comment, allCommentsArr, imageId) {
     const commentDiv = document.createElement("div");
     commentDiv.className = comment.parentCommentId ? "comment reply" : "comment";
     commentDiv.id = `comment-${comment._id}`;
@@ -1191,17 +1122,18 @@ function createCommentElement(comment, allComments, imageId) {
     const commentTime = new Date(comment.createdAt);
     const timeText = getTimeAgo(commentTime);
     
-    const replies = allComments.filter(c => c.parentCommentId === comment._id) || [];
+    const replies = allCommentsArr.filter(c => c.parentCommentId === comment._id) || [];
     const userLiked = comment.userLiked || false;
     
-    // Check if current user can edit/delete
-    const isOwner = currentUser && comment.userId === currentUser._id;
-    const isAdmin = currentUser && (currentUser.role === 'admin' || currentUser.isAdmin);
-    const canEdit = isOwner || isAdmin;
+    // FIX: properly check ownership and admin using _id from backend
+    const isOwner = currentUser && (comment.userId === currentUser.id);
+    // FIX: use isAdmin from /user endpoint
+    const isAdmin = currentUser && currentUser.isAdmin;
+    const canEdit = isOwner;           // only owner can edit
     const canDelete = isOwner || isAdmin;
 
     const editedBadge = comment.isEdited ? `<span class="comment-edited-badge">(edited)</span>` : '';
-    const adminBadge = isAdmin && comment.userId !== currentUser._id ? `<span class="admin-badge">ADMIN</span>` : '';
+    const adminActionBadge = isAdmin && !isOwner ? `<span class="admin-badge">ADMIN</span>` : '';
 
     commentDiv.innerHTML = `
         <img
@@ -1211,17 +1143,17 @@ function createCommentElement(comment, allComments, imageId) {
           onerror="this.src='/logo_1.png'">
         <div class="comment-content">
             <div class="comment-header">
-                <span class="comment-name">${comment.userName}</span>
+                <span class="comment-name">${escapeHtml(comment.userName)}</span>
                 <span class="comment-time">${timeText}</span>
                 ${editedBadge}
-                ${adminBadge}
+                ${adminActionBadge}
             </div>
             <div class="comment-text" id="text-${comment._id}">${escapeHtml(comment.commentText)}</div>
             <input 
                 type="text" 
                 class="comment-input-edit" 
                 id="edit-${comment._id}"
-                value="${comment.commentText}"
+                value="${escapeHtml(comment.commentText)}"
             >
             <div class="edit-actions" id="edit-actions-${comment._id}">
                 <button class="edit-save" onclick="saveCommentEdit('${imageId}', '${comment._id}')">Save</button>
@@ -1229,13 +1161,13 @@ function createCommentElement(comment, allComments, imageId) {
             </div>
             <div class="comment-actions">
                 <button class="action-btn like ${userLiked ? 'liked' : ''}" onclick="toggleCommentLike('${imageId}', '${comment._id}', this)">
-                    ♡ <span id="like-count-comment-${comment._id}">${comment.likeCount || 0}</span>
+                    ${userLiked ? '❤' : '♡'} <span id="like-count-comment-${comment._id}">${comment.likeCount || 0}</span>
                 </button>
                 <button class="reply-btn" onclick="toggleReplyForm('${comment._id}')">Reply</button>
                 ${canEdit ? `<button class="action-btn" onclick="toggleEditMode('${comment._id}')">Edit</button>` : ''}
                 ${canDelete ? `<button class="action-btn delete" onclick="deleteComment('${imageId}', '${comment._id}')">Delete</button>` : ''}
             </div>
-            ${replies.length > 0 ? `<div style="margin-top:12px;"><span class="reply-count" onclick="toggleReplies('${comment._id}')">${replies.length} ${replies.length === 1 ? 'reply' : 'replies'}</span></div>` : ''}
+            ${replies.length > 0 ? `<div style="margin-top:12px;"><span class="reply-count" onclick="toggleReplies('${comment._id}', '${imageId}')">${replies.length} ${replies.length === 1 ? 'reply' : 'replies'}</span></div>` : ''}
             <div id="replies-${comment._id}" style="display:none;margin-top:12px;"></div>
             <div class="reply-form" id="reply-form-${comment._id}" style="display:none;">
                 <input 
@@ -1243,6 +1175,7 @@ function createCommentElement(comment, allComments, imageId) {
                     class="reply-input" 
                     placeholder="Write a reply..." 
                     id="reply-input-${comment._id}"
+                    onkeydown="if(event.key==='Enter') submitReply('${imageId}', '${comment._id}')"
                 >
                 <button class="reply-submit" onclick="submitReply('${imageId}', '${comment._id}')">Reply</button>
             </div>
@@ -1252,7 +1185,8 @@ function createCommentElement(comment, allComments, imageId) {
     return commentDiv;
 }
 
-function toggleReplies(commentId) {
+// FIX: pass imageId to toggleReplies so it can use the right comments array
+function toggleReplies(commentId, imageId) {
     const repliesDiv = document.getElementById(`replies-${commentId}`);
     const isVisible = repliesDiv.style.display !== 'none';
     
@@ -1260,9 +1194,10 @@ function toggleReplies(commentId) {
         repliesDiv.style.display = 'none';
     } else {
         if (repliesDiv.innerHTML === '') {
-            const replies = allComments[currentModalImageId].filter(c => c.parentCommentId === commentId);
+            const imgId = imageId || currentModalImageId;
+            const replies = (allComments[imgId] || []).filter(c => c.parentCommentId === commentId);
             replies.forEach(reply => {
-                const replyElement = createCommentElement(reply, allComments[currentModalImageId], currentModalImageId);
+                const replyElement = createCommentElement(reply, allComments[imgId], imgId);
                 repliesDiv.appendChild(replyElement);
             });
         }
@@ -1380,8 +1315,11 @@ async function toggleCommentLike(imageId, commentId, button) {
 
         if (data.liked) {
             button.classList.add('liked');
+            // FIX: update heart icon as well
+            button.childNodes[0].textContent = '❤ ';
         } else {
             button.classList.remove('liked');
+            button.childNodes[0].textContent = '♡ ';
         }
 
         document.getElementById(`like-count-comment-${commentId}`).textContent = data.likeCount;
@@ -1436,8 +1374,10 @@ async function loadComments(imageId) {
         const response = await fetch(`/api/images/${imageId}/comments`);
         const comments = await response.json();
 
+        // FIX: count all top-level comments only
         const topLevelCount = comments.filter(c => !c.parentCommentId).length;
-        document.getElementById(`comment-count-${imageId}`).textContent = topLevelCount;
+        const badge = document.getElementById(`comment-count-${imageId}`);
+        if (badge) badge.textContent = topLevelCount;
 
     } catch (err) {
         console.log(err);
@@ -1497,31 +1437,18 @@ async function deleteImage(id) {
     }
 
     try {
-
-        const response = await fetch(
-            `/images/${id}`,
-            {
-                method: "DELETE"
-            }
-        );
-
+        const response = await fetch(`/images/${id}`, { method: "DELETE" });
         const data = await response.json();
 
         if (data.success) {
-
             alert("Image deleted");
-
             location.reload();
-
         } else {
-
             alert(data.message || "Delete failed");
         }
 
     } catch (err) {
-
         console.log(err);
-
         alert("Error deleting image");
     }
 }
@@ -1530,43 +1457,35 @@ async function deleteImage(id) {
 <script>
 const toggleBtn = document.getElementById("themeToggle");
 
-if(localStorage.getItem("theme")==="light"){
+if(localStorage.getItem("theme") === "light"){
     document.body.classList.add("light-theme");
-    toggleBtn.textContent="☀️";
+    toggleBtn.textContent = "☀️";
 }
 
-toggleBtn.addEventListener("click",()=>{
-
+toggleBtn.addEventListener("click", () => {
     document.body.classList.toggle("light-theme");
-
     if(document.body.classList.contains("light-theme")){
-        localStorage.setItem("theme","light");
-        toggleBtn.textContent="☀️";
-    }else{
-        localStorage.setItem("theme","dark");
-        toggleBtn.textContent="🌙";
+        localStorage.setItem("theme", "light");
+        toggleBtn.textContent = "☀️";
+    } else {
+        localStorage.setItem("theme", "dark");
+        toggleBtn.textContent = "🌙";
     }
-
 });
 </script>
 
 <script>
-
 fetch("/image-count")
 .then(res => res.json())
 .then(data => {
-
     document.getElementById("imageCounter").innerHTML =
         `🚀 Total Images Uploaded: ${data.count}`;
-
 })
 .catch(() => {
-
     document.getElementById("imageCounter").innerHTML =
         "🚀 Total Images Uploaded: 0";
-
 });
-
 </script>
+
 </body>
 </html>
