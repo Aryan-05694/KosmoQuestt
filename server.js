@@ -202,7 +202,7 @@ app.use(
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
-        store: new MongoStore({
+        store: MongoStore.create({
             mongoUrl: process.env.MONGO_URI,
             touchAfter: 24 * 3600 // lazy session update (24 hours)
         }),
