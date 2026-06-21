@@ -133,6 +133,47 @@ body{
 
 .nav-links .login-btn:hover{ background:#1d4ed8; }
 
+/* USER INFO STYLE */
+.user-info{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:6px 16px;
+    background:rgba(37,99,235,.15);
+    border:1px solid rgba(37,99,235,.3);
+    border-radius:999px;
+}
+
+.user-photo{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    border:2px solid #60a5fa;
+    object-fit:cover;
+}
+
+.user-name{
+    font-size:14px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.logout-link{
+    text-decoration:none;
+    color:#60a5fa;
+    font-size:12px;
+    padding:4px 10px;
+    border-left:1px solid rgba(96,165,250,.3);
+    margin-left:8px;
+    transition:.2s;
+}
+
+.logout-link:hover{
+    color:#93c5fd;
+    background:rgba(96,165,250,.1);
+    border-radius:4px;
+}
+
 #themeToggle{
     background:rgba(255,255,255,.08);
     border:none;
@@ -510,6 +551,8 @@ body{
     .stats{ padding:20px; }
     .apod-section{ padding:0 20px; }
     .apod-info{ padding:24px 20px; }
+    .user-info{ padding:4px 12px; font-size:12px; }
+    .user-photo{ width:28px; height:28px; }
 }
 </style>
 </head>
@@ -539,7 +582,9 @@ body{
         <a href="/about.html">About</a>
         <a href="https://youtube.com/@KosmoQuestt" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
         <a href="https://x.com/KosmoQuestt" target="_blank" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-        <a href="/auth/google" class="login-btn">Login</a>
+        
+        <!-- User Status Display -->
+        <div id="userStatus"></div>
     </div>
 </nav>
 
@@ -661,6 +706,44 @@ toggleBtn.addEventListener("click", () => {
     localStorage.setItem("theme", isLight ? "light" : "dark");
     toggleBtn.textContent = isLight ? "☀️" : "🌙";
 });
+
+/* CHECK LOGIN STATUS & SHOW USER INFO */
+function checkLoginStatus(){
+    fetch("/user")
+        .then(res => res.json())
+        .then(user => {
+            const userStatusDiv = document.getElementById("userStatus");
+            
+            if(user){
+                // User is logged in - show user info
+                userStatusDiv.innerHTML = `
+                    <div class="user-info">
+                        <img src="${user.photo}" alt="${user.displayName}" class="user-photo">
+                        <span class="user-name">${user.displayName}</span>
+                        <a href="/logout" class="logout-link">Logout</a>
+                    </div>
+                `;
+            } else {
+                // User is NOT logged in - show login button
+                userStatusDiv.innerHTML = `
+                    <a href="/auth/google" class="login-btn">Login</a>
+                `;
+            }
+        })
+        .catch(err => {
+            console.log("Login check failed:", err);
+            // Fallback to login button
+            document.getElementById("userStatus").innerHTML = `
+                <a href="/auth/google" class="login-btn">Login</a>
+            `;
+        });
+}
+
+// Check login status when page loads
+checkLoginStatus();
+
+// Recheck every 10 seconds (optional - updates if user logs out in another tab)
+setInterval(checkLoginStatus, 10000);
 
 /* LIVE IMAGE COUNT */
 fetch("/image-count")
