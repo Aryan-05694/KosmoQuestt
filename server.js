@@ -197,20 +197,32 @@ app.use(express.json());
 /* =======================
    SESSION CONFIGURATION (FIXED)
 ======================= */
+/* =======================
+   SESSION CONFIGURATION
+======================= */
+
+// Required for Render / HTTPS proxy
+app.set("trust proxy", 1);
+
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
+
         store: MongoStore.create({
             mongoUrl: process.env.MONGO_URI,
-            touchAfter: 24 * 3600 // lazy session update (24 hours)
+            touchAfter: 24 * 3600
         }),
-        cookie: { 
-            maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // true only on HTTPS
-            sameSite: "lax"
+
+            // IMPORTANT
+            secure: true,
+
+            sameSite: "none"
         }
     })
 );
@@ -814,12 +826,21 @@ app.get("/", (req, res) => {
 });
 
 /* =======================
+   DEBUG AUTH
+======================= */
+app.get("/debug-auth", (req, res) => {
+    res.json({
+        authenticated: req.isAuthenticated(),
+        user: req.user || null,
+        session: req.session || null
+    });
+});
+
+/* =======================
    SERVER
 ======================= */
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(
-        `Server running on port ${PORT}`
-    );
+    console.log(`Server running on port ${PORT}`);
 });
