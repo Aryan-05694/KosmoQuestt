@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const multer = require("multer");
@@ -193,11 +194,24 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+/* =======================
+   SESSION CONFIGURATION (FIXED)
+======================= */
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: false,
-        saveUninitialized: false
+        saveUninitialized: false,
+        store: new MongoStore({
+            mongoUrl: process.env.MONGO_URI,
+            touchAfter: 24 * 3600 // lazy session update (24 hours)
+        }),
+        cookie: { 
+            maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // true only on HTTPS
+            sameSite: "lax"
+        }
     })
 );
 
