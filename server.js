@@ -816,6 +816,45 @@ app.get("/api/apod", async (req, res) => {
 });
 
 /* =======================
+   PLATFORM STATS
+======================= */
+app.get("/api/stats", async (req, res) => {
+
+    try {
+
+        const imageCount = await Image.countDocuments();
+
+        const memberCount = await Image.distinct("userId");
+
+        const launchDate = new Date("2025-06-01"); // Change to actual launch date
+
+        const monthsActive = Math.max(
+            1,
+            Math.floor(
+                (Date.now() - launchDate.getTime()) /
+                (1000 * 60 * 60 * 24 * 30)
+            )
+        );
+
+        res.json({
+            imageCount,
+            memberCount: memberCount.length,
+            monthsActive
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            imageCount: 0,
+            memberCount: 0,
+            monthsActive: 0
+        });
+    }
+});
+
+/* =======================
    HOME PAGE
 ======================= */
 app.get("/", (req, res) => {

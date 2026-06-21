@@ -198,46 +198,57 @@ body{
 /* STATS SECTION */
 .stats-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:24px;
     margin-bottom:60px;
 }
 
 .stat-box{
-    background:var(--card-bg);
-    border:1px solid var(--card-border);
-    border-radius:16px;
-    padding:30px;
+    background:linear-gradient(
+        145deg,
+        rgba(15,23,42,.95),
+        rgba(5,10,25,.95)
+    );
+    border:1px solid rgba(96,165,250,.12);
+    border-radius:20px;
+    padding:45px 25px;
     text-align:center;
-    backdrop-filter:blur(12px);
-    transition:.3s ease;
     position:relative;
     overflow:hidden;
+    backdrop-filter:blur(16px);
+    transition:.35s ease;
 }
 
 .stat-box::before{
     content:'';
     position:absolute;
     inset:0;
-    background:radial-gradient(circle at 50% 0%, rgba(37,99,235,.08), transparent 70%);
+    background:
+    radial-gradient(
+        circle at top,
+        rgba(96,165,250,.12),
+        transparent 70%
+    );
 }
 
 .stat-box:hover{
-    transform:translateY(-6px);
-    box-shadow:0 0 30px rgba(96,165,250,.2);
-    border-color:rgba(96,165,250,.25);
+    transform:translateY(-8px);
+    border-color:rgba(96,165,250,.35);
+    box-shadow:
+    0 15px 40px rgba(37,99,235,.18);
 }
 
 .stat-number{
-    font-size:42px;
-    color:#60a5fa;
-    margin-bottom:10px;
-    font-weight:800;
+    font-size:70px;
+    margin-bottom:18px;
+    line-height:1;
 }
 
 .stat-label{
-    color:#94a3b8;
-    font-size:14px;
+    color:#cbd5e1;
+    font-size:16px;
+    font-weight:600;
+    letter-spacing:.05em;
 }
 
 /* CARDS */
@@ -603,20 +614,25 @@ body{
 
 <!-- STATS -->
 <section class="container">
-    <p class="section-label">Platform Metrics</p>
+    <p class="section-label">Platform Highlights</p>
+
     <div class="stats-grid">
+
         <div class="stat-box">
-            <div class="stat-number">2.3K</div>
-            <p class="stat-label">Images in Gallery</p>
+            <div class="stat-number">🚀</div>
+            <p class="stat-label">ISS Live Tracker</p>
         </div>
+
         <div class="stat-box">
-            <div class="stat-number">892</div>
-            <p class="stat-label">Active Members</p>
+            <div class="stat-number">🪐</div>
+            <p class="stat-label">Solar System Explorer</p>
         </div>
+
         <div class="stat-box">
-            <div class="stat-number">12</div>
-            <p class="stat-label">Months Active</p>
+            <div class="stat-number">📸</div>
+            <p class="stat-label">Space Image Gallery</p>
         </div>
+
     </div>
 </section>
 
@@ -686,34 +702,60 @@ body{
 </section>
 
 <!-- TIMELINE -->
+<!-- TIMELINE -->
 <section class="container">
     <p class="section-label">Our Journey</p>
+
     <div class="timeline-section">
+
         <div class="timeline-item">
             <div class="timeline-year">November 2024</div>
             <div class="timeline-title">KosmoQuestt Launches</div>
-            <div class="timeline-desc">Platform goes live with core image sharing features and user authentication</div>
+            <div class="timeline-desc">
+                Platform goes live with core image sharing features and user authentication.
+            </div>
         </div>
+
         <div class="timeline-item">
             <div class="timeline-year">December 2024</div>
             <div class="timeline-title">ISS Tracker Released</div>
-            <div class="timeline-desc">Real-time International Space Station tracking feature becomes available</div>
+            <div class="timeline-desc">
+                Real-time International Space Station tracking feature becomes available.
+            </div>
         </div>
+
         <div class="timeline-item">
             <div class="timeline-year">January 2025</div>
             <div class="timeline-title">Solar System Explorer Added</div>
-            <div class="timeline-desc">Interactive planet explorer with NASA imagery launches</div>
+            <div class="timeline-desc">
+                Interactive planet explorer with NASA imagery launches.
+            </div>
         </div>
+
         <div class="timeline-item">
             <div class="timeline-year">February 2025</div>
             <div class="timeline-title">Community Milestone</div>
-            <div class="timeline-desc">Platform reaches 800+ members and 2000+ images</div>
+            <div class="timeline-desc">
+                Platform reaches new milestones with growing community engagement and image sharing.
+            </div>
         </div>
+
+        <div class="timeline-item">
+            <div class="timeline-year">2026</div>
+            <div class="timeline-title">Community Growth</div>
+            <div class="timeline-desc">
+                Gallery, comments, likes, and community features continue to expand.
+            </div>
+        </div>
+
         <div class="timeline-item">
             <div class="timeline-year">2025+</div>
             <div class="timeline-title">Continuous Improvement</div>
-            <div class="timeline-desc">Regular updates, new features, and community enhancements</div>
+            <div class="timeline-desc">
+                Regular updates, new features, and community enhancements.
+            </div>
         </div>
+
     </div>
 </section>
 
