@@ -278,6 +278,65 @@ body{
     }
 }
 
+.mobile-menu{
+    display:none;
+}
+
+@media(max-width:900px){
+
+    .mobile-menu{
+        position:absolute;
+        top:100%;
+        left:0;
+        width:100%;
+        background:var(--nav-bg);
+        backdrop-filter:blur(12px);
+        border-top:1px solid rgba(255,255,255,.08);
+        display:none;
+        flex-direction:column;
+        padding:10px;
+        z-index:999;
+    }
+
+    .mobile-menu.active{
+        display:flex;
+    }
+
+    .mobile-menu a{
+        color:var(--text);
+        text-decoration:none;
+        padding:14px;
+        border-radius:8px;
+    }
+
+    .mobile-menu a:hover{
+        background:rgba(255,255,255,.08);
+    }
+
+    .mobile-dropdown-toggle{
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        background:none;
+        border:none;
+        color:var(--text);
+        padding:14px;
+        cursor:pointer;
+        font-size:15px;
+    }
+
+    .mobile-dropdown-menu{
+        display:none;
+        flex-direction:column;
+        padding-left:15px;
+    }
+
+    .mobile-dropdown-menu.active{
+        display:flex;
+    }
+}
+
 /* ===== HERO ===== */
 .hero{
     text-align:center;
@@ -697,6 +756,29 @@ body{
         <span></span>
         <span></span>
     </button>
+
+    <div class="mobile-menu" id="mobileMenu">
+    <a href="/">🏠 Home</a>
+    <a href="/dashboard.html">🖼️ Gallery</a>
+
+    <div class="mobile-dropdown">
+        <button class="mobile-dropdown-toggle" id="mobileExploreBtn">
+            🚀 Explore
+            <i class="fas fa-chevron-down"></i>
+        </button>
+
+        <div class="mobile-dropdown-menu" id="mobileExploreMenu">
+            <a href="/solar-system.html">🪐 Solar System</a>
+            <a href="/iss.html">🛰️ ISS Tracker</a>
+            <a href="/iss-3d.html">🔭 ISS 3D View</a>
+            <a href="/space-facts.html">📚 Space Facts</a>
+        </div>
+    </div>
+
+    <a href="/about.html">ℹ️ About</a>
+</div>
+
+
 </nav>
 
 <!-- HERO -->
@@ -917,14 +999,17 @@ async function loadAPOD(){
 
 loadAPOD();
 
-/* HAMBURGER MENU */
-const hamburger = document.getElementById("hamburger");
-if(hamburger){
-    hamburger.addEventListener("click", () => {
-        alert("Mobile menu - implement as needed");
-    });
-}
-</script>
+/* MOBILE MENU */
 
-</body>
-</html>
+const hamburger = document.getElementById("hamburger");
+const mobileMenu = document.getElementById("mobileMenu");
+const mobileExploreBtn = document.getElementById("mobileExploreBtn");
+const mobileExploreMenu = document.getElementById("mobileExploreMenu");
+
+hamburger.addEventListener("click", () => {
+    mobileMenu.classList.toggle("active");
+});
+
+mobileExploreBtn.addEventListener("click", () => {
+    mobileExploreMenu.classList.toggle("active");
+});
