@@ -10,9 +10,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-
 <link rel="manifest" href="/site.webmanifest">
 
 <style>
@@ -24,6 +22,8 @@
     --nav-bg:rgba(5,8,20,.9);
     --card-bg:rgba(17,24,39,.75);
     --card-border:rgba(255,255,255,.06);
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
 }
 
 .light-theme{
@@ -58,7 +58,6 @@ body{
     50%{ opacity:1; }
 }
 
-/* GLOW */
 .glow{
     position:fixed;
     top:-200px; left:50%;
@@ -71,12 +70,12 @@ body{
 
 .content{ position:relative; z-index:1; }
 
-/* NAVBAR */
+/* ===== NAVBAR ===== */
 .navbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:16px 40px;
+    padding:14px 40px;
     background:var(--nav-bg);
     backdrop-filter:blur(12px);
     border-bottom:1px solid rgba(255,255,255,.08);
@@ -93,85 +92,95 @@ body{
     color:var(--text);
 }
 
-.logo img{ height:45px; width:auto; display:block; }
+.logo img{ height:40px; width:auto; display:block; }
 
-.logo-text h2{ font-size:24px; line-height:1.1; }
+.logo h2{ font-size:20px; }
 
-.tagline{
-    font-size:11px;
-    color:#60a5fa;
-    letter-spacing:.06em;
-    display:block;
-    margin-top:2px;
+.nav-center{
+    display:flex;
+    align-items:center;
+    gap:4px;
 }
 
-.nav-links{
+.nav-center a{
+    text-decoration:none;
+    color:#cbd5e1;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:14px;
+    transition:.2s;
+    white-space:nowrap;
+}
+
+.nav-center a:hover{ 
+    background:rgba(255,255,255,.08); 
+    color:white; 
+}
+
+/* DROPDOWN */
+.dropdown{
+    position:relative;
+    display:inline-block;
+}
+
+.dropdown-toggle{
     display:flex;
     align-items:center;
     gap:6px;
-    flex-wrap:wrap;
-}
-
-.nav-links a{
-    text-decoration:none;
-    color:#cbd5e1;
-    padding:8px 12px;
+    padding:8px 14px;
     border-radius:8px;
+    background:none;
+    border:none;
+    color:#cbd5e1;
+    cursor:pointer;
     font-size:14px;
     transition:.2s;
 }
 
-.nav-links a:hover{ background:rgba(255,255,255,.08); color:white; }
-
-.nav-links .login-btn{
-    background:#2563eb;
-    color:white !important;
-    padding:8px 18px;
-    border-radius:8px;
-    font-weight:600;
+.dropdown-toggle:hover{
+    background:rgba(255,255,255,.08);
+    color:white;
 }
 
-.nav-links .login-btn:hover{ background:#1d4ed8; }
+.dropdown-menu{
+    position:absolute;
+    top:100%;
+    left:0;
+    background:var(--nav-bg);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:10px;
+    padding:8px 0;
+    min-width:180px;
+    display:none;
+    flex-direction:column;
+    margin-top:6px;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+    z-index:200;
+}
 
-/* USER INFO STYLE */
-.user-info{
+.dropdown:hover .dropdown-menu{
+    display:flex;
+}
+
+.dropdown-menu a{
+    color:#cbd5e1;
+    padding:10px 16px;
+    text-decoration:none;
+    font-size:13px;
+    transition:.2s;
+    white-space:nowrap;
+}
+
+.dropdown-menu a:hover{
+    background:rgba(255,255,255,.08);
+    color:white;
+}
+
+.nav-right{
     display:flex;
     align-items:center;
     gap:12px;
-    padding:6px 16px;
-    background:rgba(37,99,235,.15);
-    border:1px solid rgba(37,99,235,.3);
-    border-radius:999px;
-}
-
-.user-photo{
-    width:32px;
-    height:32px;
-    border-radius:50%;
-    border:2px solid #60a5fa;
-    object-fit:cover;
-}
-
-.user-name{
-    font-size:14px;
-    font-weight:600;
-    color:var(--text);
-}
-
-.logout-link{
-    text-decoration:none;
-    color:#60a5fa;
-    font-size:12px;
-    padding:4px 10px;
-    border-left:1px solid rgba(96,165,250,.3);
-    margin-left:8px;
-    transition:.2s;
-}
-
-.logout-link:hover{
-    color:#93c5fd;
-    background:rgba(96,165,250,.1);
-    border-radius:4px;
 }
 
 #themeToggle{
@@ -187,7 +196,89 @@ body{
 
 #themeToggle:hover{ background:rgba(255,255,255,.15); }
 
-/* HERO */
+.user-info{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:6px 14px;
+    background:rgba(37,99,235,.15);
+    border:1px solid rgba(37,99,235,.3);
+    border-radius:999px;
+}
+
+.user-photo{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    border:2px solid #60a5fa;
+    object-fit:cover;
+}
+
+.user-name{
+    font-size:13px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.logout-link{
+    text-decoration:none;
+    color:#60a5fa;
+    font-size:12px;
+    padding:0 8px;
+    border-left:1px solid rgba(96,165,250,.3);
+    margin-left:8px;
+    transition:.2s;
+}
+
+.logout-link:hover{ color:#93c5fd; }
+
+.login-btn{
+    background:var(--primary) !important;
+    color:white !important;
+    padding:8px 18px !important;
+    border-radius:8px !important;
+    font-weight:600;
+    text-decoration:none;
+    border:none;
+}
+
+.login-btn:hover{ background:var(--primary-dark) !important; }
+
+/* Hamburger Menu */
+.hamburger{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    cursor:pointer;
+    padding:8px;
+    border-radius:8px;
+    background:rgba(255,255,255,.08);
+    border:none;
+}
+
+.hamburger span{
+    display:block;
+    width:22px;
+    height:2px;
+    background:white;
+    border-radius:2px;
+    transition:.3s;
+}
+
+/* Mobile */
+@media(max-width:900px){
+    .nav-center{ display:none; }
+    
+    .hamburger{
+        display:flex;
+    }
+    
+    .navbar{
+        padding:12px 16px;
+    }
+}
+
+/* ===== HERO ===== */
 .hero{
     text-align:center;
     padding:120px 20px 80px;
@@ -230,7 +321,7 @@ body{
     align-items:center;
     gap:8px;
     padding:16px 34px;
-    background:#2563eb;
+    background:var(--primary);
     color:white;
     text-decoration:none;
     border-radius:12px;
@@ -243,7 +334,7 @@ body{
 .btn:hover{
     transform:translateY(-3px) scale(1.05);
     box-shadow:0 0 40px rgba(37,99,235,.8);
-    background:#1d4ed8;
+    background:var(--primary-dark);
 }
 
 .btn-outline{
@@ -258,7 +349,7 @@ body{
     box-shadow:none;
 }
 
-/* STATS */
+/* ===== STATS ===== */
 .stats{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -301,7 +392,7 @@ body{
 
 .stat p{ color:#94a3b8; font-size:14px; }
 
-/* SECTION LABEL */
+/* ===== FEATURES ===== */
 .section-label{
     text-align:center;
     font-size:13px;
@@ -312,7 +403,6 @@ body{
     margin-bottom:10px;
 }
 
-/* FEATURES */
 .features-section{
     padding:20px 40px 80px;
     max-width:1300px;
@@ -356,7 +446,7 @@ body{
 
 .card-link{ cursor:pointer; text-decoration:none; color:inherit; display:block; }
 
-/* APOD SECTION */
+/* ===== APOD ===== */
 .apod-section{
     max-width:1100px;
     margin:0 auto 80px;
@@ -477,12 +567,12 @@ body{
 }
 
 .apod-btn-primary{
-    background:#2563eb;
+    background:var(--primary);
     color:white;
     box-shadow:0 0 20px rgba(37,99,235,.4);
 }
 
-.apod-btn-primary:hover{ background:#1d4ed8; transform:translateY(-2px); }
+.apod-btn-primary:hover{ background:var(--primary-dark); transform:translateY(-2px); }
 
 .apod-btn-secondary{
     background:transparent;
@@ -495,7 +585,7 @@ body{
 .apod-error{ text-align:center; padding:60px 20px; color:#94a3b8; }
 .apod-error i{ font-size:48px; color:#475569; margin-bottom:16px; display:block; }
 
-/* FOOTER */
+/* ===== FOOTER ===== */
 .footer{
     text-align:center;
     padding:50px 40px;
@@ -533,7 +623,7 @@ body{
     border-color:rgba(96,165,250,.5);
 }
 
-/* RESPONSIVE */
+/* ===== RESPONSIVE ===== */
 @media(max-width:900px){
     .apod-card{ grid-template-columns:1fr; }
     .apod-media{ min-height:260px; }
@@ -541,16 +631,20 @@ body{
 }
 
 @media(max-width:768px){
-    .navbar{ flex-direction:column; gap:15px; padding:15px; }
-    .logo{ justify-content:center; }
-    .nav-links{ justify-content:center; }
+    .navbar{ padding:12px 16px; }
+    .logo img{ height:32px; }
+    .logo h2{ font-size:16px; }
+    .nav-right{ gap:8px; }
+    
     .hero h1{ font-size:38px; }
     .hero p{ font-size:16px; padding:0 15px; }
+    
     .features-section{ padding:20px; }
     .features{ grid-template-columns:1fr; }
     .stats{ padding:20px; }
     .apod-section{ padding:0 20px; }
     .apod-info{ padding:24px 20px; }
+    
     .user-info{ padding:4px 12px; font-size:12px; }
     .user-photo{ width:28px; height:28px; }
 }
@@ -567,26 +661,42 @@ body{
 <nav class="navbar">
     <a href="/" class="logo">
         <img src="/logo_1.png" alt="KosmoQuestt Logo">
-        <div class="logo-text">
-            <h2>KosmoQuestt</h2>
-            <span class="tagline">Exploring Beyond The Horizon!</span>
-        </div>
+        <h2>KosmoQuestt</h2>
     </a>
-    <div class="nav-links">
-        <button id="themeToggle" title="Toggle theme">🌙</button>
+
+    <!-- NAVIGATION - HIDDEN ON MOBILE -->
+    <div class="nav-center">
         <a href="/">Home</a>
         <a href="/dashboard.html">Gallery</a>
-        <a href="/solar-system.html">Solar System</a>
-        <a href="space-facts.html">Space Facts</a>
-        <a href="/iss.html">ISS Tracker</a>
-        <a href="/iss-3d.html">ISS 3D</a>
-        <a href="/about.html">About</a>
-        <a href="https://youtube.com/@KosmoQuestt" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-        <a href="https://x.com/KosmoQuestt" target="_blank" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
         
-        <!-- User Status Display -->
+        <!-- EXPLORE DROPDOWN -->
+        <div class="dropdown">
+            <button class="dropdown-toggle">
+                <span>Explore</span>
+                <i class="fas fa-chevron-down" style="font-size:11px;"></i>
+            </button>
+            <div class="dropdown-menu">
+                <a href="/solar-system.html">🪐 Solar System</a>
+                <a href="/iss.html">🛰️ ISS Tracker</a>
+                <a href="/iss-3d.html">🔭 ISS 3D View</a>
+                <a href="space-facts.html">📚 Space Facts</a>
+            </div>
+        </div>
+        
+        <a href="/about.html">About</a>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="nav-right">
+        <button id="themeToggle" title="Toggle theme">🌙</button>
         <div id="userStatus"></div>
     </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 </nav>
 
 <!-- HERO -->
@@ -636,7 +746,7 @@ body{
         </div>
         <a href="/solar-system.html" class="card card-link">
             <span class="card-icon">🪐</span>
-            <h3>Solar System Explorer</h3>
+            <h3>Solar System</h3>
             <p>Explore all 8 planets with real NASA images, stats and fun facts.</p>
         </a>
         <a href="/iss.html" class="card card-link">
@@ -646,17 +756,16 @@ body{
         </a>
         <a href="#apod" class="card card-link">
             <span class="card-icon">🔭</span>
-            <h3>Astronomy Picture of the Day</h3>
-            <p>NASA's daily cosmic wonder — a new breathtaking image or video every day.</p>
+            <h3>Astronomy Picture</h3>
+            <p>NASA's daily cosmic wonder — a new breathtaking image every day.</p>
         </a>
     </div>
 </section>
 
-<!-- APOD SECTION -->
+<!-- APOD -->
 <section class="apod-section" id="apod">
     <h2 class="section-title">🔭 Astronomy Picture of the Day</h2>
     <p class="section-subtitle">Brought to you by NASA — a new cosmic wonder every day.</p>
-
     <div class="apod-card" id="apod-card">
         <div class="apod-media" id="apod-media">
             <div class="apod-media-loader">
@@ -683,7 +792,7 @@ body{
 </div>
 
 <script>
-/* STARS with twinkle */
+/* STARS */
 const starsEl = document.getElementById("stars");
 for(let i = 0; i < 220; i++){
     const star = document.createElement("div");
@@ -708,15 +817,13 @@ toggleBtn.addEventListener("click", () => {
     toggleBtn.textContent = isLight ? "☀️" : "🌙";
 });
 
-/* CHECK LOGIN STATUS & SHOW USER INFO */
+/* USER STATUS */
 function checkLoginStatus(){
     fetch("/user")
         .then(res => res.json())
         .then(user => {
             const userStatusDiv = document.getElementById("userStatus");
-            
             if(user){
-                // User is logged in - show user info
                 userStatusDiv.innerHTML = `
                     <div class="user-info">
                         <img src="${user.photo}" alt="${user.displayName}" class="user-photo">
@@ -725,34 +832,23 @@ function checkLoginStatus(){
                     </div>
                 `;
             } else {
-                // User is NOT logged in - show login button
-                userStatusDiv.innerHTML = `
-                    <a href="/auth/google" class="login-btn">Login</a>
-                `;
+                userStatusDiv.innerHTML = `<a href="/auth/google" class="login-btn">Login</a>`;
             }
         })
-        .catch(err => {
-            console.log("Login check failed:", err);
-            // Fallback to login button
-            document.getElementById("userStatus").innerHTML = `
-                <a href="/auth/google" class="login-btn">Login</a>
-            `;
+        .catch(() => {
+            document.getElementById("userStatus").innerHTML = `<a href="/auth/google" class="login-btn">Login</a>`;
         });
 }
 
-// Check login status when page loads
 checkLoginStatus();
-
-// Recheck every 10 seconds (optional - updates if user logs out in another tab)
 setInterval(checkLoginStatus, 10000);
 
-/* LIVE IMAGE COUNT */
+/* IMAGE COUNT */
 fetch("/image-count")
 .then(res => res.json())
 .then(data => {
     const el = document.getElementById("stat-images");
     if(data.count !== undefined){
-        // Animate count up
         let current = 0;
         const target = data.count;
         if(target === 0){ el.textContent = "0"; return; }
@@ -770,7 +866,7 @@ fetch("/image-count")
     document.getElementById("stat-images").textContent = "∞";
 });
 
-/* NASA APOD — fetched from backend proxy to hide API key */
+/* APOD */
 async function loadAPOD(){
     const mediaEl = document.getElementById("apod-media");
     const infoEl  = document.getElementById("apod-info");
@@ -780,14 +876,12 @@ async function loadAPOD(){
         if(!res.ok) throw new Error("APOD fetch error: " + res.status);
         const data = await res.json();
 
-        /* MEDIA */
         if(data.media_type === "video"){
             mediaEl.innerHTML = `<iframe src="${data.url}" allowfullscreen title="${data.title}"></iframe>`;
         } else {
             mediaEl.innerHTML = `<img src="${data.hdurl || data.url}" alt="${data.title}" loading="lazy">`;
         }
 
-        /* INFO */
         const dateFormatted = new Date(data.date).toLocaleDateString("en-IN",{
             year:"numeric", month:"long", day:"numeric"
         });
@@ -808,7 +902,6 @@ async function loadAPOD(){
                 </a>
             </div>
         `;
-
     } catch(err){
         console.error(err);
         mediaEl.innerHTML = ``;
@@ -823,6 +916,14 @@ async function loadAPOD(){
 }
 
 loadAPOD();
+
+/* HAMBURGER MENU */
+const hamburger = document.getElementById("hamburger");
+if(hamburger){
+    hamburger.addEventListener("click", () => {
+        alert("Mobile menu - implement as needed");
+    });
+}
 </script>
 
 </body>

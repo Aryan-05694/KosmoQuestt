@@ -6,6 +6,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KosmoQuestt Gallery</title>
 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<!-- FAVICON START -->
+<link rel="icon" href="/favicon.ico?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<!-- FAVICON END -->
+
 <style>
 
 *{
@@ -13,16 +28,35 @@
     padding:0;
     box-sizing:border-box;
 }
+:root{
+    --bg:#050814;
+    --text:white;
+    --header-bg:rgba(0,0,0,.6);
+    --card-bg:rgba(15,23,42,.85);
+    --border:rgba(255,255,255,.08);
+    --input-bg:#111827;
+    --modal-bg:rgba(5,8,20,.98);
+}
+
+.light-theme{
+    --bg:#f5f7ff;
+    --text:#111827;
+    --header-bg:rgba(255,255,255,.9);
+    --card-bg:#ffffff;
+    --border:rgba(0,0,0,.08);
+    --input-bg:#e5e7eb;
+    --modal-bg:rgba(255,255,255,.95);
+}
 
 body{
     font-family:Segoe UI,sans-serif;
-    background:#050814;
-    color:white;
+    background:var(--bg);
+    color:var(--text);
     overflow-x:hidden;
+    transition:.3s;
 }
 
 /* Moving Stars */
-
 .stars{
     position:fixed;
     inset:0;
@@ -40,19 +74,9 @@ body{
 }
 
 @keyframes starMove{
-    0%{
-        transform:translateY(0);
-        opacity:.2;
-    }
-
-    50%{
-        opacity:1;
-    }
-
-    100%{
-        transform:translateY(-150px);
-        opacity:.2;
-    }
+    0%{ transform:translateY(0); opacity:.2; }
+    50%{ opacity:1; }
+    100%{ transform:translateY(-150px); opacity:.2; }
 }
 
 .content{
@@ -61,15 +85,17 @@ body{
 }
 
 /* Header */
-
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:18px 40px;
-    background:rgba(0,0,0,.6);
+    padding:14px 40px;
+    background:var(--header-bg);
     backdrop-filter:blur(12px);
     border-bottom:1px solid rgba(255,255,255,.08);
+    position:sticky;
+    top:0;
+    z-index:50;
 }
 
 .logo{
@@ -77,36 +103,110 @@ body{
     align-items:center;
     gap:12px;
     text-decoration:none;
-    color:white;
+    color:var(--text);
 }
 
 .logo img{
-    width:45px;
-    height:45px;
+    height:40px;
+    width:auto;
+    display:block;
+}
+
+.logo h2{
+    font-size:20px;
+    white-space:nowrap;
 }
 
 .nav-links{
     display:flex;
     align-items:center;
-    gap:12px;
-    flex-wrap:wrap;
+    gap:6px;
+    flex-wrap:nowrap;
 }
 
 .nav-links a{
     color:#cbd5e1;
     text-decoration:none;
-    margin:0;
-    padding:10px 16px;
+    padding:8px 14px;
     border-radius:10px;
+    margin:0;
+    font-size:14px;
+    white-space:nowrap;
 }
 
 .nav-links a:hover{
-    color:white;
     background:rgba(255,255,255,.08);
+    color:white;
+}
+
+/* Mobile hamburger */
+.hamburger{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    cursor:pointer;
+    padding:8px;
+    border-radius:8px;
+    background:rgba(255,255,255,.08);
+    border:none;
+    margin:0;
+    width:auto !important;
+    height:auto !important;
+    margin-top:0 !important;
+}
+
+.hamburger span{
+    display:block;
+    width:22px;
+    height:2px;
+    background:white;
+    border-radius:2px;
+    transition:.3s;
+}
+
+.nav-links.open{
+    display:flex;
+}
+
+@media(max-width:640px){
+    .header{
+        padding:12px 16px;
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+    .hamburger{
+        display:flex;
+    }
+
+    .nav-links{
+        display:none;
+        width:100%;
+        flex-direction:column;
+        align-items:stretch;
+        gap:4px;
+        padding-bottom:8px;
+    }
+
+    .nav-links a{
+        padding:12px 14px;
+        border-radius:8px;
+        background:rgba(255,255,255,.04);
+        text-align:center;
+    }
+
+    .nav-links a:hover{
+        background:rgba(255,255,255,.1);
+    }
+
+    #themeToggle{
+        width:100%;
+        text-align:center;
+        padding:12px;
+    }
 }
 
 /* Profile */
-
 #profile{
     text-align:center;
     margin-top:25px;
@@ -125,14 +225,13 @@ body{
 }
 
 /* Upload */
-
 .upload-box{
     max-width:600px;
     margin:25px auto;
     padding:25px;
     border-radius:18px;
-    background:rgba(15,23,42,.85);
-    border:1px solid rgba(255,255,255,.08);
+    background:var(--card-bg);
+    border:1px solid var(--border);
 }
 
 .upload-box h3{
@@ -146,8 +245,12 @@ input{
     margin-top:10px;
     border:none;
     border-radius:10px;
-    background:#111827;
+    background:var(--input-bg);
     color:white;
+}
+
+input::placeholder{
+    color:#6b7280;
 }
 
 button{
@@ -167,7 +270,6 @@ button:hover{
 }
 
 /* Gallery */
-
 .section-title{
     text-align:center;
     margin-top:30px;
@@ -178,23 +280,20 @@ button:hover{
     max-width:1400px;
     margin:auto;
     padding:20px;
-
     display:grid;
-
-    grid-template-columns:
-    repeat(auto-fill,minmax(320px,320px));
-
+    grid-template-columns:repeat(auto-fill,minmax(320px,320px));
     justify-content:center;
-
     gap:20px;
 }
 
 .card{
-    background:rgba(15,23,42,.85);
+    background:var(--card-bg);
     border-radius:15px;
     overflow:hidden;
-    border:1px solid rgba(255,255,255,.05);
+    border:1px solid var(--border);
     transition:.3s;
+    display:flex;
+    flex-direction:column;
 }
 
 .card:hover{
@@ -214,10 +313,546 @@ button:hover{
     color:#d1d5db;
 }
 
+/* Engagement Section */
+.engagement-section{
+    padding:12px;
+    border-top:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.like-section{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.like-btn{
+    background:none;
+    border:none;
+    color:#60a5fa;
+    font-size:20px;
+    cursor:pointer;
+    padding:8px;
+    transition:.2s;
+    width:auto;
+    margin:0;
+}
+
+.like-btn:hover{
+    color:#3b82f6;
+    transform:scale(1.1);
+}
+
+.like-btn.liked{
+    color:#ef4444;
+}
+
+.like-count{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+/* Comments Button */
+.comments-btn{
+    background:none;
+    border:none;
+    color:#60a5fa;
+    cursor:pointer;
+    padding:8px 12px;
+    font-size:14px;
+    border-radius:6px;
+    transition:.2s;
+    width:auto;
+    margin:0;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.comments-btn:hover{
+    background:rgba(96,165,250,.1);
+    color:#3b82f6;
+}
+
+.comment-count-badge{
+    background:rgba(96,165,250,.2);
+    padding:2px 8px;
+    border-radius:12px;
+    font-size:12px;
+    color:#60a5fa;
+}
+
+.delete-btn{
+    width:auto;
+    margin:0 0 0 auto;
+    display:block;
+    background:#dc2626;
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:8px 16px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:13px;
+    transition:.2s;
+}
+
+.delete-btn:hover{
+    background:#b91c1c;
+}
+
+/* COMMENTS MODAL */
+.modal-overlay{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(4px);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+    animation:fadeIn .2s;
+}
+
+.modal-overlay.active{
+    display:flex;
+}
+
+@keyframes fadeIn{
+    from{ opacity:0; }
+    to{ opacity:1; }
+}
+
+.modal{
+    background:var(--modal-bg);
+    border-radius:16px;
+    border:1px solid var(--border);
+    width:90%;
+    max-width:540px;
+    max-height:80vh;
+    display:flex;
+    flex-direction:column;
+    animation:slideUp .3s;
+}
+
+@keyframes slideUp{
+    from{ transform:translateY(40px); opacity:0; }
+    to{ transform:translateY(0); opacity:1; }
+}
+
+.modal-header{
+    padding:20px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.modal-title{
+    font-size:18px;
+    font-weight:600;
+}
+
+.modal-close{
+    background:none;
+    border:none;
+    color:var(--text);
+    font-size:24px;
+    cursor:pointer;
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    transition:.2s;
+    padding:0;
+    margin:0;
+}
+
+.modal-close:hover{
+    background:rgba(255,255,255,.08);
+}
+
+/* Search Box */
+.modal-search{
+    padding:0 20px 12px 20px;
+    display:flex;
+    gap:8px;
+}
+
+.modal-search input{
+    flex:1;
+    padding:10px 12px !important;
+    border:1px solid var(--border) !important;
+    border-radius:8px !important;
+    background:var(--input-bg) !important;
+    color:white !important;
+    font-size:13px !important;
+    margin:0 !important;
+}
+
+.modal-search input::placeholder{
+    color:#6b7280;
+}
+
+/* Modal Content */
+.modal-content{
+    flex:1;
+    overflow-y:auto;
+    padding:20px;
+}
+
+/* Comments Thread */
+.comments-thread{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.comment{
+    display:flex;
+    gap:12px;
+    padding:12px;
+    background:rgba(255,255,255,.02);
+    border-radius:8px;
+    border:1px solid var(--border);
+}
+
+.comment.reply{
+    margin-left:30px;
+    border-left:3px solid rgba(96,165,250,.4);
+}
+
+.comment-avatar{
+    width:40px !important;
+    height:40px !important;
+    min-width:40px !important;
+    min-height:40px !important;
+    border-radius:50% !important;
+    object-fit:cover !important;
+    display:block !important;
+    flex:none !important;
+    aspect-ratio:1/1 !important;
+}
+
+.comment-content{
+    flex:1;
+    min-width:0;
+}
+
+.comment-header{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:6px;
+    flex-wrap:wrap;
+}
+
+.comment-name{
+    color:#60a5fa;
+    font-weight:600;
+    font-size:13px;
+}
+
+.comment-time{
+    color:#6b7280;
+    font-size:12px;
+}
+
+.comment-edited-badge{
+    background:rgba(156,163,175,.2);
+    color:#d1d5db;
+    font-size:11px;
+    padding:2px 6px;
+    border-radius:4px;
+}
+
+.admin-badge{
+    background:rgba(239,68,68,.2);
+    color:#fca5a5;
+    font-size:10px;
+    padding:2px 6px;
+    border-radius:4px;
+    font-weight:600;
+}
+
+.comment-text{
+    color:#d1d5db;
+    margin:8px 0;
+    font-size:13px;
+    line-height:1.5;
+    word-break:break-word;
+}
+
+.comment-text.editing{
+    display:none;
+}
+
+.comment-input-edit{
+    width:100% !important;
+    padding:10px 12px !important;
+    border:1px solid var(--border) !important;
+    border-radius:6px !important;
+    background:var(--input-bg) !important;
+    color:white !important;
+    font-size:13px !important;
+    margin:0 0 8px 0 !important;
+    min-height:36px !important;
+    display:none;
+}
+
+.comment-input-edit.editing{
+    display:block !important;
+}
+
+.edit-actions{
+    display:none;
+    gap:8px;
+    margin-bottom:8px;
+}
+
+.edit-actions.editing{
+    display:flex !important;
+}
+
+.edit-save, .edit-cancel{
+    padding:6px 12px !important;
+    font-size:12px !important;
+    border-radius:4px !important;
+    border:none !important;
+    cursor:pointer !important;
+    width:auto !important;
+    margin:0 !important;
+}
+
+.edit-save{
+    background:#10b981 !important;
+    color:white !important;
+}
+
+.edit-save:hover{
+    background:#059669 !important;
+}
+
+.edit-cancel{
+    background:#6b7280 !important;
+    color:white !important;
+}
+
+.edit-cancel:hover{
+    background:#4b5563 !important;
+}
+
+.comment-actions{
+    display:flex;
+    gap:16px;
+    font-size:12px;
+    margin-top:8px;
+    flex-wrap:wrap;
+}
+
+.action-btn{
+    background:none;
+    border:none;
+    color:#60a5fa;
+    cursor:pointer;
+    padding:0;
+    width:auto;
+    font-weight:500;
+    transition:.2s;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    margin:0;
+}
+
+.action-btn:hover{
+    color:#3b82f6;
+}
+
+.action-btn.like{
+    color:#94a3b8;
+}
+
+.action-btn.like.liked{
+    color:#ef4444;
+}
+
+.action-btn.delete{
+    color:#ef4444;
+}
+
+.action-btn.delete:hover{
+    color:#dc2626;
+}
+
+.like-count-inline{
+    color:#94a3b8;
+    font-size:12px;
+}
+
+.reply-btn{
+    background:none;
+    border:none;
+    color:#60a5fa;
+    cursor:pointer;
+    font-size:12px;
+    padding:0;
+    margin:0;
+    font-weight:500;
+    transition:.2s;
+    width:auto;
+}
+
+.reply-btn:hover{
+    color:#3b82f6;
+}
+
+.reply-count{
+    background:rgba(96,165,250,.15);
+    padding:4px 8px;
+    border-radius:6px;
+    font-size:11px;
+    color:#60a5fa;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.reply-count:hover{
+    background:rgba(96,165,250,.25);
+}
+
+.reply-form{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,.05);
+    display:flex;
+    gap:8px;
+}
+
+.reply-input{
+    flex:1;
+    padding:8px 12px !important;
+    border:1px solid var(--border) !important;
+    border-radius:6px !important;
+    background:var(--input-bg) !important;
+    color:white !important;
+    font-size:12px !important;
+    margin:0 !important;
+}
+
+.reply-submit{
+    padding:8px 16px !important;
+    background:#2563eb !important;
+    color:white !important;
+    border:none !important;
+    border-radius:6px !important;
+    font-size:12px !important;
+    font-weight:600 !important;
+    cursor:pointer !important;
+    width:auto !important;
+    margin:0 !important;
+}
+
+.empty-comments{
+    color:#6b7280;
+    font-size:14px;
+    text-align:center;
+    padding:40px 20px;
+}
+
+/* Modal Footer */
+.modal-footer{
+    padding:20px;
+    border-top:1px solid var(--border);
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+}
+
+.comment-form-modal{
+    display:flex;
+    gap:12px;
+    width:100%;
+}
+
+.comment-form-avatar-modal{
+    width:40px !important;
+    height:40px !important;
+    min-width:40px !important;
+    min-height:40px !important;
+    border-radius:50% !important;
+    object-fit:cover !important;
+    flex-shrink:0 !important;
+    display:block !important;
+}
+
+.comment-input-wrapper-modal{
+    flex:1;
+    display:flex;
+    gap:8px;
+}
+
+.comment-input-modal{
+    flex:1;
+    padding:10px 12px !important;
+    border:1px solid var(--border) !important;
+    border-radius:8px !important;
+    background:var(--input-bg) !important;
+    color:white !important;
+    font-size:13px !important;
+    margin:0 !important;
+    min-height:40px !important;
+}
+
+.comment-submit-modal{
+    padding:10px 20px !important;
+    width:auto !important;
+    margin:0 !important;
+    font-size:13px !important;
+    background:#2563eb !important;
+    border:none !important;
+    border-radius:8px !important;
+    color:white !important;
+    font-weight:600 !important;
+    cursor:pointer !important;
+}
+
 .loading{
     text-align:center;
     margin:25px;
     color:#94a3b8;
+}
+
+.image-counter{
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+    color:#60a5fa;
+    margin-bottom:20px;
+}
+
+#themeToggle{
+    background:rgba(255,255,255,.08);
+    border:none;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    width:auto;
+    padding:10px 16px;
+    border-radius:10px;
+    margin:0;
+    transition:.3s;
+}
+
+#themeToggle:hover{
+    background:rgba(255,255,255,.15);
 }
 
 </style>
@@ -237,7 +872,14 @@ button:hover{
     <h2>KosmoQuestt</h2>
 </a>
 
-<div class="nav-links">
+<button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<div class="nav-links" id="navLinks">
+    <button id="themeToggle">🌙</button>
     <a href="/">Home</a>
     <a href="/logout">Logout</a>
 </div>
@@ -275,36 +917,74 @@ Upload Image
 Latest Space Uploads
 </h2>
 
+<div id="imageCounter" class="image-counter">
+    🚀 Total Images Uploaded: Loading...
+</div>
+
 <div id="gallery" class="gallery"></div>
 
 <div id="loading" class="loading">
 Loading images...
 </div>
 
+<!-- COMMENTS MODAL -->
+<div class="modal-overlay" id="commentsModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Comments</h2>
+            <button class="modal-close" onclick="closeCommentsModal()">✕</button>
+        </div>
+        
+        <div class="modal-search">
+            <input 
+                type="text" 
+                id="comment-search" 
+                placeholder="Search comments..." 
+                onkeyup="searchComments()"
+            >
+        </div>
+        
+        <div class="modal-content">
+            <div class="comments-thread" id="modalCommentsList">
+                Loading comments...
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <div class="comment-form-modal">
+                <img class="comment-form-avatar-modal" src="" alt="Your avatar" id="modal-your-avatar" onerror="this.src='/logo_1.png'">
+                <div class="comment-input-wrapper-modal">
+                    <input 
+                        type="text" 
+                        class="comment-input-modal" 
+                        placeholder="Add a comment..." 
+                        id="modal-comment-input"
+                        onkeydown="if(event.key==='Enter') submitCommentFromModal()"
+                    >
+                    <button 
+                        class="comment-submit-modal" 
+                        onclick="submitCommentFromModal()">
+                        Post
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>
 
 <script>
 
+// Stars
 const stars = document.getElementById("stars");
-
 for(let i=0;i<220;i++){
-
     const star = document.createElement("div");
-
     star.className = "star";
-
-    star.style.left =
-    Math.random()*100 + "vw";
-
-    star.style.top =
-    Math.random()*100 + "vh";
-
-    star.style.opacity =
-    Math.random();
-
-    star.style.animationDuration =
-    (Math.random()*12 + 5) + "s";
-
+    star.style.left = Math.random()*100 + "vw";
+    star.style.top = Math.random()*100 + "vh";
+    star.style.opacity = Math.random();
+    star.style.animationDuration = (Math.random()*12 + 5) + "s";
     stars.appendChild(star);
 }
 
@@ -312,87 +992,604 @@ for(let i=0;i<220;i++){
 
 <script>
 
+let currentUser = null;
+
 fetch("/user")
 .then(res => res.json())
 .then(user => {
 
     if(!user) return;
 
-    document.getElementById("profile").innerHTML = `
+    currentUser = user;
 
+    document.getElementById("profile").innerHTML = `
     <img
     class="profile-image"
     src="${user.photo}?sz=200"
     alt="Profile"
     referrerpolicy="no-referrer"
     onerror="this.src='/logo_1.png'">
-
-    <h3 style="margin-top:12px;">
-        ${user.displayName}
-    </h3>
-
-    <p class="profile-email">
-        ${user.email}
-    </p>
-
+    <h3 style="margin-top:12px;">${user.displayName}</h3>
+    <p class="profile-email">${user.email}</p>
     `;
+    
+    setTimeout(() => {
+        document.getElementById("modal-your-avatar").src = `${user.photo}?sz=40`;
+    }, 500);
 });
 
 </script>
 
 <script>
 
+let currentModalImageId = null;
+let allComments = {};
+
 fetch("/images")
 .then(res => res.json())
 .then(images => {
 
-    const gallery =
-    document.getElementById("gallery");
-
-    const loading =
-    document.getElementById("loading");
+    const gallery = document.getElementById("gallery");
+    const loading = document.getElementById("loading");
 
     loading.style.display = "none";
 
     if(images.length === 0){
-
         loading.style.display = "block";
-
-        loading.innerText =
-        "No images uploaded yet";
-
+        loading.innerText = "No images uploaded yet";
         return;
     }
 
     images.forEach(img => {
 
-        const card =
-        document.createElement("div");
-
+        const card = document.createElement("div");
         card.className = "card";
 
         card.innerHTML = `
-
-        <img src="/uploads/${img.filename}">
-
-        <div class="caption">
-        ${img.caption || "No caption"}
+        <img src="${img.imageUrl}" loading="lazy">
+        <div class="caption">${img.caption || "No caption"}</div>
+        <div class="engagement-section">
+            <div class="like-section">
+                <button class="like-btn" onclick="toggleLike('${img._id}', event)">♡</button>
+                <span class="like-count" id="like-count-${img._id}">Loading...</span>
+            </div>
+            <button class="comments-btn" onclick="openCommentsModal('${img._id}')">
+                <span>💬</span>
+                <span class="comment-count-badge" id="comment-count-${img._id}">0</span>
+            </button>
+            <button class="delete-btn" onclick="deleteImage('${img._id}')">🗑 Delete</button>
         </div>
-
         `;
 
         gallery.appendChild(card);
 
+        loadLikes(img._id);
+        loadComments(img._id);
     });
 
 })
 .catch(() => {
-
-    document.getElementById("loading")
-    .innerText = "Failed to load images";
-
+    document.getElementById("loading").innerText = "Failed to load images";
 });
 
+</script>
+
+<script>
+
+async function toggleLike(imageId, event) {
+    try {
+        const response = await fetch(`/api/images/${imageId}/like`, {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            alert("Please login to like");
+            return;
+        }
+
+        const data = await response.json();
+        const btn = event.target;
+
+        if (data.liked) {
+            btn.classList.add("liked");
+            btn.textContent = "❤";
+        } else {
+            btn.classList.remove("liked");
+            btn.textContent = "♡";
+        }
+
+        document.getElementById(`like-count-${imageId}`).textContent = 
+            `${data.likeCount} ${data.likeCount === 1 ? "like" : "likes"}`;
+
+    } catch (err) {
+        console.log(err);
+        alert("Error liking image");
+    }
+}
+
+async function loadLikes(imageId) {
+    try {
+        const response = await fetch(`/api/images/${imageId}/likes`);
+        const data = await response.json();
+
+        document.getElementById(`like-count-${imageId}`).textContent = 
+            `${data.likeCount} ${data.likeCount === 1 ? "like" : "likes"}`;
+
+        if (data.userLiked) {
+            const btn = document.querySelector(`[onclick="toggleLike('${imageId}', event)"]`);
+            if (btn) {
+                btn.classList.add("liked");
+                btn.textContent = "❤";
+            }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function openCommentsModal(imageId) {
+    currentModalImageId = imageId;
+    const modal = document.getElementById("commentsModal");
+    modal.classList.add("active");
+    document.getElementById("comment-search").value = "";
+    loadCommentsForModal(imageId);
+    document.getElementById("modal-comment-input").value = "";
+    // FIX: focus input when modal opens
+    setTimeout(() => document.getElementById("modal-comment-input").focus(), 300);
+}
+
+function closeCommentsModal() {
+    const modal = document.getElementById("commentsModal");
+    modal.classList.remove("active");
+    currentModalImageId = null;
+}
+
+document.getElementById("commentsModal").addEventListener("click", function(e) {
+    if (e.target === this) {
+        closeCommentsModal();
+    }
+});
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+        closeCommentsModal();
+    }
+});
+
+function getTimeAgo(date) {
+    const now = new Date();
+    const diff = now - date;
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    
+    if (seconds < 60) return "just now";
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 7) return `${days}d ago`;
+    return date.toLocaleDateString();
+}
+
+async function loadCommentsForModal(imageId) {
+    const commentsList = document.getElementById("modalCommentsList");
+    commentsList.innerHTML = "<div class='empty-comments'>Loading...</div>";
+
+    try {
+        const response = await fetch(`/api/images/${imageId}/comments`);
+        const comments = await response.json();
+
+        allComments[imageId] = comments;
+        renderComments(comments, imageId);
+
+    } catch (err) {
+        console.log(err);
+        commentsList.innerHTML = "<div class='empty-comments'>Failed to load comments.</div>";
+    }
+}
+
+function renderComments(comments, imageId) {
+    const commentsList = document.getElementById("modalCommentsList");
+    commentsList.innerHTML = "";
+
+    if (comments.length === 0) {
+        commentsList.innerHTML = "<div class='empty-comments'>No comments yet. Be the first to comment!</div>";
+        return;
+    }
+
+    const topLevelComments = comments.filter(c => !c.parentCommentId);
+
+    topLevelComments.forEach(comment => {
+        const commentDiv = createCommentElement(comment, comments, imageId);
+        commentsList.appendChild(commentDiv);
+    });
+}
+
+function createCommentElement(comment, allCommentsArr, imageId) {
+    const commentDiv = document.createElement("div");
+    commentDiv.className = comment.parentCommentId ? "comment reply" : "comment";
+    commentDiv.id = `comment-${comment._id}`;
+    
+    const commentTime = new Date(comment.createdAt);
+    const timeText = getTimeAgo(commentTime);
+    
+    const replies = allCommentsArr.filter(c => c.parentCommentId === comment._id) || [];
+    const userLiked = comment.userLiked || false;
+    
+    // FIX: properly check ownership and admin using _id from backend
+    const isOwner = currentUser && (comment.userId === currentUser.id);
+    // FIX: use isAdmin from /user endpoint
+    const isAdmin = currentUser && currentUser.isAdmin;
+    const canEdit = isOwner;           // only owner can edit
+    const canDelete = isOwner || isAdmin;
+
+    const editedBadge = comment.isEdited ? `<span class="comment-edited-badge">(edited)</span>` : '';
+    const adminActionBadge = isAdmin && !isOwner ? `<span class="admin-badge">ADMIN</span>` : '';
+
+    commentDiv.innerHTML = `
+        <img
+          class="comment-avatar"
+          src="${comment.userPhoto || '/logo_1.png'}"
+          alt="avatar"
+          onerror="this.src='/logo_1.png'">
+        <div class="comment-content">
+            <div class="comment-header">
+                <span class="comment-name">${escapeHtml(comment.userName)}</span>
+                <span class="comment-time">${timeText}</span>
+                ${editedBadge}
+                ${adminActionBadge}
+            </div>
+            <div class="comment-text" id="text-${comment._id}">${escapeHtml(comment.commentText)}</div>
+            <input 
+                type="text" 
+                class="comment-input-edit" 
+                id="edit-${comment._id}"
+                value="${escapeHtml(comment.commentText)}"
+            >
+            <div class="edit-actions" id="edit-actions-${comment._id}">
+                <button class="edit-save" onclick="saveCommentEdit('${imageId}', '${comment._id}')">Save</button>
+                <button class="edit-cancel" onclick="cancelCommentEdit('${comment._id}')">Cancel</button>
+            </div>
+            <div class="comment-actions">
+                <button class="action-btn like ${userLiked ? 'liked' : ''}" onclick="toggleCommentLike('${imageId}', '${comment._id}', this)">
+                    ${userLiked ? '❤' : '♡'} <span id="like-count-comment-${comment._id}">${comment.likeCount || 0}</span>
+                </button>
+                <button class="reply-btn" onclick="toggleReplyForm('${comment._id}')">Reply</button>
+                ${canEdit ? `<button class="action-btn" onclick="toggleEditMode('${comment._id}')">Edit</button>` : ''}
+                ${canDelete ? `<button class="action-btn delete" onclick="deleteComment('${imageId}', '${comment._id}')">Delete</button>` : ''}
+            </div>
+            ${replies.length > 0 ? `<div style="margin-top:12px;"><span class="reply-count" onclick="toggleReplies('${comment._id}', '${imageId}')">${replies.length} ${replies.length === 1 ? 'reply' : 'replies'}</span></div>` : ''}
+            <div id="replies-${comment._id}" style="display:none;margin-top:12px;"></div>
+            <div class="reply-form" id="reply-form-${comment._id}" style="display:none;">
+                <input 
+                    type="text" 
+                    class="reply-input" 
+                    placeholder="Write a reply..." 
+                    id="reply-input-${comment._id}"
+                    onkeydown="if(event.key==='Enter') submitReply('${imageId}', '${comment._id}')"
+                >
+                <button class="reply-submit" onclick="submitReply('${imageId}', '${comment._id}')">Reply</button>
+            </div>
+        </div>
+    `;
+
+    return commentDiv;
+}
+
+// FIX: pass imageId to toggleReplies so it can use the right comments array
+function toggleReplies(commentId, imageId) {
+    const repliesDiv = document.getElementById(`replies-${commentId}`);
+    const isVisible = repliesDiv.style.display !== 'none';
+    
+    if (isVisible) {
+        repliesDiv.style.display = 'none';
+    } else {
+        if (repliesDiv.innerHTML === '') {
+            const imgId = imageId || currentModalImageId;
+            const replies = (allComments[imgId] || []).filter(c => c.parentCommentId === commentId);
+            replies.forEach(reply => {
+                const replyElement = createCommentElement(reply, allComments[imgId], imgId);
+                repliesDiv.appendChild(replyElement);
+            });
+        }
+        repliesDiv.style.display = 'block';
+    }
+}
+
+function toggleReplyForm(commentId) {
+    const form = document.getElementById(`reply-form-${commentId}`);
+    form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+    if (form.style.display === 'flex') {
+        document.getElementById(`reply-input-${commentId}`).focus();
+    }
+}
+
+function toggleEditMode(commentId) {
+    const textDiv = document.getElementById(`text-${commentId}`);
+    const input = document.getElementById(`edit-${commentId}`);
+    const actions = document.getElementById(`edit-actions-${commentId}`);
+    
+    if (input.classList.contains('editing')) {
+        input.classList.remove('editing');
+        textDiv.classList.remove('editing');
+        actions.classList.remove('editing');
+    } else {
+        input.classList.add('editing');
+        textDiv.classList.add('editing');
+        actions.classList.add('editing');
+        input.focus();
+    }
+}
+
+function cancelCommentEdit(commentId) {
+    toggleEditMode(commentId);
+}
+
+async function saveCommentEdit(imageId, commentId) {
+    const input = document.getElementById(`edit-${commentId}`);
+    const newText = input.value.trim();
+
+    if (!newText) {
+        alert("Comment cannot be empty");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/images/${imageId}/comment/${commentId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ commentText: newText })
+        });
+
+        if (!response.ok) {
+            alert("Error updating comment");
+            return;
+        }
+
+        loadCommentsForModal(imageId);
+
+    } catch (err) {
+        console.log(err);
+        alert("Error updating comment");
+    }
+}
+
+async function submitReply(imageId, parentCommentId) {
+    const input = document.getElementById(`reply-input-${parentCommentId}`);
+    const replyText = input.value.trim();
+
+    if (!replyText) {
+        alert("Reply cannot be empty");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/images/${imageId}/comment`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ 
+                commentText: replyText,
+                parentCommentId: parentCommentId
+            })
+        });
+
+        if (!response.ok) {
+            alert("Error posting reply");
+            return;
+        }
+
+        input.value = "";
+        loadCommentsForModal(imageId);
+
+    } catch (err) {
+        console.log(err);
+        alert("Error posting reply");
+    }
+}
+
+async function toggleCommentLike(imageId, commentId, button) {
+    try {
+        const response = await fetch(`/api/images/${imageId}/comment/${commentId}/like`, {
+            method: "POST"
+        });
+
+        if (!response.ok) {
+            alert("Please login to like");
+            return;
+        }
+
+        const data = await response.json();
+
+        if (data.liked) {
+            button.classList.add('liked');
+            // FIX: update heart icon as well
+            button.childNodes[0].textContent = '❤ ';
+        } else {
+            button.classList.remove('liked');
+            button.childNodes[0].textContent = '♡ ';
+        }
+
+        document.getElementById(`like-count-comment-${commentId}`).textContent = data.likeCount;
+
+    } catch (err) {
+        console.log(err);
+        alert("Error liking comment");
+    }
+}
+
+async function deleteComment(imageId, commentId) {
+    if (!confirm("Delete this comment?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/images/${imageId}/comment/${commentId}`, {
+            method: "DELETE"
+        });
+
+        if (response.ok) {
+            loadCommentsForModal(imageId);
+            loadComments(imageId);
+        } else {
+            alert("Error deleting comment");
+        }
+    } catch (err) {
+        console.log(err);
+        alert("Error deleting comment");
+    }
+}
+
+function searchComments() {
+    const searchTerm = document.getElementById("comment-search").value.toLowerCase();
+    const comments = allComments[currentModalImageId] || [];
+
+    if (searchTerm === '') {
+        renderComments(comments, currentModalImageId);
+        return;
+    }
+
+    const filtered = comments.filter(c => 
+        c.commentText.toLowerCase().includes(searchTerm) ||
+        c.userName.toLowerCase().includes(searchTerm)
+    );
+
+    renderComments(filtered, currentModalImageId);
+}
+
+async function loadComments(imageId) {
+    try {
+        const response = await fetch(`/api/images/${imageId}/comments`);
+        const comments = await response.json();
+
+        // FIX: count all top-level comments only
+        const topLevelCount = comments.filter(c => !c.parentCommentId).length;
+        const badge = document.getElementById(`comment-count-${imageId}`);
+        if (badge) badge.textContent = topLevelCount;
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function submitCommentFromModal() {
+    const input = document.getElementById("modal-comment-input");
+    const commentText = input.value.trim();
+
+    if (!commentText || !currentModalImageId) {
+        alert("Comment cannot be empty");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/images/${currentModalImageId}/comment`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ commentText })
+        });
+
+        if (!response.ok) {
+            if (response.status === 401) {
+                alert("Please login to comment");
+            } else {
+                alert("Error posting comment");
+            }
+            return;
+        }
+
+        input.value = "";
+        loadCommentsForModal(currentModalImageId);
+        loadComments(currentModalImageId);
+
+    } catch (err) {
+        console.log(err);
+        alert("Error posting comment");
+    }
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+</script>
+
+<script>
+async function deleteImage(id) {
+
+    if (!confirm("Delete this image?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/images/${id}`, { method: "DELETE" });
+        const data = await response.json();
+
+        if (data.success) {
+            alert("Image deleted");
+            location.reload();
+        } else {
+            alert(data.message || "Delete failed");
+        }
+
+    } catch (err) {
+        console.log(err);
+        alert("Error deleting image");
+    }
+}
+</script>
+
+<script>
+const toggleBtn = document.getElementById("themeToggle");
+
+if(localStorage.getItem("theme") === "light"){
+    document.body.classList.add("light-theme");
+    toggleBtn.textContent = "☀️";
+}
+
+toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light-theme");
+    if(document.body.classList.contains("light-theme")){
+        localStorage.setItem("theme", "light");
+        toggleBtn.textContent = "☀️";
+    } else {
+        localStorage.setItem("theme", "dark");
+        toggleBtn.textContent = "🌙";
+    }
+});
+</script>
+
+<script>
+fetch("/image-count")
+.then(res => res.json())
+.then(data => {
+    document.getElementById("imageCounter").innerHTML =
+        `🚀 Total Images Uploaded: ${data.count}`;
+})
+.catch(() => {
+    document.getElementById("imageCounter").innerHTML =
+        "🚀 Total Images Uploaded: 0";
+});
+</script>
+
+<script>
+// Hamburger menu toggle
+document.getElementById("hamburger").addEventListener("click", function() {
+    document.getElementById("navLinks").classList.toggle("open");
+});
+
+// Close nav when any link is tapped on mobile
+document.querySelectorAll(".nav-links a").forEach(function(link) {
+    link.addEventListener("click", function() {
+        document.getElementById("navLinks").classList.remove("open");
+    });
+});
 </script>
 
 </body>
