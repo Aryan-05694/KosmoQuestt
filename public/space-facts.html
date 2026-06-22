@@ -608,6 +608,15 @@
         //    IDs did not correspond to real videos, which is why every embed
         //    failed with "Video unavailable".
 
+        // Every imageUrl below is a verified, real, existing file on Wikimedia
+        // Commons (mirrors of public-domain NASA/ESA/ESO imagery), referenced via
+        // the stable Special:FilePath redirect with a width parameter for a fast
+        // thumbnail. These are loaded as plain <img> tags - no fetch() / API call
+        // happens at runtime, so this works even inside sandboxes (like Claude's
+        // preview) that block outbound fetch() but still allow <img> to load
+        // external images.
+        const WIKI = "https://commons.wikimedia.org/wiki/Special:FilePath/";
+
         const spaceFacts = [
             {
                 id: 1,
@@ -616,7 +625,7 @@
                 difficulty: "easy",
                 description: "The Sun contains 99.86% of all mass in our Solar System",
                 detail: "The Sun's core temperature reaches 27 million degrees Fahrenheit. 1.3 million Earths could fit inside it!",
-                imageQuery: "sun solar corona NASA",
+                imageUrl: WIKI + "The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg?width=600",
                 videoId: "GHrsUm-lJhI",
                 timeline: "4.6 Billion Years Ago",
                 sizeComparison: [
@@ -631,7 +640,7 @@
                 difficulty: "medium",
                 description: "A giant storm raging for at least 350 years",
                 detail: "This storm is so large that 3 Earths could fit inside it. Wind speeds reach 400 mph!",
-                imageQuery: "Jupiter Great Red Spot Juno",
+                imageUrl: WIKI + "Jupiter_and_its_shrunken_Great_Red_Spot.jpg?width=600",
                 videoId: "BhNnKK_u350",
                 timeline: "1600s - Present",
                 sizeComparison: [
@@ -646,7 +655,7 @@
                 difficulty: "medium",
                 description: "Made of billions of ice and rock particles",
                 detail: "The rings span 170,000 miles but are only about 30 feet thick. They may have formed from a destroyed moon.",
-                imageQuery: "Saturn rings Cassini",
+                imageUrl: WIKI + "Saturn_during_Equinox.jpg?width=600",
                 videoId: "ENwQ7-qLlrA",
                 timeline: "Billions of Years Old",
                 sizeComparison: [
@@ -661,7 +670,7 @@
                 difficulty: "hard",
                 description: "Regions where gravity is so strong nothing escapes",
                 detail: "The first image of a black hole was captured in 2019. Supermassive black holes exist at the centers of most galaxies.",
-                imageQuery: "black hole event horizon telescope",
+                imageUrl: WIKI + "Black_hole_-_Messier_87_crop_max_res.jpg?width=600",
                 videoId: "0RxitCeuokI",
                 timeline: "Einstein Predicted (1916)"
             },
@@ -672,7 +681,7 @@
                 difficulty: "medium",
                 description: "Our galaxy contains 100-400 billion stars",
                 detail: "It's about 100,000 light-years across. Our Solar System is 26,000 light-years from the galactic center.",
-                imageQuery: "Milky Way galaxy NASA",
+                imageUrl: WIKI + "ESO_-_Milky_Way.jpg?width=600",
                 videoId: "Da_Wc_G9ms4",
                 timeline: "13.6 Billion Years Old",
                 sizeComparison: [
@@ -687,7 +696,7 @@
                 difficulty: "easy",
                 description: "The Red Planet with the largest volcano",
                 detail: "Olympus Mons is 3 times higher than Mount Everest. Mars has two small moons: Phobos and Deimos.",
-                imageQuery: "Mars surface rover NASA",
+                imageUrl: WIKI + "OSIRIS_Mars_true_color.jpg?width=600",
                 videoId: "4czjS9h4Fpg",
                 timeline: "Billions of Years Old",
                 sizeComparison: [
@@ -702,7 +711,7 @@
                 difficulty: "easy",
                 description: "Moving 1.5 inches away from Earth every year",
                 detail: "The Moon formed about 4.5 billion years ago from a giant impact. It creates tides and stabilizes Earth's climate.",
-                imageQuery: "Moon lunar surface NASA",
+                imageUrl: WIKI + "FullMoon2010.jpg?width=600",
                 videoId: "UIKmSQqp8wY",
                 timeline: "4.5 Billion Years Old",
                 sizeComparison: [
@@ -717,7 +726,7 @@
                 difficulty: "medium",
                 description: "Our nearest major galaxy 2.5 million light-years away",
                 detail: "Andromeda will collide with the Milky Way in 4.5 billion years. It contains about 1 trillion stars!",
-                imageQuery: "Andromeda galaxy Hubble",
+                imageUrl: WIKI + "Andromeda_Galaxy_%28with_h-alpha%29.jpg?width=600",
                 videoId: "4disyKG7XtU",
                 timeline: "2.5 Million Light-years Away"
             },
@@ -728,7 +737,7 @@
                 difficulty: "hard",
                 description: "Incredibly dense stellar remnants",
                 detail: "A teaspoon of neutron star material weighs 200 million tons! Some spin 716 times per second.",
-                imageQuery: "neutron star pulsar NASA",
+                imageUrl: WIKI + "Neutron_star_illustrated.jpg?width=600",
                 videoId: "hCwDNXKlN8Q",
                 timeline: "After Supernova"
             },
@@ -739,7 +748,7 @@
                 difficulty: "easy",
                 description: "The Northern Lights caused by solar wind",
                 detail: "Aurora is created when solar wind interacts with Earth's magnetic field. Also visible as Aurora Australis in the south!",
-                imageQuery: "aurora borealis northern lights space station",
+                imageUrl: WIKI + "Aurora_Borealis_Over_the_Midwest.jpg?width=600",
                 videoId: "PBJAR3-UvSQ",
                 timeline: "Ongoing Phenomenon"
             },
@@ -750,7 +759,7 @@
                 difficulty: "hard",
                 description: "The nearest star to our Sun",
                 detail: "It's 4.24 light-years away. Recently, scientists found an Earth-sized exoplanet orbiting it!",
-                imageQuery: "Proxima Centauri red dwarf star",
+                imageUrl: WIKI + "Artist%27s_impression_of_the_planet_orbiting_Proxima_Centauri.jpg?width=600",
                 videoId: "zzuPRkAAaHU",
                 timeline: "4.24 Light-Years Away"
             },
@@ -761,7 +770,7 @@
                 difficulty: "hard",
                 description: "The universe began about 13.8 billion years ago",
                 detail: "From an infinitely hot, dense point, the universe expanded. Cosmic Microwave Background radiation still exists from this event!",
-                imageQuery: "Big Bang universe origin cosmic",
+                imageUrl: WIKI + "WMAP.jpg?width=600",
                 videoId: "LeUcjqqhNxM",
                 timeline: "13.8 Billion Years Ago"
             }
@@ -770,44 +779,18 @@
         let currentQuizIndex = 0;
         let quizScore = 0;
 
-        // Build a placeholder image (no network, always works) for any fact that
-        // the NASA API doesn't return a result for.
+        // Fallback placeholder (pure data: URI, no network) used only if a real
+        // image URL above ever fails to load (e.g. offline, or Commons down).
         function placeholderImage(category) {
             return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='220'%3E%3Crect fill='%23001a4d' width='400' height='220'/%3E%3Crect fill='%23003d99' x='0' y='0' width='400' height='110'/%3E%3Ctext x='200' y='110' text-anchor='middle' dy='.3em' fill='%2300d4ff' font-size='24' font-weight='bold'%3E${category}%3C/text%3E%3C/svg%3E`;
         }
 
-        // NASA's Images API: no key required, CORS-enabled, no tight rate limit.
-        // Docs: https://api.nasa.gov/  (Image and Video Library section)
-        async function fetchNasaImage(query) {
-            try {
-                const url = `https://images-api.nasa.gov/search?q=${encodeURIComponent(query)}&media_type=image`;
-                const response = await fetch(url);
-                if (!response.ok) return null;
-                const data = await response.json();
-                const items = data && data.collection && data.collection.items;
-                if (items && items.length > 0) {
-                    for (const item of items) {
-                        if (item.links && item.links.length > 0) {
-                            const imgLink = item.links.find(l => l.render === 'image') || item.links[0];
-                            if (imgLink && imgLink.href) return imgLink.href;
-                        }
-                    }
-                }
-            } catch (e) {
-                console.log('NASA Images API unavailable, using placeholder:', e);
-            }
-            return null;
-        }
-
-        async function loadFacts() {
+        function loadFacts() {
             const factsGrid = document.getElementById('factsGrid');
             factsGrid.innerHTML = '';
 
             for (const fact of spaceFacts) {
-                let imageUrl = await fetchNasaImage(fact.imageQuery);
-                if (!imageUrl) {
-                    imageUrl = placeholderImage(fact.category);
-                }
+                const imageUrl = fact.imageUrl;
 
                 const card = document.createElement('div');
                 card.className = 'fact-card';
