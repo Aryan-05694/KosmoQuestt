@@ -4,104 +4,256 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KosmoQuestt | Explore the Universe</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="icon" href="/favicon.ico?v=2">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+:root{
+    --bg:#050814;
+    --text:white;
+    --nav-bg:rgba(5,8,20,.9);
+    --card-bg:rgba(17,24,39,.75);
+    --card-border:rgba(255,255,255,.06);
+}
+
+.light-theme{
+    --bg:#f5f7ff;
+    --text:#111827;
+    --nav-bg:rgba(255,255,255,.9);
+    --card-bg:#ffffff;
+    --card-border:rgba(0,0,0,.08);
 }
 
 body{
     font-family:"Segoe UI",sans-serif;
-    background:#050814;
-    color:white;
+    background:var(--bg);
+    color:var(--text);
     overflow-x:hidden;
+    transition:0.3s ease;
 }
 
-/* STAR BACKGROUND */
-.stars{
-    position:fixed;
-    inset:0;
-    z-index:0;
-}
-
+/* STARS */
+.stars{ position:fixed; inset:0; z-index:0; }
 .star{
     position:absolute;
-    width:2px;
-    height:2px;
+    width:2px; height:2px;
     background:white;
     border-radius:50%;
     opacity:0.6;
     box-shadow:0 0 8px white;
+    animation:twinkle linear infinite;
+}
+@keyframes twinkle{
+    0%,100%{ opacity:.2; }
+    50%{ opacity:1; }
 }
 
 /* GLOW */
 .glow{
     position:fixed;
-    top:-200px;
-    left:50%;
+    top:-200px; left:50%;
     transform:translateX(-50%);
-    width:600px;
-    height:600px;
-    background:radial-gradient(circle,
-    rgba(37,99,235,.25),
-    transparent 70%);
+    width:600px; height:600px;
+    background:radial-gradient(circle, rgba(37,99,235,.25), transparent 70%);
     filter:blur(100px);
     z-index:0;
 }
 
-/* CONTENT */
-.content{
-    position:relative;
-    z-index:1;
-}
+.content{ position:relative; z-index:1; }
 
 /* NAVBAR */
 .navbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:18px 40px;
-    background:rgba(5,8,20,.9);
+    padding:16px 40px;
+    background:var(--nav-bg);
     backdrop-filter:blur(12px);
     border-bottom:1px solid rgba(255,255,255,.08);
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
 .logo{
     display:flex;
     align-items:center;
     gap:12px;
+    text-decoration:none;
+    color:var(--text);
 }
 
-.logo img{
-    width:42px;
-    height:42px;
+.logo img{ height:45px; width:auto; display:block; }
+
+.logo-text h2{ font-size:24px; line-height:1.1; }
+
+.tagline{
+    font-size:11px;
+    color:#60a5fa;
+    letter-spacing:.06em;
+    display:block;
+    margin-top:2px;
 }
 
-.logo h2{
-    font-size:28px;
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
 }
 
 .nav-links a{
     text-decoration:none;
     color:#cbd5e1;
-    margin-left:25px;
+    padding:8px 12px;
+    border-radius:8px;
+    font-size:14px;
+    transition:.2s;
 }
 
-.nav-links a:hover{
-    color:white;
+.nav-links a:hover{ background:rgba(255,255,255,.08); color:white; }
+
+/* DROPDOWN */
+
+.dropdown{
+    position:relative;
+    display:inline-block;
 }
+
+.dropdown-toggle{
+    background:none;
+    border:none;
+    color:#cbd5e1;
+    cursor:pointer;
+    padding:8px 14px;
+    font-size:14px;
+}
+
+.dropdown-menu{
+    display:none;
+    position:absolute;
+    top:100%;
+    left:0;
+    min-width:200px;
+    background:#0b1220;
+    border-radius:10px;
+    padding:8px 0;
+    z-index:1000;
+}
+
+.dropdown:hover .dropdown-menu{
+    display:flex;
+    flex-direction:column;
+}
+
+.dropdown-menu a{
+    display:block;
+    padding:10px 16px;
+    text-decoration:none;
+    color:#cbd5e1;
+}
+
+.dropdown-menu a:hover{
+    background:rgba(255,255,255,.08);
+}
+
+.nav-links .login-btn{
+    background:#2563eb;
+    color:white !important;
+    padding:8px 18px;
+    border-radius:8px;
+    font-weight:600;
+}
+
+.nav-links .login-btn:hover{ background:#1d4ed8; }
+
+/* USER INFO STYLE */
+.user-info{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:6px 16px;
+    background:rgba(37,99,235,.15);
+    border:1px solid rgba(37,99,235,.3);
+    border-radius:999px;
+}
+
+.user-photo{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    border:2px solid #60a5fa;
+    object-fit:cover;
+}
+
+.user-name{
+    font-size:14px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.logout-link{
+    text-decoration:none;
+    color:#60a5fa;
+    font-size:12px;
+    padding:4px 10px;
+    border-left:1px solid rgba(96,165,250,.3);
+    margin-left:8px;
+    transition:.2s;
+}
+
+.logout-link:hover{
+    color:#93c5fd;
+    background:rgba(96,165,250,.1);
+    border-radius:4px;
+}
+
+#themeToggle{
+    background:rgba(255,255,255,.08);
+    border:none;
+    color:var(--text);
+    font-size:16px;
+    cursor:pointer;
+    padding:8px 12px;
+    border-radius:8px;
+    transition:.3s;
+}
+
+#themeToggle:hover{ background:rgba(255,255,255,.15); }
 
 /* HERO */
 .hero{
     text-align:center;
-    padding:120px 20px;
+    padding:120px 20px 80px;
 }
 
 .hero h1{
     font-size:64px;
     margin-bottom:20px;
+    animation:floatTitle 4s ease-in-out infinite;
+    text-shadow:0 0 20px rgba(96,165,250,.5);
+    background:linear-gradient(135deg, #fff 40%, #60a5fa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+
+@keyframes floatTitle{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-8px); }
 }
 
 .hero p{
@@ -109,21 +261,48 @@ body{
     font-size:20px;
     max-width:700px;
     margin:auto;
+    line-height:1.7;
+}
+
+.hero-btns{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:36px;
 }
 
 .btn{
-    display:inline-block;
-    margin-top:30px;
-    padding:14px 28px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:16px 34px;
     background:#2563eb;
     color:white;
     text-decoration:none;
-    border-radius:8px;
+    border-radius:12px;
     font-weight:bold;
+    transition:.3s;
+    box-shadow:0 0 25px rgba(37,99,235,.45);
+    font-size:16px;
 }
 
 .btn:hover{
+    transform:translateY(-3px) scale(1.05);
+    box-shadow:0 0 40px rgba(37,99,235,.8);
     background:#1d4ed8;
+}
+
+.btn-outline{
+    background:transparent;
+    border:1px solid rgba(37,99,235,.5);
+    color:#93c5fd;
+    box-shadow:none;
+}
+
+.btn-outline:hover{
+    background:rgba(37,99,235,.12);
+    box-shadow:none;
 }
 
 /* STATS */
@@ -131,60 +310,303 @@ body{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:20px;
-    padding:40px;
+    padding:20px 40px 60px;
     max-width:1200px;
     margin:auto;
 }
 
 .stat{
-    background:rgba(17,24,39,.7);
-    border:1px solid rgba(255,255,255,.06);
-    padding:25px;
-    border-radius:12px;
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    padding:30px 25px;
+    border-radius:16px;
     text-align:center;
+    transition:.4s;
+    position:relative;
+    overflow:hidden;
+}
+
+.stat::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 50% 0%, rgba(37,99,235,.08), transparent 70%);
+}
+
+.stat:hover{
+    transform:translateY(-8px);
+    box-shadow:0 0 35px rgba(96,165,250,.25);
+    border-color:rgba(96,165,250,.3);
 }
 
 .stat h2{
+    font-size:36px;
     color:#60a5fa;
+    margin-bottom:8px;
+    font-weight:800;
+}
+
+.stat p{ color:#94a3b8; font-size:14px; }
+
+/* SECTION LABEL */
+.section-label{
+    text-align:center;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.15em;
+    color:#60a5fa;
+    text-transform:uppercase;
     margin-bottom:10px;
 }
 
 /* FEATURES */
-.features{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:20px;
-    padding:60px 40px;
+.features-section{
+    padding:20px 40px 80px;
     max-width:1300px;
     margin:auto;
 }
 
+.features{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+}
+
 .card{
-    background:rgba(17,24,39,.75);
-    border:1px solid rgba(255,255,255,.06);
-    padding:25px;
-    border-radius:14px;
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    padding:28px;
+    border-radius:16px;
     transition:.3s;
+    position:relative;
+    overflow:hidden;
+}
+
+.card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 0% 0%, rgba(37,99,235,.06), transparent 60%);
 }
 
 .card:hover{
     transform:translateY(-8px);
-    box-shadow:0 10px 30px rgba(37,99,235,.25);
+    box-shadow:0 10px 40px rgba(37,99,235,.2);
+    border-color:rgba(96,165,250,.25);
 }
 
-.card h3{
-    margin-bottom:12px;
+.card-icon{ font-size:32px; margin-bottom:14px; display:block; }
+
+.card h3{ margin-bottom:10px; font-size:18px; }
+
+.card p{ color:#94a3b8; font-size:14px; line-height:1.7; }
+
+.card-link{ cursor:pointer; text-decoration:none; color:inherit; display:block; }
+
+/* APOD SECTION */
+.apod-section{
+    max-width:1100px;
+    margin:0 auto 80px;
+    padding:0 40px;
 }
 
-.card p{
+.section-title{
+    font-size:36px;
+    font-weight:700;
+    margin-bottom:8px;
+    text-align:center;
+    text-shadow:0 0 15px rgba(96,165,250,.4);
+}
+
+.section-subtitle{
+    text-align:center;
     color:#94a3b8;
+    margin-bottom:36px;
+    font-size:16px;
 }
+
+.apod-card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:20px;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    box-shadow:0 0 60px rgba(37,99,235,.12);
+    transition:.3s;
+}
+
+.apod-card:hover{ box-shadow:0 0 80px rgba(37,99,235,.25); }
+
+.apod-media{
+    position:relative;
+    min-height:380px;
+    background:#0a0f1e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.apod-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.apod-media iframe{ width:100%; height:100%; min-height:380px; border:none; }
+
+.apod-media video{
+    width:100%;
+    height:100%;
+    min-height:380px;
+    object-fit:cover;
+}
+
+.apod-media-loader{
+    color:#60a5fa;
+    font-size:14px;
+    text-align:center;
+    padding:20px;
+    animation:pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse{
+    0%,100%{ opacity:1; }
+    50%{ opacity:.4; }
+}
+
+.apod-info{
+    padding:36px 32px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:16px;
+}
+
+.apod-date-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    background:rgba(37,99,235,.18);
+    border:1px solid rgba(37,99,235,.35);
+    color:#93c5fd;
+    font-size:13px;
+    font-weight:600;
+    padding:6px 14px;
+    border-radius:999px;
+    width:fit-content;
+    letter-spacing:.03em;
+}
+
+.apod-title{ font-size:22px; font-weight:700; line-height:1.35; color:var(--text); }
+
+.apod-copyright{ font-size:13px; color:#64748b; }
+
+.apod-explanation{
+    font-size:15px;
+    line-height:1.75;
+    color:#94a3b8;
+    max-height:200px;
+    overflow-y:auto;
+    padding-right:6px;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(96,165,250,.3) transparent;
+}
+
+.apod-explanation::-webkit-scrollbar{ width:4px; }
+.apod-explanation::-webkit-scrollbar-track{ background:transparent; }
+.apod-explanation::-webkit-scrollbar-thumb{ background:rgba(96,165,250,.3); border-radius:4px; }
+
+.apod-actions{ display:flex; gap:12px; flex-wrap:wrap; margin-top:4px; }
+
+.apod-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 20px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    text-decoration:none;
+    transition:.25s;
+    cursor:pointer;
+    border:none;
+}
+
+.apod-btn-primary{
+    background:#2563eb;
+    color:white;
+    box-shadow:0 0 20px rgba(37,99,235,.4);
+}
+
+.apod-btn-primary:hover{ background:#1d4ed8; transform:translateY(-2px); }
+
+.apod-btn-secondary{
+    background:transparent;
+    color:#93c5fd;
+    border:1px solid rgba(37,99,235,.4);
+}
+
+.apod-btn-secondary:hover{ background:rgba(37,99,235,.12); transform:translateY(-2px); }
+
+.apod-error{ text-align:center; padding:60px 20px; color:#94a3b8; }
+.apod-error i{ font-size:48px; color:#475569; margin-bottom:16px; display:block; }
 
 /* FOOTER */
 .footer{
     text-align:center;
-    padding:40px;
+    padding:50px 40px;
     color:#64748b;
+    border-top:1px solid rgba(255,255,255,.06);
+}
+
+.footer p{ margin-bottom:6px; }
+.footer a{ color:#60a5fa; text-decoration:none; }
+.footer a:hover{ text-decoration:underline; }
+
+.social-links{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+}
+
+.social-links a{
+    color:#60a5fa;
+    font-size:24px;
+    text-decoration:none;
+    transition:.3s;
+    width:44px; height:44px;
+    border-radius:50%;
+    border:1px solid rgba(96,165,250,.2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.social-links a:hover{
+    transform:translateY(-3px);
+    background:rgba(96,165,250,.1);
+    border-color:rgba(96,165,250,.5);
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .apod-card{ grid-template-columns:1fr; }
+    .apod-media{ min-height:260px; }
+    .features{ grid-template-columns:repeat(2,1fr); }
+}
+
+@media(max-width:768px){
+    .navbar{ flex-direction:column; gap:15px; padding:15px; }
+    .logo{ justify-content:center; }
+    .nav-links{ justify-content:center; }
+    .hero h1{ font-size:38px; }
+    .hero p{ font-size:16px; padding:0 15px; }
+    .features-section{ padding:20px; }
+    .features{ grid-template-columns:1fr; }
+    .stats{ padding:20px; }
+    .apod-section{ padding:0 20px; }
+    .apod-info{ padding:24px 20px; }
+    .user-info{ padding:4px 12px; font-size:12px; }
+    .user-photo{ width:28px; height:28px; }
 }
 </style>
 </head>
@@ -195,95 +617,324 @@ body{
 
 <div class="content">
 
-<div class="navbar">
-    <div class="logo">
-    <img src="/logo_1.png" alt="KosmoQuestt Logo">
-
-    <div>
-        <h2>KosmoQuestt</h2>
-        <span class="tagline">
-            Explore Beyond The Horizon!
-        </span>
-    </div>
-</div>
-
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="/" class="logo">
+        <img src="/logo_1.png" alt="KosmoQuestt Logo">
+        <div class="logo-text">
+            <h2>KosmoQuestt</h2>
+            <span class="tagline">Exploring Beyond The Horizon!</span>
+        </div>
+    </a>
     <div class="nav-links">
+        <button id="themeToggle" title="Toggle theme">🌙</button>
         <a href="/">Home</a>
         <a href="/dashboard.html">Gallery</a>
-        <a href="/auth/google">Login</a>
-    </div>
-</div>
+        <div class="dropdown">
+           <button class="dropdown-toggle">
+              <span>Explore</span>
+              <i class="fas fa-chevron-down"></i>
+           </button>
 
+           <div class="dropdown-menu">
+             <a href="/solar-system.html">🪐 Solar System</a>
+             <a href="/iss.html">🛰️ ISS Tracker</a>
+             <a href="/iss-3d.html">🔭 ISS 3D View</a>
+             <a href="/space-facts.html">📚 Space Facts</a>
+           </div>
+        </div>
+        <a href="/about.html">About</a>
+        <a href="https://youtube.com/@KosmoQuestt" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://x.com/KosmoQuestt" target="_blank" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+        
+        <!-- User Status Display -->
+        <div id="userStatus"></div>
+    </div>
+</nav>
+
+<!-- HERO -->
 <section class="hero">
     <h1>Explore The Universe</h1>
-
-    <p>
-        Upload, discover and share breathtaking cosmic imagery
-        from around the world through the KosmoQuestt space archive.
-    </p>
-
-    <a href="/auth/google" class="btn">
-        Login With Google
-    </a>
+    <p>Upload, discover and share breathtaking cosmic imagery from around the world through the KosmoQuestt space archive.</p>
+    <div class="hero-btns">
+        <a href="/auth/google" class="btn"><i class="fab fa-google"></i> Login With Google</a>
+        <a href="/dashboard.html" class="btn btn-outline"><i class="fas fa-images"></i> View Gallery</a>
+    </div>
 </section>
 
+<!-- STATS -->
 <section class="stats">
     <div class="stat">
-        <h2>∞</h2>
-        <p>Cosmic Discoveries</p>
+        <h2 id="stat-images">—</h2>
+        <p>Images Uploaded</p>
     </div>
-
     <div class="stat">
         <h2>24/7</h2>
         <p>Space Exploration</p>
     </div>
-
     <div class="stat">
         <h2>Global</h2>
         <p>Community Access</p>
     </div>
 </section>
 
-<section class="features">
-
-    <div class="card">
-        <h3>🌌 Space Gallery</h3>
-        <p>View beautiful cosmic images uploaded by explorers.</p>
+<!-- FEATURES -->
+<section class="features-section">
+    <p class="section-label">What's Inside</p>
+    <div class="features">
+        <a href="/dashboard.html" class="card card-link">
+            <span class="card-icon">🌌</span>
+            <h3>Space Gallery</h3>
+            <p>View beautiful cosmic images uploaded by explorers from around the world.</p>
+        </a>
+        <div class="card">
+            <span class="card-icon">🚀</span>
+            <h3>Fast Uploads</h3>
+            <p>Upload images instantly with descriptions and captions. Stored securely on the cloud.</p>
+        </div>
+        <div class="card">
+            <span class="card-icon">🔐</span>
+            <h3>Secure Login</h3>
+            <p>Google authentication keeps your account protected — no passwords needed.</p>
+        </div>
+        <a href="/solar-system.html" class="card card-link">
+            <span class="card-icon">🪐</span>
+            <h3>Solar System Explorer</h3>
+            <p>Explore all 8 planets with real NASA images, stats and fun facts.</p>
+        </a>
+        <a href="/iss.html" class="card card-link">
+            <span class="card-icon">🛰️</span>
+            <h3>ISS Tracker</h3>
+            <p>Track the International Space Station's live position on an interactive map.</p>
+        </a>
+        <a href="#apod" class="card card-link">
+            <span class="card-icon">🔭</span>
+            <h3>Astronomy Picture of the Day</h3>
+            <p>NASA's daily cosmic wonder — a new breathtaking image or video every day.</p>
+        </a>
     </div>
-
-    <div class="card">
-        <h3>🚀 Fast Uploads</h3>
-        <p>Upload images instantly with descriptions and captions.</p>
-    </div>
-
-    <div class="card">
-        <h3>🔐 Secure Login</h3>
-        <p>Google authentication keeps your account protected.</p>
-    </div>
-
 </section>
 
-<div class="footer">
-    © 2026 KosmoQuestt • Exploring Beyond The Horizon
-</div>
+<!-- APOD SECTION -->
+<section class="apod-section" id="apod">
+    <h2 class="section-title">🔭 Astronomy Picture of the Day</h2>
+    <p class="section-subtitle">Brought to you by NASA — a new cosmic wonder every day.</p>
+
+    <div class="apod-card" id="apod-card">
+        <div class="apod-media" id="apod-media">
+            <div class="apod-media-loader">
+                <i class="fas fa-spinner fa-spin" style="font-size:28px;display:block;margin-bottom:10px;"></i>
+                Loading today's image…
+            </div>
+        </div>
+        <div class="apod-info" id="apod-info">
+            <div class="apod-media-loader">Fetching cosmic data…</div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <p>© 2026 <a href="/">KosmoQuestt</a> • Exploring Beyond The Horizon!</p>
+    <p style="font-size:13px;margin-top:4px;">Made with ❤️ for space lovers everywhere</p>
+    <div class="social-links">
+        <a href="https://youtube.com/@KosmoQuestt" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+        <a href="https://x.com/KosmoQuestt" target="_blank" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+    </div>
+</footer>
 
 </div>
 
 <script>
-const stars = document.getElementById("stars");
-
-for(let i=0;i<200;i++){
-    const star=document.createElement("div");
-
-    star.className="star";
-
-    star.style.left=Math.random()*100+"vw";
-    star.style.top=Math.random()*100+"vh";
-
-    star.style.opacity=Math.random();
-
-    stars.appendChild(star);
+/* STARS with twinkle */
+const starsEl = document.getElementById("stars");
+for(let i = 0; i < 220; i++){
+    const star = document.createElement("div");
+    star.className = "star";
+    star.style.left = Math.random()*100 + "vw";
+    star.style.top = Math.random()*100 + "vh";
+    star.style.animationDuration = (Math.random()*6 + 3) + "s";
+    star.style.animationDelay = (Math.random()*5) + "s";
+    starsEl.appendChild(star);
 }
+
+/* THEME TOGGLE */
+const toggleBtn = document.getElementById("themeToggle");
+if(localStorage.getItem("theme") === "light"){
+    document.body.classList.add("light-theme");
+    toggleBtn.textContent = "☀️";
+}
+toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light-theme");
+    const isLight = document.body.classList.contains("light-theme");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+    toggleBtn.textContent = isLight ? "☀️" : "🌙";
+});
+
+/* CHECK LOGIN STATUS & SHOW USER INFO */
+function checkLoginStatus(){
+    fetch("/user")
+        .then(res => res.json())
+        .then(user => {
+            const userStatusDiv = document.getElementById("userStatus");
+            
+            if(user){
+                // User is logged in - show user info
+                userStatusDiv.innerHTML = `
+                    <div class="user-info">
+                        <img src="${user.photo}" alt="${user.displayName}" class="user-photo">
+                        <span class="user-name">${user.displayName}</span>
+                        <a href="/logout" class="logout-link">Logout</a>
+                    </div>
+                `;
+            } else {
+                // User is NOT logged in - show login button
+                userStatusDiv.innerHTML = `
+                    <a href="/auth/google" class="login-btn">Login</a>
+                `;
+            }
+        })
+        .catch(err => {
+            console.log("Login check failed:", err);
+            // Fallback to login button
+            document.getElementById("userStatus").innerHTML = `
+                <a href="/auth/google" class="login-btn">Login</a>
+            `;
+        });
+}
+
+// Check login status when page loads
+checkLoginStatus();
+
+// Recheck every 10 seconds (optional - updates if user logs out in another tab)
+setInterval(checkLoginStatus, 10000);
+
+/* LIVE IMAGE COUNT */
+fetch("/image-count")
+.then(res => res.json())
+.then(data => {
+    const el = document.getElementById("stat-images");
+    if(data.count !== undefined){
+        // Animate count up
+        let current = 0;
+        const target = data.count;
+        if(target === 0){ el.textContent = "0"; return; }
+        const step = Math.ceil(target / 40);
+        const timer = setInterval(() => {
+            current = Math.min(current + step, target);
+            el.textContent = current.toLocaleString();
+            if(current >= target) clearInterval(timer);
+        }, 40);
+    } else {
+        el.textContent = "∞";
+    }
+})
+.catch(() => {
+    document.getElementById("stat-images").textContent = "∞";
+});
+
+/* NASA APOD — fetched from backend proxy to hide API key */
+async function loadAPOD(){
+    const mediaEl = document.getElementById("apod-media");
+    const infoEl  = document.getElementById("apod-info");
+
+    try{
+        const res  = await fetch("/api/apod");
+        if(!res.ok) throw new Error("APOD fetch error: " + res.status);
+        const data = await res.json();
+
+        /* MEDIA */
+        
+        if (data.media_type === "video") {
+
+          const isMp4 = data.url.toLowerCase().includes(".mp4");
+
+          if (isMp4) {
+
+            mediaEl.innerHTML = `
+             <video
+                 id="apod-player"
+                 playsinline
+                 controls
+                 controlsList="nodownload"
+                 disablePictureInPicture
+                 oncontextmenu="return false;"
+                 style="width:100%;height:100%;object-fit:cover;">
+                 <source src="${data.url}" type="video/mp4">
+                 Your browser does not support HTML5 video.
+             </video>
+            `;
+
+            setTimeout(() => {
+              new Plyr('#apod-player', {
+                 controls: [
+                     'play-large',
+                     'play',
+                     'progress',
+                     'current-time',
+                     'mute',
+                     'volume',
+                     'fullscreen'
+                 ]
+              });
+            }, 100);
+
+          
+        } else {
+          mediaEl.innerHTML = `
+              <iframe
+                 src="${data.url}"
+                 allowfullscreen
+                 style="width:100%;height:100%;border:none;"
+                 title="${data.title}">
+              </iframe>
+          `;
+        }
+
+        } else {
+          mediaEl.innerHTML = `
+            <img src="${data.hdurl || data.url}"
+               alt="${data.title}"
+               loading="lazy">
+          `;
+        }
+
+        /* INFO */
+        const dateFormatted = new Date(data.date).toLocaleDateString("en-IN",{
+            year:"numeric", month:"long", day:"numeric"
+        });
+
+        infoEl.innerHTML = `
+            <span class="apod-date-badge">
+                <i class="fas fa-calendar-star"></i> ${dateFormatted}
+            </span>
+            <div class="apod-title">${data.title}</div>
+            ${data.copyright ? `<div class="apod-copyright">📷 ${data.copyright.replace(/\n/g," ")}</div>` : ""}
+            <p class="apod-explanation">${data.explanation}</p>
+            <div class="apod-actions">
+                <a href="${data.hdurl || data.url}" target="_blank" class="apod-btn apod-btn-primary">
+                    <i class="fas fa-expand"></i> Full Resolution
+                </a>
+                <a href="https://apod.nasa.gov/apod/astropix.html" target="_blank" class="apod-btn apod-btn-secondary">
+                    <i class="fas fa-external-link-alt"></i> NASA APOD
+                </a>
+            </div>
+        `;
+
+    } catch(err){
+        console.error(err);
+        mediaEl.innerHTML = ``;
+        infoEl.innerHTML = `
+            <div class="apod-error">
+                <i class="fas fa-satellite-dish"></i>
+                <p>Could not load today's picture.</p>
+                <p style="font-size:13px;margin-top:8px;">Try again later.</p>
+            </div>
+        `;
+    }
+}
+
+loadAPOD();
 </script>
 
 </body>
