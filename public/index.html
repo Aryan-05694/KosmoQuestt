@@ -15,6 +15,9 @@
 
 <link rel="manifest" href="/site.webmanifest">
 
+<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+<script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+
 <style>
 *{ margin:0; padding:0; box-sizing:border-box; }
 
@@ -449,6 +452,13 @@ body{
 
 .apod-media iframe{ width:100%; height:100%; min-height:380px; border:none; }
 
+.apod-media video{
+    width:100%;
+    height:100%;
+    min-height:380px;
+    object-fit:cover;
+}
+
 .apod-media-loader{
     color:#60a5fa;
     font-size:14px;
@@ -840,13 +850,36 @@ async function loadAPOD(){
           const isMp4 = data.url.toLowerCase().includes(".mp4");
 
           if (isMp4) {
+
             mediaEl.innerHTML = `
-                <video controls preload="metadata"
-                     style="width:100%;height:100%;object-fit:cover;">
-                  <source src="${data.url}" type="video/mp4">
-                  Your browser does not support HTML5 video.
-                </video>
+             <video
+                 id="apod-player"
+                 playsinline
+                 controls
+                 controlsList="nodownload"
+                 disablePictureInPicture
+                 oncontextmenu="return false;"
+                 style="width:100%;height:100%;object-fit:cover;">
+                 <source src="${data.url}" type="video/mp4">
+                 Your browser does not support HTML5 video.
+             </video>
             `;
+
+            setTimeout(() => {
+              new Plyr('#apod-player', {
+                 controls: [
+                     'play-large',
+                     'play',
+                     'progress',
+                     'current-time',
+                     'mute',
+                     'volume',
+                     'fullscreen'
+                 ]
+              });
+            }, 100);
+
+          
         } else {
           mediaEl.innerHTML = `
               <iframe
