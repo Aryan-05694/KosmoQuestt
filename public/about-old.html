@@ -19,9 +19,6 @@
     --nav-bg:rgba(5,8,20,.9);
     --card-bg:rgba(17,24,39,.75);
     --card-border:rgba(255,255,255,.06);
-    --text-secondary:#94a3b8;
-    --text-muted:#cbd5e1;
-    --accent:#60a5fa;
 }
 
 .light-theme{
@@ -30,9 +27,6 @@
     --nav-bg:rgba(255,255,255,.9);
     --card-bg:#ffffff;
     --card-border:rgba(0,0,0,.08);
-    --text-secondary:#5a6b7a;
-    --text-muted:#374151;
-    --accent:#2563eb;
 }
 
 body{
@@ -118,7 +112,7 @@ body{
 
 .tagline{
     font-size:11px;
-    color:var(--accent);
+    color:#60a5fa;
     letter-spacing:.06em;
     display:block;
     margin-top:2px;
@@ -133,7 +127,7 @@ body{
 
 .nav-links a{
     text-decoration:none;
-    color:var(--text-muted);
+    color:#cbd5e1;
     padding:8px 12px;
     border-radius:8px;
     font-size:14px;
@@ -142,7 +136,7 @@ body{
 
 .nav-links a:hover{
     background:rgba(255,255,255,.08);
-    color:var(--text);
+    color:white;
 }
 
 #themeToggle{
@@ -176,13 +170,16 @@ body{
 .hero-about h1{
     font-size:60px;
     margin-bottom:20px;
-    color:var(--text);
+    background:linear-gradient(135deg, #fff 40%, #60a5fa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
 }
 
 .hero-about p{
     max-width:750px;
     margin:auto;
-    color:var(--text-secondary);
+    color:#94a3b8;
     font-size:18px;
     line-height:1.8;
 }
@@ -193,7 +190,7 @@ body{
     font-size:13px;
     font-weight:700;
     letter-spacing:.15em;
-    color:var(--accent);
+    color:#60a5fa;
     text-transform:uppercase;
     margin-bottom:30px;
 }
@@ -222,15 +219,6 @@ body{
     transition:.35s ease;
 }
 
-.light-theme .stat-box{
-    background:linear-gradient(
-        145deg,
-        rgba(255,255,255,.95),
-        rgba(245,247,255,.95)
-    );
-    border:1px solid rgba(37,99,235,.2);
-}
-
 .stat-box::before{
     content:'';
     position:absolute;
@@ -257,7 +245,7 @@ body{
 }
 
 .stat-label{
-    color:var(--text-muted);
+    color:#cbd5e1;
     font-size:16px;
     font-weight:600;
     letter-spacing:.05em;
@@ -289,7 +277,7 @@ body{
 }
 
 .about-card h2{
-    color:var(--accent);
+    color:#60a5fa;
     margin-bottom:20px;
     font-size:24px;
     display:flex;
@@ -298,7 +286,7 @@ body{
 }
 
 .about-card p{
-    color:var(--text-secondary);
+    color:#cbd5e1;
     line-height:1.8;
     margin-bottom:15px;
 }
@@ -308,13 +296,13 @@ body{
 }
 
 .about-card li{
-    color:var(--text-secondary);
+    color:#cbd5e1;
     margin-bottom:14px;
     line-height:1.7;
 }
 
 .about-card li::marker{
-    color:var(--accent);
+    color:#60a5fa;
 }
 
 /* FEATURES GRID */
@@ -346,13 +334,13 @@ body{
 }
 
 .feature-card h3{
-    color:var(--accent);
+    color:#60a5fa;
     margin-bottom:10px;
     font-size:16px;
 }
 
 .feature-card p{
-    color:var(--text-secondary);
+    color:#94a3b8;
     font-size:14px;
     line-height:1.6;
 }
@@ -374,13 +362,13 @@ body{
 }
 
 .cta-section h2{
-    color:var(--accent);
+    color:#60a5fa;
     font-size:32px;
     margin-bottom:15px;
 }
 
 .cta-section p{
-    color:var(--text-secondary);
+    color:#cbd5e1;
     font-size:16px;
     margin-bottom:30px;
     max-width:600px;
@@ -429,7 +417,7 @@ body{
 
 .btn-outline:hover{
     background:rgba(37,99,235,.1);
-    border-color:var(--accent);
+    border-color:#60a5fa;
 }
 
 /* TIMELINE */
@@ -449,11 +437,11 @@ body{
 
 .timeline-item:hover{
     box-shadow:0 8px 20px rgba(96,165,250,.12);
-    border-left-color:var(--accent);
+    border-left-color:#60a5fa;
 }
 
 .timeline-year{
-    color:var(--accent);
+    color:#60a5fa;
     font-weight:700;
     font-size:13px;
     text-transform:uppercase;
@@ -461,14 +449,14 @@ body{
 }
 
 .timeline-title{
-    color:var(--text);
+    color:white;
     margin:8px 0 5px 0;
     font-size:16px;
     font-weight:600;
 }
 
 .timeline-desc{
-    color:var(--text-secondary);
+    color:#94a3b8;
     font-size:14px;
     line-height:1.5;
 }
@@ -503,7 +491,7 @@ body{
 }
 
 .tech-name{
-    color:var(--accent);
+    color:#60a5fa;
     font-size:12px;
     font-weight:600;
 }
@@ -522,7 +510,7 @@ body{
 }
 
 .footer a{
-    color:var(--accent);
+    color:#60a5fa;
     text-decoration:none;
 }
 
@@ -538,7 +526,7 @@ body{
 }
 
 .social-links a{
-    color:var(--accent);
+    color:#60a5fa;
     font-size:24px;
     text-decoration:none;
     transition:.3s;
@@ -713,6 +701,8 @@ body{
     </div>
 </section>
 
+
+<!-- TIMELINE -->
 <!-- TIMELINE -->
 <section class="container">
     <p class="section-label">Our Journey</p>
@@ -774,7 +764,7 @@ body{
 <section class="container">
     <div class="about-card">
         <h2><i class="fas fa-microchip"></i> Technology Stack</h2>
-        <p style="margin-bottom:20px;color:var(--text-secondary);">KosmoQuestt is built with modern, reliable technologies designed for performance and scalability.</p>
+        <p style="margin-bottom:20px;">KosmoQuestt is built with modern, reliable technologies designed for performance and scalability.</p>
         <div class="tech-stack">
             <div class="tech-item">
                 <span class="tech-icon">⚙️</span>
