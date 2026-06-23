@@ -834,10 +834,36 @@ async function loadAPOD(){
         const data = await res.json();
 
         /* MEDIA */
-        if(data.media_type === "video"){
-            mediaEl.innerHTML = `<iframe src="${data.url}" allowfullscreen title="${data.title}"></iframe>`;
+        
+        if (data.media_type === "video") {
+
+          const isMp4 = data.url.toLowerCase().includes(".mp4");
+
+          if (isMp4) {
+            mediaEl.innerHTML = `
+                <video controls preload="metadata"
+                     style="width:100%;height:100%;object-fit:cover;">
+                  <source src="${data.url}" type="video/mp4">
+                  Your browser does not support HTML5 video.
+                </video>
+            `;
         } else {
-            mediaEl.innerHTML = `<img src="${data.hdurl || data.url}" alt="${data.title}" loading="lazy">`;
+          mediaEl.innerHTML = `
+              <iframe
+                 src="${data.url}"
+                 allowfullscreen
+                 style="width:100%;height:100%;border:none;"
+                 title="${data.title}">
+              </iframe>
+          `;
+        }
+
+        } else {
+          mediaEl.innerHTML = `
+            <img src="${data.hdurl || data.url}"
+               alt="${data.title}"
+               loading="lazy">
+          `;
         }
 
         /* INFO */
