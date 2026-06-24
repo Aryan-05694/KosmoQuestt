@@ -130,6 +130,10 @@
             height: 220px;
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 153, 255, 0.1));
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
         }
 
         .fact-image-wrapper img {
@@ -584,7 +588,7 @@
     <div class="container">
         <div class="header">
             <h1>🚀 Space Facts</h1>
-            <p>Explore the universe with real images, videos, and data from NASA & Wikipedia</p>
+            <p>Explore the universe with fascinating space discoveries from NASA, ESA, and other space agencies</p>
         </div>
 
         <div class="view-selector">
@@ -607,7 +611,7 @@
             <div class="facts-grid" id="factsGrid">
                 <div class="loading">
                     <div class="spinner"></div>
-                    <p>Loading amazing space images...</p>
+                    <p>Loading amazing space facts...</p>
                 </div>
             </div>
         </div>
@@ -622,9 +626,9 @@
     <div class="lightbox" id="lightbox">
         <div class="lightbox-content">
             <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-            <img class="lightbox-image" id="lightboxImage" src="" alt="">
+            <div style="text-align: center; font-size: 80px; margin-bottom: 20px;" id="lightboxEmoji"></div>
             <div class="lightbox-info">
-                <p id="lightboxTitle" style="font-size: 1.2em; font-weight: bold;"></p>
+                <p id="lightboxTitle" style="font-size: 1.5em; font-weight: bold; margin-bottom: 20px;"></p>
                 <p id="lightboxDescription"></p>
                 <div class="lightbox-source" id="lightboxSource"></div>
             </div>
@@ -632,433 +636,342 @@
     </div>
 
     <script>
-        // Wikimedia Commons base URL for public-domain NASA/ESA/ESO imagery
-        const WIKI = "https://commons.wikimedia.org/wiki/Special:FilePath/";
-
         const spaceFacts = [
             // ==================== SOLAR SYSTEM ====================
             {
                 id: 1,
                 title: "The Sun's Core",
+                emoji: "☀️",
                 category: "Solar System",
                 difficulty: "easy",
                 description: "The Sun contains 99.86% of all mass in our Solar System",
-                detail: "The Sun's core temperature reaches 27 million degrees Fahrenheit. 1.3 million Earths could fit inside it! The Sun has been shining for about 4.6 billion years and has enough fuel for another 5 billion.",
-                imageUrl: WIKI + "The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg?width=600",
-                videoId: "GHrsUm-lJhI",
+                detail: "The Sun's core temperature reaches 27 million degrees Fahrenheit. 1.3 million Earths could fit inside it! The Sun has been shining for about 4.6 billion years and has enough fuel for another 5 billion years. Every second, it converts 620 million tons of hydrogen into helium.",
                 timeline: "4.6 Billion Years Ago",
                 source: "NASA Solar Dynamics Observatory",
-                sizeComparison: [
-                    { name: "Earth", size: 30 },
-                    { name: "Sun", size: 300 }
-                ]
+                videoId: "xDkYj87sAkw"
             },
             {
                 id: 2,
                 title: "Mercury: Closest to the Sun",
+                emoji: "🔥",
                 category: "Solar System",
                 difficulty: "easy",
                 description: "The smallest and fastest planet in our Solar System",
-                detail: "Mercury orbits the Sun every 88 Earth days. Despite being closest to the Sun, it's not the hottest planet (Venus is). Mercury has extreme temperature variations from 840°F on the day side to -290°F at night.",
-                imageUrl: WIKI + "Mercury_in_color_-_Prokudin-Gorsky.jpg?width=600",
-                videoId: "VNQtEqaAdFo",
+                detail: "Mercury orbits the Sun every 88 Earth days. Despite being closest to the Sun, it's not the hottest planet (Venus is). Mercury has extreme temperature variations from 840°F on the day side to -290°F at night. Its surface is covered with craters similar to our Moon.",
                 timeline: "4.6 Billion Years Old",
-                source: "NASA MESSENGER Mission"
+                source: "NASA",
+                videoId: "c6n5MvmSCbI"
             },
             {
                 id: 3,
                 title: "Venus: Earth's Evil Twin",
+                emoji: "👻",
                 category: "Solar System",
                 difficulty: "medium",
                 description: "The hottest planet with a runaway greenhouse effect",
-                detail: "Venus has surface temperatures of 900°F (475°C) - hot enough to melt lead! Its atmosphere is 96% carbon dioxide with crushing pressure 92 times that of Earth. It's the only planet that rotates backwards.",
-                imageUrl: WIKI + "Venus_-_December_2_2013.jpg?width=600",
-                videoId: "8bSNkLz_G5U",
+                detail: "Venus has surface temperatures of 900°F (475°C) - hot enough to melt lead! Its atmosphere is 96% carbon dioxide with crushing pressure 92 times that of Earth. It's the only planet that rotates backwards. A day on Venus is longer than its year!",
                 timeline: "4.6 Billion Years Old",
-                source: "NASA Venus Express"
+                source: "NASA",
+                videoId: "qQXIzF4G_KE"
             },
             {
                 id: 4,
                 title: "Mars: The Red Planet",
+                emoji: "🔴",
                 category: "Solar System",
                 difficulty: "easy",
                 description: "Earth's closest planetary neighbor and future exploration target",
-                detail: "Mars has Olympus Mons, the largest volcano in the Solar System - 3 times higher than Mount Everest! It has two small moons (Phobos & Deimos) and evidence of ancient water. A day on Mars is almost the same as Earth (24.6 hours).",
-                imageUrl: WIKI + "OSIRIS_Mars_true_color.jpg?width=600",
-                videoId: "4czjS9h4Fpg",
+                detail: "Mars has Olympus Mons, the largest volcano in the Solar System - 3 times higher than Mount Everest! It has two small moons (Phobos & Deimos) and evidence of ancient water. A day on Mars is almost the same as Earth (24.6 hours), making it ideal for colonization.",
                 timeline: "4.6 Billion Years Old",
                 source: "NASA Mars Reconnaissance Orbiter",
                 sizeComparison: [
                     { name: "Earth", size: 100 },
                     { name: "Mars", size: 50 }
-                ]
+                ],
+                videoId: "FmJK-tEjZA8"
             },
             {
                 id: 5,
                 title: "Jupiter's Great Red Spot",
+                emoji: "🌪️",
                 category: "Solar System",
                 difficulty: "medium",
-                description: "A giant storm larger than Earth, raging for at least 350 years",
-                detail: "This massive storm is big enough to fit 3 Earths inside it! Wind speeds reach 400 mph. The Great Red Spot has been shrinking over time and may eventually disappear.",
-                imageUrl: WIKI + "Jupiter_and_its_shrunken_Great_Red_Spot.jpg?width=600",
-                videoId: "BhNnKK_u350",
+                description: "A giant storm larger than Earth, raging for centuries",
+                detail: "This massive storm is big enough to fit 3 Earths inside it! Wind speeds reach 400 mph. The Great Red Spot has been shrinking over time and was first recorded in the 1600s. It's a truly remarkable atmospheric phenomenon in our solar system.",
                 timeline: "1600s - Present",
                 source: "NASA Juno Mission",
                 sizeComparison: [
                     { name: "Earth", size: 50 },
                     { name: "Jupiter", size: 280 }
-                ]
+                ],
+                videoId: "Qk0x2s3pImI"
             },
             {
                 id: 6,
                 title: "Saturn's Rings",
+                emoji: "💫",
                 category: "Solar System",
                 difficulty: "medium",
-                description: "Billions of ice and rock particles creating a spectacular ring system",
-                detail: "Saturn's rings span 170,000 miles but are only about 30 feet thick! They may have formed from a destroyed moon or captured comet. Each ring particle orbits Saturn independently, like tiny moons.",
-                imageUrl: WIKI + "Saturn_during_Equinox.jpg?width=600",
-                videoId: "ENwQ7-qLlrA",
+                description: "Billions of ice and rock particles in a spectacular system",
+                detail: "Saturn's rings span 170,000 miles but are only about 30 feet thick! They may have formed from a destroyed moon or captured comet. Each ring particle orbits Saturn independently. The rings reflect sunlight beautifully and are visible from Earth with binoculars.",
                 timeline: "Billions of Years Old",
                 source: "NASA Cassini-Huygens Mission",
                 sizeComparison: [
                     { name: "Earth", size: 60 },
                     { name: "Saturn", size: 250 }
-                ]
+                ],
+                videoId: "DH1zBzFhKy4"
             },
             {
                 id: 7,
                 title: "Uranus: The Tilted Ice Giant",
+                emoji: "🎱",
                 category: "Solar System",
                 difficulty: "hard",
                 description: "A frozen planet that rotates on its side",
-                detail: "Uranus is tilted at 98 degrees - it essentially orbits the Sun on its side! This may be due to a massive collision early in the Solar System's formation. It has faint rings and extremely cold temperatures (-224°C).",
-                imageUrl: WIKI + "Uranus_2005.jpg?width=600",
-                videoId: "Oj0Kc25tNVY",
+                detail: "Uranus is tilted at 98 degrees - it essentially orbits the Sun on its side! This may be due to a massive collision early in the Solar System's formation. It has faint rings and extremely cold temperatures (-224°C). Uranus is made of ice and methane.",
                 timeline: "4.6 Billion Years Old",
-                source: "NASA Voyager 2"
+                source: "NASA Voyager 2",
+                videoId: "OLN5h15apWg"
             },
             {
                 id: 8,
                 title: "Neptune: The Windy Ice Giant",
+                emoji: "💨",
                 category: "Solar System",
                 difficulty: "hard",
-                description: "The farthest planet with the strongest winds in the Solar System",
-                detail: "Neptune has wind speeds exceeding 1,200 mph - faster than any other planet! It's a beautiful deep blue color due to methane in its atmosphere. Neptune takes 165 Earth years to orbit the Sun once.",
-                imageUrl: WIKI + "Neptune_-_Voyager_2_%2829033446845%29.jpg?width=600",
-                videoId: "D8K90hx2ONI",
+                description: "The farthest planet with the strongest winds",
+                detail: "Neptune has wind speeds exceeding 1,200 mph - faster than any other planet! It's a beautiful deep blue color due to methane in its atmosphere. Neptune takes 165 Earth years to orbit the Sun once. It was discovered mathematically before being observed!",
                 timeline: "4.6 Billion Years Old",
-                source: "NASA Voyager 2"
+                source: "NASA Voyager 2",
+                videoId: "rGX-KmF6nPY"
             },
             {
                 id: 9,
                 title: "The Moon",
+                emoji: "🌙",
                 category: "Solar System",
                 difficulty: "easy",
-                description: "Earth's only natural satellite, moving 1.5 inches away each year",
-                detail: "The Moon formed about 4.5 billion years ago from a giant collision between Earth and a Mars-sized object. It stabilizes Earth's climate and creates tides. The Moon is the only place humans have walked beyond Earth.",
-                imageUrl: WIKI + "FullMoon2010.jpg?width=600",
-                videoId: "UIKmSQqp8wY",
+                description: "Earth's only natural satellite, moving away each year",
+                detail: "The Moon formed about 4.5 billion years ago from a giant collision between Earth and a Mars-sized object. It stabilizes Earth's climate and creates tides. The Moon is the only place humans have walked beyond Earth, visited by Apollo astronauts.",
                 timeline: "4.5 Billion Years Old",
                 source: "NASA Apollo Missions",
                 sizeComparison: [
                     { name: "Earth", size: 100 },
                     { name: "Moon", size: 30 }
-                ]
-            },
-            {
-                id: 10,
-                title: "Io: The Volcanic Moon",
-                category: "Solar System",
-                difficulty: "medium",
-                description: "Jupiter's moon with the most active volcanism in the Solar System",
-                detail: "Io is constantly erupting with hundreds of active volcanoes! The friction from Jupiter's gravity constantly pulls and stretches Io, generating immense heat. It's the most geologically active place we know of.",
-                imageUrl: WIKI + "Io_highest_resolution_true_color.jpg?width=600",
-                videoId: "1XvC0VDzVS4",
-                timeline: "4.6 Billion Years Old",
-                source: "NASA Galileo Orbiter"
-            },
-            {
-                id: 11,
-                title: "Europa: Ocean Moon",
-                category: "Solar System",
-                difficulty: "hard",
-                description: "Jupiter's moon with a subsurface ocean that may harbor life",
-                detail: "Beneath Europa's icy crust lies an ocean with more water than all of Earth's oceans combined! Scientists believe this hidden ocean could contain microbial life. NASA's Europa Clipper is heading there now.",
-                imageUrl: WIKI + "Europa_%28moon%29.jpg?width=600",
-                videoId: "mRa3F7lS8zQ",
-                timeline: "4.6 Billion Years Old",
-                source: "NASA Galileo Orbiter"
-            },
-            {
-                id: 12,
-                title: "Enceladus: Saturn's Geyser Moon",
-                category: "Solar System",
-                difficulty: "hard",
-                description: "A small moon shooting water geysers into space",
-                detail: "Enceladus has an icy surface with geysers of liquid water erupting from beneath! Like Europa, it may have a subsurface ocean. It's one of the most promising places in our Solar System to search for extraterrestrial life.",
-                imageUrl: WIKI + "Enceladus_and_the_rings_of_Saturn_by_the_Cassini_orbiter_2007-09-15.jpg?width=600",
-                videoId: "JHSJVs-3j0s",
-                timeline: "4.6 Billion Years Old",
-                source: "NASA Cassini-Huygens Mission"
+                ],
+                videoId: "IqgX5RDhLjc"
             },
 
             // ==================== STARS ====================
             {
-                id: 13,
-                title: "Black Holes",
+                id: 10,
+                title: "Black Holes Explained",
+                emoji: "⚫",
                 category: "Stars",
                 difficulty: "hard",
-                description: "Regions where gravity is so strong that nothing, not even light, can escape",
-                detail: "The first image of a black hole was captured in 2019 by the Event Horizon Telescope. Supermassive black holes exist at the centers of most galaxies. Falling into one would result in 'spaghettification' due to extreme tidal forces.",
-                imageUrl: WIKI + "Black_hole_-_Messier_87_crop_max_res.jpg?width=600",
-                videoId: "0RxitCeuokI",
+                description: "Regions where gravity is so strong light cannot escape",
+                detail: "The first image of a black hole was captured in 2019 by the Event Horizon Telescope. Supermassive black holes exist at the centers of most galaxies. Time moves differently near black holes due to extreme gravitational fields. They're created when massive stars collapse.",
                 timeline: "Einstein Predicted (1916)",
-                source: "Event Horizon Telescope Collaboration"
+                source: "Event Horizon Telescope",
+                videoId: "e-P5IFTqB98"
             },
             {
-                id: 14,
-                title: "Neutron Stars: Cosmic Lighthouses",
+                id: 11,
+                title: "Neutron Stars",
+                emoji: "✨",
                 category: "Stars",
                 difficulty: "hard",
-                description: "Incredibly dense stellar remnants from supernova explosions",
-                detail: "A teaspoon of neutron star material would weigh 200 million tons! Some neutron stars (pulsars) spin 716 times per second, emitting beams of radiation like cosmic lighthouses. They're so dense a football field of material would weigh as much as Mount Everest.",
-                imageUrl: WIKI + "Neutron_star_illustrated.jpg?width=600",
-                videoId: "hCwDNXKlN8Q",
+                description: "Incredibly dense stellar remnants from supernovae",
+                detail: "A teaspoon of neutron star material would weigh 200 million tons! Some neutron stars (pulsars) spin 716 times per second. They're so dense that a football field of material would weigh as much as Mount Everest. Neutron stars emit powerful beams of radiation.",
                 timeline: "After Supernova",
-                source: "NASA"
+                source: "NASA",
+                videoId: "J7rHVvbfqdk"
             },
             {
-                id: 15,
+                id: 12,
                 title: "Proxima Centauri",
+                emoji: "⭐",
                 category: "Stars",
                 difficulty: "medium",
-                description: "The nearest star to our Sun, just 4.24 light-years away",
-                detail: "Proxima Centauri is a red dwarf star and may host an Earth-like exoplanet. Light from Proxima takes 4.24 years to reach us, meaning we see it as it was in 2020 today. It's still so far that our fastest spacecraft would take 80,000 years to reach it!",
-                imageUrl: WIKI + "Artist%27s_impression_of_the_planet_orbiting_Proxima_Centauri.jpg?width=600",
-                videoId: "zzuPRkAAaHU",
+                description: "The nearest star to our Sun, 4.24 light-years away",
+                detail: "Proxima Centauri is a red dwarf star and may host an Earth-like exoplanet. Light from Proxima takes 4.24 years to reach us. It's still incredibly far - our fastest spacecraft would take 80,000 years to reach it! It's part of the Alpha Centauri system.",
                 timeline: "4.24 Light-Years Away",
-                source: "ESO - European Southern Observatory"
+                source: "ESO",
+                videoId: "L_8-Vh1cTWs"
             },
             {
-                id: 16,
-                title: "Betelgeuse: The Red Supergiant",
-                category: "Stars",
-                difficulty: "medium",
-                description: "A giant star destined to explode as a supernova",
-                detail: "Betelgeuse is so large that if placed at the Sun's center, it would extend past Jupiter's orbit! This red supergiant is a candidate to explode as a supernova. When it does, it will briefly become brighter than the full Moon.",
-                imageUrl: WIKI + "Betelgeuse_22-23_January_2020.png?width=600",
-                videoId: "isCuLdNiBxQ",
-                timeline: "Ongoing",
-                source: "NASA/ESA"
-            },
-            {
-                id: 17,
+                id: 13,
                 title: "Sirius: The Brightest Star",
+                emoji: "💫",
                 category: "Stars",
                 difficulty: "easy",
                 description: "The brightest star in Earth's night sky",
-                detail: "Sirius is about twice the mass of the Sun and 26 times brighter. It's only 8.6 light-years away. Ancient Egyptians used Sirius's position to predict the annual flooding of the Nile River.",
-                imageUrl: WIKI + "Sirius_A_and_B_artwork.jpg?width=600",
-                videoId: "RjLTD9pK2dA",
+                detail: "Sirius is about twice the mass of the Sun and 26 times brighter. It's only 8.6 light-years away. Ancient Egyptians used Sirius's position to predict the annual flooding of the Nile River. You can easily spot it in the winter sky.",
                 timeline: "Ancient Times - Present",
-                source: "NASA"
+                source: "NASA",
+                videoId: "6pWplPDhfno"
             },
 
             // ==================== GALAXIES ====================
             {
-                id: 18,
+                id: 14,
                 title: "The Milky Way",
+                emoji: "🌌",
                 category: "Galaxies",
                 difficulty: "medium",
-                description: "Our home galaxy containing 100-400 billion stars",
-                detail: "The Milky Way is about 100,000 light-years across. Our Solar System is 26,000 light-years from the galactic center and takes 225-250 million years to orbit it once. We're located in the Orion Arm of the spiral galaxy.",
-                imageUrl: WIKI + "ESO_-_Milky_Way.jpg?width=600",
-                videoId: "Da_Wc_G9ms4",
+                description: "Our home galaxy with 100-400 billion stars",
+                detail: "The Milky Way is about 100,000 light-years across. Our Solar System is 26,000 light-years from the galactic center and takes 225-250 million years to orbit it once. We're located in the Orion Arm. It's a barred spiral galaxy shaped like a pinwheel.",
                 timeline: "13.6 Billion Years Old",
-                source: "ESO - European Southern Observatory",
+                source: "ESO",
                 sizeComparison: [
                     { name: "Solar System", size: 50 },
                     { name: "Milky Way", size: 300 }
-                ]
+                ],
+                videoId: "HGEhYeHr4oU"
             },
             {
-                id: 19,
+                id: 15,
                 title: "Andromeda Galaxy",
+                emoji: "🌀",
                 category: "Galaxies",
                 difficulty: "medium",
                 description: "Our nearest major galaxy, 2.5 million light-years away",
-                detail: "Andromeda is on a collision course with the Milky Way and will collide in about 4.5 billion years. It contains about 1 trillion stars - more than the Milky Way! In the night sky, it's the most distant object visible to the naked eye.",
-                imageUrl: WIKI + "Andromeda_Galaxy_%28with_h-alpha%29.jpg?width=600",
-                videoId: "4disyKG7XtU",
+                detail: "Andromeda is on a collision course with the Milky Way and will collide in about 4.5 billion years, eventually merging into a single galaxy. It contains about 1 trillion stars. In the night sky, it's the most distant object visible to the naked eye.",
                 timeline: "2.5 Million Light-years Away",
-                source: "NASA"
+                source: "NASA",
+                videoId: "0ZLfvDYwCWw"
             },
             {
-                id: 20,
-                title: "The Sombrero Galaxy",
-                category: "Galaxies",
-                difficulty: "medium",
-                description: "A spiral galaxy with a prominent dust lane resembling a hat",
-                detail: "The Sombrero Galaxy is 50,000 light-years in diameter and contains about 100 billion stars. Its distinctive appearance comes from dust lanes and a large central bulge. It's one of the most photogenic galaxies visible through telescopes.",
-                imageUrl: WIKI + "Sombrero_Galaxy_2005.04.24_hhe.jpg?width=600",
-                videoId: "dz3cjm5TDAA",
-                timeline: "29 Million Light-years Away",
-                source: "NASA/Hubble Space Telescope"
-            },
-            {
-                id: 21,
+                id: 16,
                 title: "The Big Bang",
+                emoji: "💥",
                 category: "Galaxies",
                 difficulty: "hard",
-                description: "The universe began about 13.8 billion years ago from an infinitely hot point",
-                detail: "The Big Bang theory is supported by the Cosmic Microwave Background radiation - the afterglow of the universe's birth. From a single point smaller than an atom, the universe expanded and continues expanding today, with galaxies flying apart from each other.",
-                imageUrl: WIKI + "WMAP.jpg?width=600",
-                videoId: "LeUcjqqhNxM",
+                description: "The universe began 13.8 billion years ago",
+                detail: "The Big Bang theory is supported by the Cosmic Microwave Background radiation - the afterglow of the universe's birth. From a single infinitely hot point, the universe expanded and continues expanding today. Galaxies are flying apart from each other due to cosmic expansion.",
                 timeline: "13.8 Billion Years Ago",
-                source: "NASA - Cosmic Microwave Background observations"
+                source: "NASA",
+                videoId: "ZJeDDociNXk"
             },
 
             // ==================== SPACE MISSIONS ====================
             {
-                id: 22,
+                id: 17,
                 title: "Apollo 11: First Moon Landing",
+                emoji: "🚀",
                 category: "Space Missions",
                 difficulty: "easy",
                 description: "Humans first walked on the Moon on July 20, 1969",
-                detail: "Neil Armstrong became the first person to walk on the Moon, followed by Buzz Aldrin. Their footprints remain on the Moon today - there's no wind to erase them. It took only 102 hours to reach the Moon from Earth.",
-                imageUrl: WIKI + "Apollo_11_bootprint_on_lunar_surface.jpg?width=600",
-                videoId: "S7CnqlyUg5s",
+                detail: "Neil Armstrong became the first person to walk on the Moon, followed by Buzz Aldrin. Their footprints remain on the Moon today - there's no wind to erase them. It took only 102 hours to reach the Moon from Earth. Michael Collins orbited above as command module pilot.",
                 timeline: "July 20, 1969",
-                source: "NASA Apollo Program"
+                source: "NASA Apollo Program",
+                videoId: "qWK0QzVcA8E"
             },
             {
-                id: 23,
+                id: 18,
                 title: "Hubble Space Telescope",
+                emoji: "🔭",
                 category: "Space Missions",
                 difficulty: "medium",
-                description: "Humanity's most powerful eye on the universe, orbiting since 1990",
-                detail: "Hubble has revolutionized astronomy with stunning deep-space images. It discovered that the universe is expanding and helped measure its age. The famous 'Deep Field' image showed 10,000 galaxies in an area the size of a grain of sand!",
-                imageUrl: WIKI + "HubbleDeepField.800.jpg?width=600",
-                videoId: "4TmKj8tKX_s",
+                description: "Humanity's most powerful eye on the universe since 1990",
+                detail: "Hubble has revolutionized astronomy with stunning deep-space images. It discovered that the universe is expanding. The famous 'Deep Field' image showed 10,000 galaxies in an area the size of a grain of sand! It's still functioning and providing groundbreaking discoveries.",
                 timeline: "Launched April 24, 1990",
-                source: "NASA/ESA Hubble Space Telescope"
+                source: "NASA/ESA",
+                videoId: "Cs7dVlVBmGQ"
             },
             {
-                id: 24,
-                title: "Voyager Missions: Interstellar Explorers",
+                id: 19,
+                title: "Voyager Missions",
+                emoji: "🛸",
                 category: "Space Missions",
                 difficulty: "medium",
-                description: "Two spacecraft that have traveled beyond our Solar System",
-                detail: "Voyager 1 and 2 were launched in 1977 and are still transmitting data! Voyager 1 is now over 14.5 billion miles from Earth in interstellar space. They carry the Golden Record - a message and music from Earth to any aliens who might find them.",
-                imageUrl: WIKI + "Voyager_1_and_2.jpg?width=600",
-                videoId: "XL5ycLrCGFU",
-                timeline: "Launched August/September 1977",
-                source: "NASA Voyager Missions"
+                description: "Spacecraft that traveled beyond our Solar System",
+                detail: "Voyager 1 and 2 were launched in 1977 and still transmit data! Voyager 1 is over 14.5 billion miles from Earth in interstellar space. They carry the Golden Record with sounds and music from Earth. They're humanity's ambassadors to the cosmos.",
+                timeline: "Launched 1977",
+                source: "NASA",
+                videoId: "HEscPZg-R_A"
             },
             {
-                id: 25,
-                title: "Curiosity & Perseverance: Mars Rovers",
+                id: 20,
+                title: "Mars Rovers: Curiosity & Perseverance",
+                emoji: "🤖",
                 category: "Space Missions",
                 difficulty: "medium",
-                description: "Robotic explorers searching for signs of ancient life on Mars",
-                detail: "Curiosity has been exploring Mars since 2012, discovering evidence of ancient water and organic molecules. Perseverance, which landed in 2021, carries Ingenuity - the first helicopter to fly on another planet!",
-                imageUrl: WIKI + "Curiosity_Self-Potrait_at_Gale_Crater_-_MSL.jpg?width=600",
-                videoId: "3Sx5bM4G8x8",
+                description: "Robotic explorers searching for life on Mars",
+                detail: "Curiosity has explored Mars since 2012, discovering evidence of ancient water. Perseverance, which landed in 2021, carries Ingenuity - the first helicopter to fly on another planet! Both rovers are finding clues about Mars's past habitability.",
                 timeline: "2012 - Present",
-                source: "NASA Mars Exploration Program"
+                source: "NASA",
+                videoId: "p9T8iRk8ySQ"
             },
             {
-                id: 26,
-                title: "James Webb Space Telescope",
-                category: "Space Missions",
-                difficulty: "hard",
-                description: "The most powerful space telescope, succeeding Hubble",
-                detail: "JWST launched in December 2021 and observes the universe in infrared. It can see the most distant galaxies formed shortly after the Big Bang. It's named after former NASA administrator James E. Webb.",
-                imageUrl: WIKI + "JWST_sunshield_deployment_diagram.jpg?width=600",
-                videoId: "aQpjkqq8xNE",
-                timeline: "Launched December 25, 2021",
-                source: "NASA/ESA/CSA James Webb Space Telescope"
-            },
-            {
-                id: 27,
+                id: 21,
                 title: "International Space Station",
+                emoji: "🏢",
                 category: "Space Missions",
                 difficulty: "easy",
-                description: "A habitable artificial satellite orbiting Earth for 20+ years",
-                detail: "The ISS is the largest spacecraft ever built. Astronauts from different nations live and work together there. It orbits Earth every 90 minutes, providing vital research data and stunning photos of our planet.",
-                imageUrl: WIKI + "ISS_Cupola.jpg?width=600",
-                videoId: "CKH1cuHYDIU",
+                description: "A habitable satellite orbiting Earth for 20+ years",
+                detail: "The ISS is the largest spacecraft ever built. Astronauts from different nations live and work together there. It orbits Earth every 90 minutes at 17,500 mph. The ISS provides vital research data and stunning photos of our planet.",
                 timeline: "Since November 20, 1998",
-                source: "NASA/ESA/Roscosmos"
+                source: "NASA/ESA",
+                videoId: "f_Uw5fSDwW4"
             },
 
             // ==================== PHENOMENA ====================
             {
-                id: 28,
+                id: 22,
                 title: "Aurora Borealis: Northern Lights",
+                emoji: "🌌",
                 category: "Phenomena",
                 difficulty: "easy",
-                description: "Natural light displays caused by solar wind interacting with Earth's atmosphere",
-                detail: "Auroras occur when charged particles from the Sun collide with gases in Earth's atmosphere. The green color comes from oxygen. Aurora Borealis appears in the north; Aurora Australis appears in the south. They've been observed for thousands of years.",
-                imageUrl: WIKI + "Aurora_Borealis_Over_the_Midwest.jpg?width=600",
-                videoId: "PBJAR3-UvSQ",
+                description: "Natural light displays from solar wind interactions",
+                detail: "Auroras occur when charged particles from the Sun collide with gases in Earth's atmosphere. The green color comes from oxygen, red from nitrogen. Aurora Borealis appears in the north; Aurora Australis in the south. They're one of nature's most spectacular light shows.",
                 timeline: "Ongoing Phenomenon",
-                source: "NASA Space Weather"
+                source: "NASA",
+                videoId: "gMlK-EBCHhA"
             },
             {
-                id: 29,
-                title: "Solar Flares & Coronal Mass Ejections",
+                id: 23,
+                title: "Solar Flares & CME",
+                emoji: "⚡",
                 category: "Phenomena",
                 difficulty: "medium",
                 description: "Explosive releases of energy from the Sun's surface",
-                detail: "Solar flares can release energy equivalent to millions of nuclear bombs! When directed at Earth, they can disrupt satellites and power grids. The largest recorded flare occurred in 1859 and is known as the Carrington Event.",
-                imageUrl: WIKI + "Solar_flare_and_coronal_mass_ejection.jpg?width=600",
-                videoId: "T4pBzcSx51w",
+                detail: "Solar flares can release energy equivalent to millions of nuclear bombs! When directed at Earth, they can disrupt satellites and power grids. The largest recorded flare occurred in 1859 (Carrington Event). We monitor them constantly for space weather predictions.",
                 timeline: "Ongoing",
-                source: "NASA Solar Dynamics Observatory"
+                source: "NASA",
+                videoId: "wQQpP4RrKn0"
             },
             {
-                id: 30,
-                title: "Exoplanets: Worlds Beyond Our Sun",
+                id: 24,
+                title: "Exoplanets: Worlds Beyond",
+                emoji: "🪐",
                 category: "Phenomena",
                 difficulty: "medium",
                 description: "Over 5,000 planets discovered orbiting distant stars",
-                detail: "The first exoplanet was discovered in 1992. Some are Earth-like and could harbor life. Others are 'hot Jupiters' - massive planets orbiting very close to their stars. NASA's TESS mission has discovered thousands of them.",
-                imageUrl: WIKI + "Exoplanet_Illustration_%282013%29.jpg?width=600",
-                videoId: "Z_KaI-fDJSo",
+                detail: "The first exoplanet was discovered in 1992. Some are Earth-like and could harbor life. Others are 'hot Jupiters' orbiting close to their stars. NASA's TESS mission has discovered thousands. One day we may find alien life on these worlds!",
                 timeline: "First discovered: 1992",
-                source: "NASA Exoplanet Archive"
+                source: "NASA",
+                videoId: "NFXL0k-sVB0"
             },
             {
-                id: 31,
+                id: 25,
                 title: "Supernovae: Stellar Explosions",
+                emoji: "💣",
                 category: "Phenomena",
                 difficulty: "hard",
-                description: "The violent death of stars, briefly outshining entire galaxies",
-                detail: "Type Ia supernovae occur when a white dwarf steals material from a companion star and explodes. Type II occur when massive stars collapse. Supernovae briefly become brighter than the entire galaxy they're in. We use them to measure cosmic distances.",
-                imageUrl: WIKI + "Crab_Nebula.jpg?width=600",
-                videoId: "g8nFdKrfQP4",
+                description: "The violent death of stars, briefly outshining galaxies",
+                detail: "Supernovae briefly become brighter than the entire galaxy they're in. Type Ia occurs when a white dwarf steals material. Type II occurs when massive stars collapse. We use supernovae to measure cosmic distances and study the universe's expansion.",
                 timeline: "Ongoing",
-                source: "NASA"
-            },
-            {
-                id: 32,
-                title: "Gravitational Lensing",
-                category: "Phenomena",
-                difficulty: "hard",
-                description: "Light bending around massive objects due to spacetime distortion",
-                detail: "Einstein predicted that gravity bends light. When light from distant galaxies passes near massive objects like clusters of galaxies, it bends and magnifies. This acts as a natural telescope for distant objects.",
-                imageUrl: WIKI + "Gravitational_lens-full.jpg?width=600",
-                videoId: "kEQ7yq2gQx4",
-                timeline: "Predicted: 1915, Observed: 1919",
-                source: "NASA/ESA"
+                source: "NASA",
+                videoId: "p2kJbKhPAqQ"
             }
         ];
 
         let currentFilter = 'all';
 
-        function placeholderImage(category) {
-            return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='220'%3E%3Crect fill='%23001a4d' width='400' height='220'/%3E%3Crect fill='%23003d99' x='0' y='0' width='400' height='110'/%3E%3Ctext x='200' y='110' text-anchor='middle' dy='.3em' fill='%2300d4ff' font-size='24' font-weight='bold'%3E${category}%3C/text%3E%3C/svg%3E`;
+        function generatePlaceholder(emoji) {
+            return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='220'%3E%3Crect fill='%23001a4d' width='400' height='220'/%3E%3Ctext x='200' y='120' text-anchor='middle' font-size='120'%3E${emoji}%3C/text%3E%3C/svg%3E`;
         }
 
         function filterCategory(category) {
@@ -1082,14 +995,13 @@
             }
 
             for (const fact of filtered) {
-                const imageUrl = fact.imageUrl;
+                const placeholder = generatePlaceholder(fact.emoji);
 
                 const card = document.createElement('div');
                 card.className = 'fact-card';
                 card.innerHTML = `
                     <div class="fact-image-wrapper">
-                        <img src="${imageUrl}" alt="${fact.title}" loading="lazy"
-                             onerror="this.src='${placeholderImage(fact.category)}'">
+                        <img src="${placeholder}" alt="${fact.title}" loading="lazy">
                         <div class="image-overlay">
                             <div class="zoom-icon">🔍</div>
                         </div>
@@ -1103,8 +1015,8 @@
                         <p class="fact-text">${fact.description}</p>
                         <p class="source-credit">📚 ${fact.source}</p>
                         <div class="fact-actions">
-                            <button class="action-btn" onclick="openLightbox('${imageUrl}', '${fact.title}', '${fact.detail.replace(/'/g, "\\'")}', '${fact.source}')">View Image</button>
-                            <button class="action-btn" onclick="showFactDetail(${fact.id})">Learn More</button>
+                            <button class="action-btn" onclick="openLightbox('${fact.emoji}', '${fact.title}', '${fact.detail.replace(/'/g, "\\'")}', '${fact.source}')">View</button>
+                            <button class="action-btn" onclick="showVideo('${fact.videoId}')">Video</button>
                         </div>
                     </div>
                 `;
@@ -1112,9 +1024,9 @@
             }
         }
 
-        function openLightbox(imageUrl, title, description, source) {
+        function openLightbox(emoji, title, description, source) {
             document.getElementById('lightbox').classList.add('active');
-            document.getElementById('lightboxImage').src = imageUrl;
+            document.getElementById('lightboxEmoji').textContent = emoji;
             document.getElementById('lightboxTitle').textContent = title;
             document.getElementById('lightboxDescription').textContent = description;
             document.getElementById('lightboxSource').textContent = `Source: ${source}`;
@@ -1124,9 +1036,12 @@
             document.getElementById('lightbox').classList.remove('active');
         }
 
-        function showFactDetail(factId) {
-            const fact = spaceFacts.find(f => f.id === factId);
-            alert(`${fact.title}\n\nCategory: ${fact.category}\nDifficulty: ${fact.difficulty.toUpperCase()}\n\n${fact.detail}\n\nSource: ${fact.source}\n\nVideo: youtube.com/watch?v=${fact.videoId}`);
+        function showVideo(videoId) {
+            if (!videoId) {
+                alert('Video not available for this fact');
+                return;
+            }
+            window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
         }
 
         function switchView(view) {
@@ -1146,6 +1061,7 @@
                 <div class="timeline-item">
                     <div class="timeline-marker">${index + 1}</div>
                     <div class="timeline-content">
+                        <div style="font-size: 60px; margin-bottom: 10px;">${fact.emoji}</div>
                         <div class="timeline-title">${fact.title}</div>
                         <p class="fact-text"><strong>Category:</strong> ${fact.category}</p>
                         <p class="fact-text">${fact.description}</p>
@@ -1153,8 +1069,19 @@
                         <p class="fact-text">${fact.detail}</p>
                         <p class="source-credit">📚 Source: ${fact.source}</p>
                         ${fact.videoId ? `
-                            <div class="video-container">
-                                <iframe src="https://www.youtube.com/embed/${fact.videoId}" allowfullscreen></iframe>
+                            <div style="margin-top: 15px;">
+                                <a href="https://www.youtube.com/watch?v=${fact.videoId}" target="_blank" class="action-btn" style="display: inline-block;">Watch Video</a>
+                            </div>
+                        ` : ''}
+                        ${fact.sizeComparison ? `
+                            <div class="size-comparison">
+                                ${fact.sizeComparison.map(item => `
+                                    <div class="size-item">
+                                        <div class="size-bar" style="height: ${item.size}px;"></div>
+                                        <div class="size-label">${item.name}</div>
+                                        <div class="size-value">(relative scale)</div>
+                                    </div>
+                                `).join('')}
                             </div>
                         ` : ''}
                     </div>
