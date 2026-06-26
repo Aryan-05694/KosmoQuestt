@@ -13,30 +13,231 @@
         }
 
         :root {
-            --bg: #050814;
-            --text: white;
-            --nav-bg: rgba(5, 8, 20, .9);
-            --text-secondary: #94a3b8;
-            --accent: #60a5fa;
-            --card-bg: rgba(17, 24, 39, .75);
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151932;
+            --bg-tertiary: #1a1f3a;
+            --text: #e0e6ff;
+            --text-secondary: #b0b8d4;
+            --accent: #00d4ff;
+            --accent-alt: #ff00ff;
+            --card-bg: rgba(25, 30, 55, 0.6);
+            --glow-color: rgba(0, 212, 255, 0.3);
         }
 
         .light-theme {
-            --bg: #f5f7ff;
-            --text: #111827;
-            --nav-bg: rgba(255, 255, 255, .9);
-            --text-secondary: #5a6b7a;
-            --accent: #2563eb;
-            --card-bg: #ffffff;
+            --bg-primary: #f0f4ff;
+            --bg-secondary: #e8ecff;
+            --bg-tertiary: #dfe5ff;
+            --text: #1a1f3a;
+            --text-secondary: #4a5578;
+            --accent: #0084d4;
+            --accent-alt: #d400d4;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --glow-color: rgba(0, 132, 212, 0.2);
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
+            background: var(--bg-primary);
             color: var(--text);
             line-height: 1.8;
-            transition: 0.3s ease;
+            transition: background 0.3s ease;
+            overflow-x: hidden;
+            position: relative;
         }
+
+        /* STARFIELD BACKGROUND */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 60px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 50px 50px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 10px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 5s infinite;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        /* NEBULA BACKGROUND */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 20%, rgba(255, 0, 200, 0.08) 0%, transparent 50%),
+                linear-gradient(180deg, rgba(10, 14, 39, 0.9) 0%, rgba(10, 14, 39, 0.7) 50%, rgba(10, 14, 39, 0.9) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes twinkle-slow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; filter: blur(2px); }
+            50% { opacity: 1; filter: blur(4px); }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px) rotateZ(0deg); }
+            50% { transform: translateY(-15px) rotateZ(5deg); }
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(0, 212, 255, 0.4),
+                            0 0 20px rgba(0, 212, 255, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(0, 212, 255, 0.6),
+                            0 0 40px rgba(0, 212, 255, 0.4),
+                            inset 0 0 10px rgba(0, 212, 255, 0.1);
+            }
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(50px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes meteor {
+            0% {
+                transform: translateX(-100px) translateY(-100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(300px) translateY(300px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes cosmic-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* PARTICLES */
+        .cosmic-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(0, 212, 255, 0.8);
+            border-radius: 50%;
+            animation: float-particle linear infinite;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-duration: 8s; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 30%; animation-duration: 12s; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 40%; animation-duration: 9s; animation-delay: 1s; }
+        .particle:nth-child(5) { left: 50%; animation-duration: 11s; animation-delay: 3s; }
+        .particle:nth-child(6) { left: 60%; animation-duration: 13s; animation-delay: 5s; }
+        .particle:nth-child(7) { left: 70%; animation-duration: 10s; animation-delay: 2s; }
+        .particle:nth-child(8) { left: 80%; animation-duration: 12s; animation-delay: 4s; }
+        .particle:nth-child(9) { left: 90%; animation-duration: 8s; animation-delay: 1s; }
 
         /* NAVBAR */
         .navbar {
@@ -44,12 +245,15 @@
             justify-content: space-between;
             align-items: center;
             padding: 16px 40px;
-            background: var(--nav-bg);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            background: linear-gradient(180deg, rgba(10, 14, 39, 0.95) 0%, rgba(21, 25, 50, 0.85) 100%);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+            border-image: linear-gradient(90deg, rgba(0, 212, 255, 0.5), rgba(255, 0, 200, 0.3)) 1;
             position: sticky;
             top: 0;
             z-index: 100;
+            animation: slideInDown 0.6s ease;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
         }
 
         .logo {
@@ -63,11 +267,19 @@
         .logo img {
             height: 45px;
             width: auto;
+            animation: float-slow 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.6));
         }
 
         .logo-text h2 {
             font-size: 24px;
             line-height: 1.1;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            letter-spacing: 2px;
         }
 
         .tagline {
@@ -76,6 +288,9 @@
             letter-spacing: .06em;
             display: block;
             margin-top: 2px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
         .nav-links {
@@ -92,17 +307,37 @@
             border-radius: 8px;
             font-size: 14px;
             transition: .2s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+            transition: left 0.4s ease;
+            z-index: -1;
         }
 
         .nav-links a:hover {
-            background: rgba(255, 255, 255, .08);
-            color: var(--text);
+            color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .nav-links a:hover::before {
+            left: 100%;
         }
 
         #themeToggle {
-            background: rgba(255, 255, 255, .08);
-            border: none;
-            color: var(--text);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 200, 0.2));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: var(--accent);
             font-size: 16px;
             cursor: pointer;
             padding: 8px 12px;
@@ -111,13 +346,17 @@
         }
 
         #themeToggle:hover {
-            background: rgba(255, 255, 255, .15);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.4), rgba(255, 0, 200, 0.4));
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+            transform: rotate(20deg);
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
+            position: relative;
+            z-index: 1;
         }
 
         /* HEADER */
@@ -126,12 +365,30 @@
             margin-bottom: 50px;
             padding-bottom: 30px;
             border-bottom: 2px solid var(--accent);
+            animation: fadeInDown 0.8s ease;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(255, 0, 200, 0.05));
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.1);
         }
 
         .page-header h1 {
             font-size: 3.5em;
             margin-bottom: 15px;
-            color: var(--accent);
+            background: linear-gradient(135deg, #00d4ff, #ff00ff, #00d4ff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: float-slow 4s ease-in-out infinite, gradient-shift 3s ease infinite;
+            font-weight: 900;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            letter-spacing: -2px;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         .page-header p {
@@ -139,21 +396,30 @@
             color: var(--text-secondary);
             max-width: 700px;
             margin: 0 auto;
+            animation: fadeInUp 0.8s ease 0.2s both;
+            font-weight: 300;
+            letter-spacing: 1px;
         }
 
         /* TABLE OF CONTENTS */
         .toc-section {
-            background: var(--card-bg);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 0, 200, 0.05));
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 20px;
             margin-bottom: 50px;
-            border: 1px solid rgba(96, 165, 250, .2);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            animation: fadeInUp 0.8s ease 0.3s both;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.1),
+                        inset 0 1px 0 rgba(0, 212, 255, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         .toc-section h2 {
             color: var(--accent);
             margin-bottom: 20px;
             font-size: 1.5em;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+            letter-spacing: 2px;
         }
 
         .toc-grid {
@@ -164,29 +430,61 @@
 
         .toc-item {
             padding: 15px;
-            background: rgba(96, 165, 250, .05);
-            border-radius: 8px;
-            border-left: 4px solid var(--accent);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 200, 0.05));
+            border-radius: 12px;
+            border: 2px solid var(--accent);
             cursor: pointer;
-            transition: .3s;
+            transition: .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: fadeInUp 0.6s ease backwards;
+            position: relative;
+            overflow: hidden;
         }
 
+        .toc-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .toc-item:nth-child(1) { animation-delay: 0.3s; }
+        .toc-item:nth-child(2) { animation-delay: 0.4s; }
+        .toc-item:nth-child(3) { animation-delay: 0.5s; }
+        .toc-item:nth-child(4) { animation-delay: 0.6s; }
+        .toc-item:nth-child(5) { animation-delay: 0.7s; }
+        .toc-item:nth-child(6) { animation-delay: 0.8s; }
+
         .toc-item:hover {
-            background: rgba(96, 165, 250, .12);
-            transform: translateX(5px);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 200, 0.1));
+            transform: translateX(5px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3),
+                        inset 0 1px 0 rgba(0, 212, 255, 0.3);
+            border-color: var(--accent-alt);
+        }
+
+        .toc-item:hover::before {
+            left: 100%;
         }
 
         .toc-item a {
             text-decoration: none;
             color: var(--text);
             font-weight: 600;
+            position: relative;
+            z-index: 1;
         }
 
         /* FACT SECTIONS */
         .fact-section {
             margin-bottom: 60px;
-            padding-bottom: 40px;
-            border-bottom: 1px solid rgba(96, 165, 250, .2);
+            padding: 40px 0;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
         }
 
         .fact-section:last-child {
@@ -195,30 +493,91 @@
 
         .section-title {
             font-size: 2.5em;
-            color: var(--accent);
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 10px;
             margin-top: 40px;
+            position: relative;
+            display: inline-block;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-alt));
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+            animation: slideInRight 0.8s ease forwards;
         }
 
         .section-subtitle {
             color: var(--text-secondary);
             font-size: 1.1em;
             margin-bottom: 30px;
+            animation: fadeInUp 0.6s ease 0.2s both;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-top: 20px;
         }
 
         /* FACT CARDS */
         .fact-card {
-            background: var(--card-bg);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 0, 200, 0.04));
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 16px;
             margin-bottom: 25px;
-            border: 1px solid rgba(96, 165, 250, .2);
-            transition: .3s;
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            transition: .4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: fadeInUp 0.6s ease backwards;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
+        .fact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+            z-index: 1;
+        }
+
+        .fact-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.05), transparent);
+            pointer-events: none;
+        }
+
+        .fact-card:nth-child(1) { animation-delay: 0s; }
+        .fact-card:nth-child(2) { animation-delay: 0.1s; }
+        .fact-card:nth-child(3) { animation-delay: 0.2s; }
+        .fact-card:nth-child(4) { animation-delay: 0.3s; }
+        .fact-card:nth-child(5) { animation-delay: 0.4s; }
+
         .fact-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(96, 165, 250, .15);
+            border-color: var(--accent-alt);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(255, 0, 200, 0.08));
+            box-shadow: 0 15px 50px rgba(0, 212, 255, 0.2),
+                        0 0 30px rgba(255, 0, 200, 0.1),
+                        inset 0 1px 0 rgba(0, 212, 255, 0.2);
+            transform: translateY(-8px);
         }
 
         .fact-card h3 {
@@ -228,28 +587,60 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
         }
 
         .fact-emoji {
             font-size: 1.5em;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
         }
 
         .fact-card p {
             color: var(--text-secondary);
             margin-bottom: 15px;
             line-height: 1.8;
+            position: relative;
+            z-index: 2;
+            font-weight: 300;
         }
 
-        .fact-detail {
-            background: rgba(96, 165, 250, .05);
-            padding: 20px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid var(--accent);
+        /* MEDIA CONTAINER */
+        .media-container {
+            margin: 20px 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 212, 255, 0.2),
+                        0 0 30px rgba(255, 0, 200, 0.1);
+            animation: fadeInUp 0.8s ease;
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            position: relative;
         }
 
-        .fact-detail strong {
+        .media-container img,
+        .media-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .media-container:hover img,
+        .media-container:hover video {
+            transform: scale(1.03);
+        }
+
+        .media-caption {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(255, 0, 200, 0.08));
+            padding: 15px;
             color: var(--accent);
+            font-size: 0.95em;
+            text-align: center;
+            border-top: 2px solid rgba(0, 212, 255, 0.2);
+            font-weight: 500;
         }
 
         /* STATISTICS */
@@ -261,23 +652,59 @@
         }
 
         .stat-item {
-            background: rgba(96, 165, 250, .1);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 200, 0.05));
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             text-align: center;
-            border: 1px solid rgba(96, 165, 250, .2);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            transition: .3s;
+            animation: fadeInUp 0.6s ease backwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, var(--accent), var(--accent-alt), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+            animation: none;
+        }
+
+        .stat-item:nth-child(1) { animation-delay: 0s; }
+        .stat-item:nth-child(2) { animation-delay: 0.1s; }
+        .stat-item:nth-child(3) { animation-delay: 0.2s; }
+        .stat-item:nth-child(4) { animation-delay: 0.3s; }
+
+        .stat-item:hover {
+            border-color: var(--accent-alt);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2),
+                        0 0 20px rgba(255, 0, 200, 0.15);
+            transform: translateY(-8px) scale(1.05);
         }
 
         .stat-value {
             font-size: 2em;
             font-weight: bold;
-            color: var(--accent);
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
         }
 
         .stat-label {
             color: var(--text-secondary);
             font-size: 0.95em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* COMPARISON TABLE */
@@ -285,41 +712,71 @@
             width: 100%;
             border-collapse: collapse;
             margin: 30px 0;
-            background: var(--card-bg);
-            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 0, 200, 0.04));
+            border-radius: 12px;
             overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
         }
 
         .comparison-table th {
-            background: var(--accent);
-            color: #000;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            color: var(--bg-primary);
             padding: 15px;
             text-align: left;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
         }
 
         .comparison-table td {
             padding: 15px;
-            border-bottom: 1px solid rgba(96, 165, 250, .2);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            transition: background-color 0.3s ease;
+            color: var(--text-secondary);
         }
 
         .comparison-table tr:hover {
-            background: rgba(96, 165, 250, .05);
+            background: rgba(0, 212, 255, 0.08);
+        }
+
+        .comparison-table tr:hover td {
+            color: var(--accent);
         }
 
         /* KEY FACTS BOX */
         .key-facts {
-            background: linear-gradient(135deg, rgba(96, 165, 250, .15), rgba(59, 130, 246, .1));
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(255, 0, 200, 0.08));
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 16px;
             border: 2px solid var(--accent);
             margin: 30px 0;
+            animation: slideInLeft 0.8s ease;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.15),
+                        inset 0 1px 0 rgba(0, 212, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .key-facts::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-alt), transparent);
         }
 
         .key-facts h4 {
             color: var(--accent);
             margin-bottom: 15px;
             font-size: 1.2em;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .key-facts ul {
@@ -332,14 +789,52 @@
             padding: 8px 0;
             padding-left: 25px;
             position: relative;
+            animation: fadeInUp 0.5s ease backwards;
+            font-weight: 300;
         }
 
+        .key-facts li:nth-child(1) { animation-delay: 0.1s; }
+        .key-facts li:nth-child(2) { animation-delay: 0.2s; }
+        .key-facts li:nth-child(3) { animation-delay: 0.3s; }
+        .key-facts li:nth-child(4) { animation-delay: 0.4s; }
+        .key-facts li:nth-child(5) { animation-delay: 0.5s; }
+        .key-facts li:nth-child(6) { animation-delay: 0.6s; }
+
         .key-facts li:before {
-            content: "✓";
+            content: "⭐";
             position: absolute;
             left: 0;
             color: var(--accent);
             font-weight: bold;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        /* FACT DETAIL BOX */
+        .fact-detail {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 0, 200, 0.03));
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent);
+            animation: slideInLeft 0.6s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fact-detail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1), transparent);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .fact-detail strong {
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
         }
 
         /* BACK TO TOP */
@@ -349,8 +844,8 @@
             right: 20px;
             width: 50px;
             height: 50px;
-            background: var(--accent);
-            color: #000;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            color: var(--bg-primary);
             border: none;
             border-radius: 50%;
             font-size: 1.5em;
@@ -360,11 +855,15 @@
             justify-content: center;
             transition: .3s;
             z-index: 100;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+            font-weight: bold;
         }
 
         .scroll-to-top:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(96, 165, 250, .4);
+            transform: translateY(-5px) scale(1.15);
+            box-shadow: 0 15px 50px rgba(0, 212, 255, 0.6),
+                        0 0 30px rgba(255, 0, 200, 0.3);
+            animation: glow-pulse 1.5s ease-in-out;
         }
 
         /* RESPONSIVE */
@@ -405,13 +904,35 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Prefers reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- COSMIC PARTICLES -->
+    <div class="cosmic-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
     <!-- NAVBAR -->
     <nav class="navbar">
         <a href="/" class="logo">
-            <img src="/logo_1.png" alt="KosmoQuestt Logo" onerror="this.style.display='none'">
+            <img src="https://via.placeholder.com/45x45?text=🚀" alt="KosmoQuestt Logo">
             <div class="logo-text">
                 <h2>KosmoQuestt</h2>
                 <span class="tagline">Exploring Beyond The Horizon!</span>
@@ -428,7 +949,7 @@
     <div class="container">
         <!-- PAGE HEADER -->
         <div class="page-header">
-            <h1>🚀 Outer Space </h1>
+            <h1>🚀 Outer Space</h1>
             <p>Discover fascinating facts about our universe, planets, stars, galaxies, and space exploration</p>
         </div>
 
@@ -452,6 +973,12 @@
 
             <div class="fact-card">
                 <h3><span class="fact-emoji">☀️</span> The Sun</h3>
+                
+                <div class="media-container">
+                    <img src="https://images.unsplash.com/photo-1464207687429-7505649dae38?w=600&h=400&fit=crop" alt="The Sun - massive ball of hot plasma">
+                    <div class="media-caption">The Sun: Our Star at the Center of the Solar System</div>
+                </div>
+
                 <p>The Sun is a massive ball of hot plasma held together by its own gravity. It is the central star of our solar system and contains 99.86% of all the mass in the entire solar system.</p>
                 
                 <div class="key-facts">
@@ -472,6 +999,12 @@
 
             <div class="fact-card">
                 <h3><span class="fact-emoji">🔥</span> Solar System Formation</h3>
+                
+                <div class="media-container">
+                    <img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=400&fit=crop" alt="Solar System Formation">
+                    <div class="media-caption">Animation: Solar System Formation Over Time</div>
+                </div>
+
                 <p>The solar system formed approximately 4.6 billion years ago from the gravitational collapse of a giant interstellar molecular cloud.</p>
                 
                 <div class="key-facts">
@@ -585,6 +1118,10 @@
 
             <div class="fact-card">
                 <h3><span class="fact-emoji">🔴</span> Mars: The Red Planet</h3>
+                <div class="media-container">
+                    <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=600&h=400&fit=crop" alt="Mars - The Red Planet">
+                    <div class="media-caption">Mars: Earth's Closest Planetary Neighbor</div>
+                </div>
                 <p>Mars is Earth's closest planetary neighbor and the primary focus of current space exploration efforts.</p>
                 
                 <div class="key-facts">
@@ -601,24 +1138,11 @@
             </div>
 
             <div class="fact-card">
-                <h3><span class="fact-emoji">💫</span> Jupiter: The Gas Giant</h3>
-                <p>Jupiter is the largest planet in our solar system and a true giant of the cosmos.</p>
-                
-                <div class="key-facts">
-                    <h4>Jupiter's Amazing Features:</h4>
-                    <ul>
-                        <li>Great Red Spot: A storm larger than Earth raging for 350+ years</li>
-                        <li>79 known moons, including 4 Galilean moons</li>
-                        <li>Powerful magnetic field</li>
-                        <li>Faint ring system</li>
-                        <li>Rotates once every 10 hours</li>
-                        <li>Strong auroras at the poles</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="fact-card">
                 <h3><span class="fact-emoji">💫</span> Saturn: The Ringed Beauty</h3>
+                <div class="media-container">
+                    <img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=400&fit=crop" alt="Saturn with its ring system">
+                    <div class="media-caption">Saturn: The Most Visually Striking Planet</div>
+                </div>
                 <p>Saturn is famous for its spectacular and extensive ring system, making it the most visually striking planet.</p>
                 
                 <div class="key-facts">
@@ -642,6 +1166,10 @@
 
             <div class="fact-card">
                 <h3><span class="fact-emoji">⭐</span> What Are Stars?</h3>
+                <div class="media-container">
+                    <img src="https://images.unsplash.com/photo-1543722530-d2c3201371e7?w=600&h=400&fit=crop" alt="Stars in the night sky">
+                    <div class="media-caption">Stars: Cosmic Furnaces of Light and Energy</div>
+                </div>
                 <p>Stars are massive luminous spheres of plasma held together by gravity, powered by nuclear fusion in their cores.</p>
                 
                 <div class="key-facts">
@@ -673,23 +1201,6 @@
                     </ul>
                 </div>
             </div>
-
-            <div class="fact-card">
-                <h3><span class="fact-emoji">✨</span> Neutron Stars</h3>
-                <p>Neutron stars are incredibly dense stellar remnants left behind after supernova explosions.</p>
-                
-                <div class="key-facts">
-                    <h4>Neutron Star Properties:</h4>
-                    <ul>
-                        <li>A teaspoon of material weighs 200 million tons</li>
-                        <li>Some spin 716 times per second (pulsars)</li>
-                        <li>Emit powerful beams of radiation</li>
-                        <li>Among the densest objects in universe</li>
-                        <li>Used as cosmic timekeepers</li>
-                        <li>Can merge to create gravitational waves</li>
-                    </ul>
-                </div>
-            </div>
         </div>
 
         <!-- GALAXIES SECTION -->
@@ -699,6 +1210,10 @@
 
             <div class="fact-card">
                 <h3><span class="fact-emoji">🌌</span> The Milky Way</h3>
+                <div class="media-container">
+                    <img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=400&fit=crop" alt="The Milky Way galaxy">
+                    <div class="media-caption">The Milky Way: Our Home Galaxy</div>
+                </div>
                 <p>Our home galaxy is a large barred spiral galaxy containing between 100 and 400 billion stars.</p>
                 
                 <div class="key-facts">
@@ -730,23 +1245,6 @@
                     </ul>
                 </div>
             </div>
-
-            <div class="fact-card">
-                <h3><span class="fact-emoji">💥</span> The Big Bang</h3>
-                <p>The Big Bang theory describes the origin of the universe as we know it, occurring approximately 13.8 billion years ago.</p>
-                
-                <div class="key-facts">
-                    <h4>Big Bang Theory:</h4>
-                    <ul>
-                        <li>Universe began from an infinitely hot point</li>
-                        <li>Supported by cosmic microwave background radiation</li>
-                        <li>Universe continues expanding today</li>
-                        <li>Galaxies are flying apart from each other</li>
-                        <li>Space and time created at Big Bang</li>
-                        <li>Universe age calculated from expansion rate</li>
-                    </ul>
-                </div>
-            </div>
         </div>
 
         <!-- SPACE MISSIONS SECTION -->
@@ -756,6 +1254,10 @@
 
             <div class="fact-card">
                 <h3><span class="fact-emoji">🚀</span> Apollo 11: First Moon Landing</h3>
+                <div class="media-container">
+                    <img src="https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=600&h=400&fit=crop" alt="Apollo 11 moon landing">
+                    <div class="media-caption">Apollo 11: Humanity's First Steps on the Moon</div>
+                </div>
                 <p>On July 20, 1969, humans set foot on the Moon for the first time, achieving one of humanity's greatest accomplishments.</p>
                 
                 <div class="key-facts">
@@ -767,23 +1269,6 @@
                         <li>Journey time: 102 hours to the Moon</li>
                         <li>Moon surface time: 21.5 hours</li>
                         <li>Collected 47.5 pounds of lunar samples</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="fact-card">
-                <h3><span class="fact-emoji">🔭</span> Hubble Space Telescope</h3>
-                <p>Launched in 1990, the Hubble Space Telescope has revolutionized astronomy and provided unprecedented views of the universe.</p>
-                
-                <div class="key-facts">
-                    <h4>Hubble's Achievements:</h4>
-                    <ul>
-                        <li>Determined age of the universe more precisely</li>
-                        <li>Discovered that universe is expanding</li>
-                        <li>Hubble Deep Field: 10,000 galaxies in tiny area</li>
-                        <li>Still operational and producing discoveries</li>
-                        <li>Over 1.4 million observations made</li>
-                        <li>Paved way for modern space telescopes</li>
                     </ul>
                 </div>
             </div>
@@ -801,97 +1286,6 @@
                         <li>Fastest human-made objects</li>
                         <li>Visited all four giant planets</li>
                         <li>Now in interstellar space</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="fact-card">
-                <h3><span class="fact-emoji">🤖</span> Mars Rovers</h3>
-                <p>Curiosity and Perseverance rovers have been exploring Mars, searching for evidence of past life and studying the planet's geology.</p>
-                
-                <div class="key-facts">
-                    <h4>Mars Rover Achievements:</h4>
-                    <ul>
-                        <li>Curiosity operating since 2012</li>
-                        <li>Found evidence of ancient water</li>
-                        <li>Perseverance carries Ingenuity helicopter</li>
-                        <li>First aircraft flight on another planet</li>
-                        <li>Studying Mount Sharp on Mars</li>
-                        <li>Collecting samples for future return to Earth</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- PHENOMENA SECTION -->
-        <div class="fact-section" id="phenomena">
-            <h2 class="section-title">⚡ Space Phenomena</h2>
-            <p class="section-subtitle">Amazing cosmic events and processes</p>
-
-            <div class="fact-card">
-                <h3><span class="fact-emoji">🌌</span> Aurora Borealis (Northern Lights)</h3>
-                <p>The Aurora Borealis is a natural light display in the sky, caused by the interaction of solar wind with Earth's atmosphere.</p>
-                
-                <div class="key-facts">
-                    <h4>Aurora Facts:</h4>
-                    <ul>
-                        <li>Caused by charged particles from the Sun</li>
-                        <li>Green color comes from oxygen atoms</li>
-                        <li>Red colors from nitrogen atoms</li>
-                        <li>Aurora Australis is southern equivalent</li>
-                        <li>More active during solar maximums</li>
-                        <li>Visible from high latitudes</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="fact-card">
-                <h3><span class="fact-emoji">⚡</span> Solar Flares & CME</h3>
-                <p>Solar flares and coronal mass ejections are powerful eruptions of energy and particles from the Sun's surface.</p>
-                
-                <div class="key-facts">
-                    <h4>Solar Activity Facts:</h4>
-                    <ul>
-                        <li>Energy equivalent to millions of nuclear bombs</li>
-                        <li>Can disrupt satellites and power grids</li>
-                        <li>Largest recorded: Carrington Event (1859)</li>
-                        <li>Ejected particles reach Earth in 1-3 days</li>
-                        <li>Monitored by space weather agencies</li>
-                        <li>Occur in 11-year solar cycles</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="fact-card">
-                <h3><span class="fact-emoji">🪐</span> Exoplanets</h3>
-                <p>Over 5,500 exoplanets have been discovered orbiting distant stars, with more being found regularly.</p>
-                
-                <div class="key-facts">
-                    <h4>Exoplanet Facts:</h4>
-                    <ul>
-                        <li>First discovered in 1992</li>
-                        <li>Some Earth-like and potentially habitable</li>
-                        <li>Hot Jupiters orbit very close to stars</li>
-                        <li>Detection methods: transit and radial velocity</li>
-                        <li>TESS mission discovering thousands</li>
-                        <li>Potential candidates for future exploration</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="fact-card">
-                <h3><span class="fact-emoji">💣</span> Supernovae</h3>
-                <p>Supernovae are violent stellar explosions that briefly outshine entire galaxies, briefly becoming as bright as billions of stars.</p>
-                
-                <div class="key-facts">
-                    <h4>Supernova Facts:</h4>
-                    <ul>
-                        <li>Type Ia: white dwarf steals material from companion</li>
-                        <li>Type II: massive star core collapse</li>
-                        <li>Used to measure cosmic distances</li>
-                        <li>Create and scatter heavy elements</li>
-                        <li>Energy comparable to Sun's lifetime output</li>
-                        <li>Visible from Earth without telescope</li>
                     </ul>
                 </div>
             </div>
@@ -933,6 +1327,25 @@
                     target.scrollIntoView({ behavior: 'smooth' });
                 }
             });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fact-section').forEach(section => {
+            observer.observe(section);
         });
     </script>
 </body>
