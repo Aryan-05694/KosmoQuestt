@@ -610,7 +610,7 @@
 
         /* MEDIA CONTAINER */
         .media-container {
-            margin: 20px 0;
+            margin: 20px auto;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 15px 50px rgba(0, 212, 255, 0.2),
@@ -618,6 +618,8 @@
             animation: fadeInUp 0.8s ease;
             border: 2px solid rgba(0, 212, 255, 0.2);
             position: relative;
+            max-width: 600px;
+            width: 100%;
         }
 
         .media-container img,
@@ -903,6 +905,11 @@
             .toc-grid {
                 grid-template-columns: 1fr;
             }
+
+            /* Make images even smaller on mobile */
+            .media-container {
+                max-width: 90%;
+            }
         }
 
         /* Prefers reduced motion */
@@ -1187,7 +1194,10 @@
 
             <div class="fact-card">
                 <h3><span class="fact-emoji">⚫</span> Black Holes</h3>
-                <img src="/images/black-hole.jpg" alt="Black Hole">
+                <div class="media-container">
+                    <img src="/images/black-hole.jpg" alt="Black Hole">
+                    <div class="media-caption">Black Holes: Points of No Return</div>
+                </div>
                 <p>Black holes are the most extreme objects in the universe - regions where gravity is so strong that nothing, not even light, can escape.</p>
                 
                 <div class="key-facts">
