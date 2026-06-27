@@ -441,6 +441,46 @@ app.delete("/images/:id", isLoggedIn, async (req, res) => {
 });
 
 /* =======================
+   UPDATE IMAGE CAPTION (NEW)
+======================= */
+app.put("/api/images/:id", isLoggedIn, async (req, res) => {
+    try {
+        const { caption } = req.body;
+        const imageId = req.params.id;
+        const userId = req.user.id;
+
+        if (caption === undefined || caption === null) {
+            return res.status(400).json({ error: 'Caption is required' });
+        }
+
+        const image = await Image.findById(imageId);
+        if (!image) {
+            return res.status(404).json({ error: 'Image not found' });
+        }
+
+        const isAdmin = await isUserAdmin(userId);
+        if (image.userId !== userId && !isAdmin) {
+            return res.status(403).json({ error: 'You can only edit your own images' });
+        }
+
+        image.caption = caption.trim();
+        await image.save();
+
+        res.json({
+            _id: image._id,
+            imageUrl: image.imageUrl,
+            caption: image.caption,
+            userId: image.userId,
+            uploadTime: image.uploadTime
+        });
+
+    } catch (err) {
+        console.log('Error updating caption:', err);
+        res.status(500).json({ error: 'Error updating caption' });
+    }
+});
+
+/* =======================
    IMAGE LIKE ENDPOINTS
 ======================= */
 
