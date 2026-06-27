@@ -89,16 +89,6 @@
             50% { opacity: 1; }
         }
 
-        @keyframes twinkle-slow {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.5; filter: blur(2px); }
-            50% { opacity: 1; filter: blur(4px); }
-        }
-
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -148,96 +138,10 @@
             50% { transform: translateY(-20px); }
         }
 
-        @keyframes float-slow {
-            0%, 100% { transform: translateY(0px) rotateZ(0deg); }
-            50% { transform: translateY(-15px) rotateZ(5deg); }
-        }
-
-        @keyframes glow-pulse {
-            0%, 100% {
-                box-shadow: 0 0 10px rgba(0, 212, 255, 0.4),
-                            0 0 20px rgba(0, 212, 255, 0.2);
-            }
-            50% {
-                box-shadow: 0 0 20px rgba(0, 212, 255, 0.6),
-                            0 0 40px rgba(0, 212, 255, 0.4),
-                            inset 0 0 10px rgba(0, 212, 255, 0.1);
-            }
-        }
-
-        @keyframes orbit {
-            from { transform: rotate(0deg) translateX(50px) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-
-        @keyframes meteor {
-            0% {
-                transform: translateX(-100px) translateY(-100px);
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(300px) translateY(300px);
-                opacity: 0;
-            }
-        }
-
-        @keyframes cosmic-pulse {
+        @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
-
-        /* PARTICLES */
-        .cosmic-particles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(0, 212, 255, 0.8);
-            border-radius: 50%;
-            animation: float-particle linear infinite;
-        }
-
-        @keyframes float-particle {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(100px);
-                opacity: 0;
-            }
-        }
-
-        .particle:nth-child(1) { left: 10%; animation-duration: 8s; animation-delay: 0s; }
-        .particle:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 2s; }
-        .particle:nth-child(3) { left: 30%; animation-duration: 12s; animation-delay: 4s; }
-        .particle:nth-child(4) { left: 40%; animation-duration: 9s; animation-delay: 1s; }
-        .particle:nth-child(5) { left: 50%; animation-duration: 11s; animation-delay: 3s; }
-        .particle:nth-child(6) { left: 60%; animation-duration: 13s; animation-delay: 5s; }
-        .particle:nth-child(7) { left: 70%; animation-duration: 10s; animation-delay: 2s; }
-        .particle:nth-child(8) { left: 80%; animation-duration: 12s; animation-delay: 4s; }
-        .particle:nth-child(9) { left: 90%; animation-duration: 8s; animation-delay: 1s; }
 
         /* NAVBAR */
         .navbar {
@@ -248,7 +152,6 @@
             background: linear-gradient(180deg, rgba(10, 14, 39, 0.95) 0%, rgba(21, 25, 50, 0.85) 100%);
             backdrop-filter: blur(20px);
             border-bottom: 2px solid rgba(0, 212, 255, 0.3);
-            border-image: linear-gradient(90deg, rgba(0, 212, 255, 0.5), rgba(255, 0, 200, 0.3)) 1;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -267,13 +170,11 @@
         .logo img {
             height: 45px;
             width: auto;
-            animation: float-slow 4s ease-in-out infinite;
             filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.6));
         }
 
         .logo-text h2 {
             font-size: 24px;
-            line-height: 1.1;
             background: linear-gradient(135deg, var(--accent), var(--accent-alt));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -285,10 +186,6 @@
         .tagline {
             font-size: 11px;
             color: var(--accent);
-            letter-spacing: .06em;
-            display: block;
-            margin-top: 2px;
-            animation: fadeInUp 0.8s ease 0.2s both;
             text-transform: uppercase;
             font-weight: 600;
         }
@@ -296,7 +193,7 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
@@ -307,31 +204,13 @@
             border-radius: 8px;
             font-size: 14px;
             transition: .2s;
-            position: relative;
-            overflow: hidden;
             border: 1px solid rgba(0, 212, 255, 0.2);
-        }
-
-        .nav-links a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
-            transition: left 0.4s ease;
-            z-index: -1;
         }
 
         .nav-links a:hover {
             color: var(--accent);
             border-color: var(--accent);
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-        }
-
-        .nav-links a:hover::before {
-            left: 100%;
         }
 
         #themeToggle {
@@ -348,7 +227,6 @@
         #themeToggle:hover {
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.4), rgba(255, 0, 200, 0.4));
             box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
-            transform: rotate(20deg);
         }
 
         .container {
@@ -359,17 +237,15 @@
             z-index: 1;
         }
 
-        /* HEADER */
+        /* PAGE HEADER */
         .page-header {
             text-align: center;
             margin-bottom: 50px;
-            padding-bottom: 30px;
-            border-bottom: 2px solid var(--accent);
-            animation: fadeInDown 0.8s ease;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(255, 0, 200, 0.05));
             padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(255, 0, 200, 0.05));
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0, 212, 255, 0.1);
+            animation: fadeInDown 0.8s ease;
         }
 
         .page-header h1 {
@@ -380,15 +256,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: float-slow 4s ease-in-out infinite, gradient-shift 3s ease infinite;
             font-weight: 900;
-            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
-            letter-spacing: -2px;
-        }
-
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
         }
 
         .page-header p {
@@ -396,9 +264,7 @@
             color: var(--text-secondary);
             max-width: 700px;
             margin: 0 auto;
-            animation: fadeInUp 0.8s ease 0.2s both;
             font-weight: 300;
-            letter-spacing: 1px;
         }
 
         /* TABLE OF CONTENTS */
@@ -409,22 +275,17 @@
             margin-bottom: 50px;
             border: 2px solid rgba(0, 212, 255, 0.3);
             animation: fadeInUp 0.8s ease 0.3s both;
-            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.1),
-                        inset 0 1px 0 rgba(0, 212, 255, 0.2);
-            backdrop-filter: blur(10px);
         }
 
         .toc-section h2 {
             color: var(--accent);
             margin-bottom: 20px;
             font-size: 1.5em;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
-            letter-spacing: 2px;
         }
 
         .toc-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
         }
 
@@ -434,61 +295,29 @@
             border-radius: 12px;
             border: 2px solid var(--accent);
             cursor: pointer;
-            transition: .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: .3s;
             animation: fadeInUp 0.6s ease backwards;
             position: relative;
-            overflow: hidden;
         }
-
-        .toc-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .toc-item:nth-child(1) { animation-delay: 0.3s; }
-        .toc-item:nth-child(2) { animation-delay: 0.4s; }
-        .toc-item:nth-child(3) { animation-delay: 0.5s; }
-        .toc-item:nth-child(4) { animation-delay: 0.6s; }
-        .toc-item:nth-child(5) { animation-delay: 0.7s; }
-        .toc-item:nth-child(6) { animation-delay: 0.8s; }
 
         .toc-item:hover {
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 200, 0.1));
             transform: translateX(5px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3),
-                        inset 0 1px 0 rgba(0, 212, 255, 0.3);
-            border-color: var(--accent-alt);
-        }
-
-        .toc-item:hover::before {
-            left: 100%;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
         }
 
         .toc-item a {
             text-decoration: none;
             color: var(--text);
             font-weight: 600;
-            position: relative;
-            z-index: 1;
         }
 
-        /* FACT SECTIONS */
+        /* FACT SECTION */
         .fact-section {
             margin-bottom: 60px;
             padding: 40px 0;
             border-bottom: 2px solid rgba(0, 212, 255, 0.2);
-            opacity: 0;
             animation: fadeInUp 0.8s ease forwards;
-        }
-
-        .fact-section:last-child {
-            border-bottom: none;
         }
 
         .section-title {
@@ -498,85 +327,34 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 10px;
-            margin-top: 40px;
-            position: relative;
-            display: inline-block;
             font-weight: 800;
-            letter-spacing: -1px;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-alt));
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
-            animation: slideInRight 0.8s ease forwards;
         }
 
         .section-subtitle {
             color: var(--text-secondary);
             font-size: 1.1em;
             margin-bottom: 30px;
-            animation: fadeInUp 0.6s ease 0.2s both;
-            font-weight: 300;
-            letter-spacing: 1px;
             margin-top: 20px;
         }
 
-        /* FACT CARDS */
+        /* FACT CARD */
         .fact-card {
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 0, 200, 0.04));
             padding: 30px;
             border-radius: 16px;
             margin-bottom: 25px;
             border: 2px solid rgba(0, 212, 255, 0.3);
-            transition: .4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: .4s;
             animation: fadeInUp 0.6s ease backwards;
             position: relative;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .fact-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
-            animation: shimmer 3s infinite;
-            z-index: 1;
-        }
-
-        .fact-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.05), transparent);
-            pointer-events: none;
-        }
-
-        .fact-card:nth-child(1) { animation-delay: 0s; }
-        .fact-card:nth-child(2) { animation-delay: 0.1s; }
-        .fact-card:nth-child(3) { animation-delay: 0.2s; }
-        .fact-card:nth-child(4) { animation-delay: 0.3s; }
-        .fact-card:nth-child(5) { animation-delay: 0.4s; }
-
         .fact-card:hover {
             border-color: var(--accent-alt);
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(255, 0, 200, 0.08));
-            box-shadow: 0 15px 50px rgba(0, 212, 255, 0.2),
-                        0 0 30px rgba(255, 0, 200, 0.1),
-                        inset 0 1px 0 rgba(0, 212, 255, 0.2);
+            box-shadow: 0 15px 50px rgba(0, 212, 255, 0.2);
             transform: translateY(-8px);
         }
 
@@ -587,25 +365,17 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            position: relative;
-            z-index: 2;
-            text-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
         }
 
         .fact-emoji {
             font-size: 1.5em;
-            display: inline-block;
             animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
         }
 
         .fact-card p {
             color: var(--text-secondary);
             margin-bottom: 15px;
             line-height: 1.8;
-            position: relative;
-            z-index: 2;
-            font-weight: 300;
         }
 
         /* MEDIA CONTAINER */
@@ -613,11 +383,9 @@
             margin: 20px auto;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 15px 50px rgba(0, 212, 255, 0.2),
-                        0 0 30px rgba(255, 0, 200, 0.1);
+            box-shadow: 0 15px 50px rgba(0, 212, 255, 0.2);
             animation: fadeInUp 0.8s ease;
             border: 2px solid rgba(0, 212, 255, 0.2);
-            position: relative;
             max-width: 600px;
             width: 100%;
         }
@@ -627,7 +395,7 @@
             width: 100%;
             height: auto;
             display: block;
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: transform 0.4s;
         }
 
         .media-container:hover img,
@@ -642,143 +410,146 @@
             font-size: 0.95em;
             text-align: center;
             border-top: 2px solid rgba(0, 212, 255, 0.2);
-            font-weight: 500;
         }
 
-        /* STATISTICS */
-        .stats-grid {
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.2);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: .3s;
+            font-weight: 600;
+        }
+
+        .tab-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 200, 0.1));
+            color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 -5px 15px rgba(0, 212, 255, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        /* EXPANDABLE BOX */
+        .expandable {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 0, 200, 0.03));
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent);
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .expandable:hover {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(255, 0, 200, 0.06));
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.1);
+        }
+
+        .expandable-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .expand-icon {
+            transition: .3s;
+        }
+
+        .expandable.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            color: var(--text-secondary);
+            margin-top: 0;
+        }
+
+        .expandable.expanded .expandable-content {
+            max-height: 500px;
+            margin-top: 15px;
+        }
+
+        /* GRID CARDS */
+        .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin: 30px 0;
         }
 
-        .stat-item {
+        .card {
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 200, 0.05));
             padding: 20px;
             border-radius: 12px;
-            text-align: center;
             border: 2px solid rgba(0, 212, 255, 0.2);
             transition: .3s;
             animation: fadeInUp 0.6s ease backwards;
-            position: relative;
-            overflow: hidden;
         }
 
-        .stat-item::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, var(--accent), var(--accent-alt), var(--accent));
-            opacity: 0;
-            transition: opacity 0.3s;
-            animation: none;
-        }
-
-        .stat-item:nth-child(1) { animation-delay: 0s; }
-        .stat-item:nth-child(2) { animation-delay: 0.1s; }
-        .stat-item:nth-child(3) { animation-delay: 0.2s; }
-        .stat-item:nth-child(4) { animation-delay: 0.3s; }
-
-        .stat-item:hover {
+        .card:hover {
             border-color: var(--accent-alt);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2),
-                        0 0 20px rgba(255, 0, 200, 0.15);
-            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+            transform: translateY(-8px);
         }
 
-        .stat-value {
-            font-size: 2em;
-            font-weight: bold;
-            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .card-title {
+            color: var(--accent);
+            font-size: 1.3em;
             margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+            font-weight: 600;
         }
 
-        .stat-label {
+        .card-content {
             color: var(--text-secondary);
             font-size: 0.95em;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            line-height: 1.6;
         }
 
-        /* COMPARISON TABLE */
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 30px 0;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 0, 200, 0.04));
-            border-radius: 12px;
-            overflow: hidden;
-            animation: fadeInUp 0.8s ease;
-            border: 2px solid rgba(0, 212, 255, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
-        }
-
-        .comparison-table th {
-            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
-            color: var(--bg-primary);
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
-        }
-
-        .comparison-table td {
-            padding: 15px;
-            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
-            transition: background-color 0.3s ease;
-            color: var(--text-secondary);
-        }
-
-        .comparison-table tr:hover {
-            background: rgba(0, 212, 255, 0.08);
-        }
-
-        .comparison-table tr:hover td {
-            color: var(--accent);
-        }
-
-        /* KEY FACTS BOX */
+        /* KEY FACTS */
         .key-facts {
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(255, 0, 200, 0.08));
             padding: 30px;
             border-radius: 16px;
             border: 2px solid var(--accent);
             margin: 30px 0;
-            animation: slideInLeft 0.8s ease;
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.15),
-                        inset 0 1px 0 rgba(0, 212, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .key-facts::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-alt), transparent);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.15);
         }
 
         .key-facts h4 {
             color: var(--accent);
             margin-bottom: 15px;
             font-size: 1.2em;
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .key-facts ul {
@@ -791,55 +562,46 @@
             padding: 8px 0;
             padding-left: 25px;
             position: relative;
-            animation: fadeInUp 0.5s ease backwards;
             font-weight: 300;
         }
-
-        .key-facts li:nth-child(1) { animation-delay: 0.1s; }
-        .key-facts li:nth-child(2) { animation-delay: 0.2s; }
-        .key-facts li:nth-child(3) { animation-delay: 0.3s; }
-        .key-facts li:nth-child(4) { animation-delay: 0.4s; }
-        .key-facts li:nth-child(5) { animation-delay: 0.5s; }
-        .key-facts li:nth-child(6) { animation-delay: 0.6s; }
 
         .key-facts li:before {
             content: "⭐";
             position: absolute;
             left: 0;
             color: var(--accent);
-            font-weight: bold;
-            animation: pulse-glow 2s ease-in-out infinite;
         }
 
-        /* FACT DETAIL BOX */
-        .fact-detail {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 0, 200, 0.03));
-            padding: 20px;
+        /* COMPARISON TABLE */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 0, 200, 0.04));
             border-radius: 12px;
-            margin: 15px 0;
-            border-left: 4px solid var(--accent);
-            animation: slideInLeft 0.6s ease;
-            position: relative;
             overflow: hidden;
+            border: 2px solid rgba(0, 212, 255, 0.2);
         }
 
-        .fact-detail::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.1), transparent);
-            animation: float 4s ease-in-out infinite;
+        .comparison-table th {
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            color: var(--bg-primary);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
         }
 
-        .fact-detail strong {
-            color: var(--accent);
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            color: var(--text-secondary);
         }
 
-        /* BACK TO TOP */
+        .comparison-table tr:hover {
+            background: rgba(0, 212, 255, 0.08);
+        }
+
+        /* SCROLL TO TOP */
         .scroll-to-top {
             position: fixed;
             bottom: 20px;
@@ -855,30 +617,19 @@
             display: none;
             align-items: center;
             justify-content: center;
-            transition: .3s;
             z-index: 100;
             box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
-            font-weight: bold;
+            transition: .3s;
         }
 
         .scroll-to-top:hover {
             transform: translateY(-5px) scale(1.15);
-            box-shadow: 0 15px 50px rgba(0, 212, 255, 0.6),
-                        0 0 30px rgba(255, 0, 200, 0.3);
-            animation: glow-pulse 1.5s ease-in-out;
         }
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
             .navbar {
                 padding: 12px 20px;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .nav-links {
-                width: 100%;
-                justify-content: center;
             }
 
             .page-header h1 {
@@ -889,30 +640,16 @@
                 font-size: 1.8em;
             }
 
-            .fact-card {
-                padding: 20px;
+            .tabs {
+                gap: 5px;
             }
 
-            .comparison-table {
+            .tab-btn {
+                padding: 10px 12px;
                 font-size: 0.9em;
-            }
-
-            .comparison-table th,
-            .comparison-table td {
-                padding: 10px;
-            }
-
-            .toc-grid {
-                grid-template-columns: 1fr;
-            }
-
-            /* Make images even smaller on mobile */
-            .media-container {
-                max-width: 90%;
             }
         }
 
-        /* Prefers reduced motion */
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation-duration: 0.01ms !important;
@@ -923,125 +660,62 @@
     </style>
 </head>
 <body>
-    <!-- COSMIC PARTICLES -->
-    <div class="cosmic-particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-    </div>
-
     <!-- NAVBAR -->
     <nav class="navbar">
         <a href="/" class="logo">
-            <img src="/logo_1.png" alt="KosmoQuestt Logo">
             <div class="logo-text">
-                <h2>KosmoQuestt</h2>
+                <h2>🚀 KosmoQuestt</h2>
                 <span class="tagline">Exploring Beyond The Horizon!</span>
             </div>
         </a>
         <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/dashboard.html">Gallery</a>
-            <a href="/about.html">About</a>
+            <button id="themeToggle" title="Toggle theme">🌙</button>
+            <a href="#solar-system">Solar System</a>
+            <a href="#asteroids">Asteroids</a>
+            <a href="#constellations">Constellations</a>
         </div>
     </nav>
 
     <div class="container">
         <!-- PAGE HEADER -->
         <div class="page-header">
-            <h1>🚀 Outer Space</h1>
-            <p>Discover fascinating facts about our universe, planets, stars, galaxies, and space exploration</p>
+            <h1>🌌 Explore the Universe</h1>
+            <p>Discover comprehensive facts about planets, stars, asteroids, constellations, and space exploration</p>
         </div>
 
         <!-- TABLE OF CONTENTS -->
         <div class="toc-section">
-            <h2>📖 Categories</h2>
+            <h2>📖 Topics</h2>
             <div class="toc-grid">
                 <div class="toc-item"><a href="#solar-system">☀️ Solar System</a></div>
                 <div class="toc-item"><a href="#planets">🪐 Planets</a></div>
-                <div class="toc-item"><a href="#stars">⭐ Stars & Black Holes</a></div>
-                <div class="toc-item"><a href="#galaxies">🌌 Galaxies</a></div>
+                <div class="toc-item"><a href="#moons">🌙 Moons</a></div>
+                <div class="toc-item"><a href="#asteroids">🪨 Asteroids & Meteors</a></div>
+                <div class="toc-item"><a href="#stars">⭐ Stars</a></div>
+                <div class="toc-item"><a href="#constellations">✨ Constellations</a></div>
+                <div class="toc-item"><a href="#black-holes">⚫ Black Holes</a></div>
                 <div class="toc-item"><a href="#missions">🛸 Space Missions</a></div>
-                <div class="toc-item"><a href="#phenomena">⚡ Phenomena</a></div>
             </div>
         </div>
 
         <!-- SOLAR SYSTEM SECTION -->
         <div class="fact-section" id="solar-system">
             <h2 class="section-title">☀️ The Solar System</h2>
-            <p class="section-subtitle">Our cosmic neighborhood consisting of the Sun and everything that orbits it</p>
+            <p class="section-subtitle">Our cosmic neighborhood of 8 planets, countless moons, and vast asteroid belts</p>
 
             <div class="fact-card">
-                <h3><span class="fact-emoji">☀️</span> The Sun</h3>
-                
-                <div class="media-container">
-                    <img src="/planets/sun.png" alt="The Sun - massive ball of hot plasma">
-                    <div class="media-caption">The Sun: Our Star at the Center of the Solar System</div>
-                </div>
-
-                <p>The Sun is a massive ball of hot plasma held together by its own gravity. It is the central star of our solar system and contains 99.86% of all the mass in the entire solar system.</p>
+                <h3><span class="fact-emoji">☀️</span> The Sun - Our Star</h3>
+                <p>The Sun is a massive ball of hot plasma that accounts for 99.86% of all mass in our solar system. It has been burning for 4.6 billion years and will continue for another 5 billion years.</p>
                 
                 <div class="key-facts">
-                    <h4>Key Facts About The Sun:</h4>
+                    <h4>Sun Facts:</h4>
                     <ul>
-                        <li>Core temperature: 27 million degrees Fahrenheit</li>
-                        <li>1.3 million Earths could fit inside the Sun</li>
-                        <li>Age: 4.6 billion years old</li>
-                        <li>Remaining life: ~5 billion years</li>
-                        <li>Every second, it converts 620 million tons of hydrogen into helium</li>
+                        <li>Surface Temperature: 10,000°F (5,500°C)</li>
+                        <li>Core Temperature: 27 million°F</li>
+                        <li>Diameter: 864,000 miles</li>
+                        <li>1.3 million Earths could fit inside</li>
+                        <li>Converts 600 million tons of hydrogen/second</li>
                     </ul>
-                </div>
-
-                <div class="fact-detail">
-                    <strong>Did you know?</strong> The Sun's energy reaches Earth in about 8 minutes and 20 seconds. Without the Sun, there would be no life on Earth.
-                </div>
-            </div>
-
-            <div class="fact-card">
-                <h3><span class="fact-emoji">🔥</span> Solar System Formation</h3>
-                
-                <div class="media-container">
-                    <img src="/images/solar-system.png" alt="Solar System">
-                    <div class="media-caption">Animation: Solar System Formation Over Time</div>
-                </div>
-
-                <p>The solar system formed approximately 4.6 billion years ago from the gravitational collapse of a giant interstellar molecular cloud.</p>
-                
-                <div class="key-facts">
-                    <h4>Formation Timeline:</h4>
-                    <ul>
-                        <li>4.6 billion years ago: Solar nebula collapses</li>
-                        <li>The Sun forms at the center</li>
-                        <li>Planets form from remaining dust and gas</li>
-                        <li>Heavy planets migrate from their original positions</li>
-                        <li>System reaches relative stability</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- STATISTICS -->
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-value">8</div>
-                    <div class="stat-label">Planets</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">200+</div>
-                    <div class="stat-label">Moons</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">Billions</div>
-                    <div class="stat-label">Asteroids</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">4.6B</div>
-                    <div class="stat-label">Years Old</div>
                 </div>
             </div>
         </div>
@@ -1049,258 +723,600 @@
         <!-- PLANETS SECTION -->
         <div class="fact-section" id="planets">
             <h2 class="section-title">🪐 The Eight Planets</h2>
-            <p class="section-subtitle">A comprehensive look at all planets in our solar system</p>
+            <p class="section-subtitle">Four terrestrial planets and four giant planets</p>
 
-            <!-- COMPARISON TABLE -->
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Planet</th>
-                        <th>Type</th>
-                        <th>Size (relative)</th>
-                        <th>Distance from Sun</th>
-                        <th>Notable Feature</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Mercury</strong></td>
-                        <td>Terrestrial</td>
-                        <td>Smallest</td>
-                        <td>57.9 million km</td>
-                        <td>Fastest planet, extreme temperatures</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Venus</strong></td>
-                        <td>Terrestrial</td>
-                        <td>Similar to Earth</td>
-                        <td>108.2 million km</td>
-                        <td>Hottest planet, rotates backwards</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Earth</strong></td>
-                        <td>Terrestrial</td>
-                        <td>Reference point</td>
-                        <td>149.6 million km</td>
-                        <td>Only known planet with life</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Mars</strong></td>
-                        <td>Terrestrial</td>
-                        <td>Half Earth's size</td>
-                        <td>227.9 million km</td>
-                        <td>Red color, largest volcano</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Jupiter</strong></td>
-                        <td>Gas Giant</td>
-                        <td>Largest</td>
-                        <td>778.5 million km</td>
-                        <td>Great Red Spot storm</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Saturn</strong></td>
-                        <td>Gas Giant</td>
-                        <td>Very Large</td>
-                        <td>1.4 billion km</td>
-                        <td>Spectacular ring system</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Uranus</strong></td>
-                        <td>Ice Giant</td>
-                        <td>Large</td>
-                        <td>2.9 billion km</td>
-                        <td>Rotates on its side</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Neptune</strong></td>
-                        <td>Ice Giant</td>
-                        <td>Large</td>
-                        <td>4.5 billion km</td>
-                        <td>Strongest winds in solar system</td>
-                    </tr>
-                </tbody>
-            </table>
+            <!-- TABS FOR PLANETS -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('terrestrial')">Terrestrial</button>
+                <button class="tab-btn" onclick="switchTab('giants')">Giant Planets</button>
+            </div>
 
-            <div class="fact-card">
-                <h3><span class="fact-emoji">🔴</span> Mars: The Red Planet</h3>
-                <div class="media-container">
-                    <img src="/planets/mars.png" alt="Mars - The Red Planet">
-                    <div class="media-caption">Mars: Earth's Closest Planetary Neighbor</div>
-                </div>
-                <p>Mars is Earth's closest planetary neighbor and the primary focus of current space exploration efforts.</p>
-                
-                <div class="key-facts">
-                    <h4>Interesting Mars Facts:</h4>
-                    <ul>
-                        <li>Home to Olympus Mons - largest volcano in solar system</li>
-                        <li>Evidence of ancient water flows</li>
-                        <li>Day length almost identical to Earth (24.6 hours)</li>
-                        <li>Two small moons: Phobos and Deimos</li>
-                        <li>Surface temperature averages -65°C</li>
-                        <li>Target for future human colonization</li>
-                    </ul>
+            <!-- TERRESTRIAL PLANETS -->
+            <div id="terrestrial" class="tab-content active">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">🔴 Mercury</div>
+                        <div class="card-content">
+                            <strong>Type:</strong> Terrestrial<br>
+                            <strong>Distance:</strong> 57.9M km<br>
+                            <strong>Diameter:</strong> 3,832 km<br>
+                            <strong>Feature:</strong> Fastest planet, extreme temperatures (-290°F to 900°F)
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🟡 Venus</div>
+                        <div class="card-content">
+                            <strong>Type:</strong> Terrestrial<br>
+                            <strong>Distance:</strong> 108.2M km<br>
+                            <strong>Diameter:</strong> 12,104 km<br>
+                            <strong>Feature:</strong> Hottest planet, toxic atmosphere, rotates backwards
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🟦 Earth</div>
+                        <div class="card-content">
+                            <strong>Type:</strong> Terrestrial<br>
+                            <strong>Distance:</strong> 149.6M km<br>
+                            <strong>Diameter:</strong> 12,742 km<br>
+                            <strong>Feature:</strong> Only known planet with life, 1 moon
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🔴 Mars</div>
+                        <div class="card-content">
+                            <strong>Type:</strong> Terrestrial<br>
+                            <strong>Distance:</strong> 227.9M km<br>
+                            <strong>Diameter:</strong> 6,779 km<br>
+                            <strong>Feature:</strong> Red surface, 2 moons, largest volcano in solar system
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="fact-card">
-                <h3><span class="fact-emoji">💫</span> Saturn: The Ringed Beauty</h3>
-                <div class="media-container">
-                    <img src="/planets/saturn.png" alt="Saturn with its ring system">
-                    <div class="media-caption">Saturn: The Most Visually Striking Planet</div>
+            <!-- GIANT PLANETS -->
+            <div id="giants" class="tab-content">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">🟠 Jupiter</div>
+                        <div class="card-content">
+                            <strong>Type:</strong> Gas Giant<br>
+                            <strong>Distance:</strong> 778.5M km<br>
+                            <strong>Diameter:</strong> 139,820 km<br>
+                            <strong>Feature:</strong> Largest planet, Great Red Spot, 95 moons
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">💫 Saturn</div>
+                        <div class="card-content">
+                            <strong>Type:</strong> Gas Giant<br>
+                            <strong>Distance:</strong> 1.4B km<br>
+                            <strong>Diameter:</strong> 116,460 km<br>
+                            <strong>Feature:</strong> Ring system, 146 moons, lowest density
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🟢 Uranus</div>
+                        <div class="card-content">
+                            <strong>Type:</strong> Ice Giant<br>
+                            <strong>Distance:</strong> 2.9B km<br>
+                            <strong>Diameter:</strong> 50,724 km<br>
+                            <strong>Feature:</strong> Rotates on side, methane atmosphere, 27 moons
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">🔵 Neptune</div>
+                        <div class="card-content">
+                            <strong>Type:</strong> Ice Giant<br>
+                            <strong>Distance:</strong> 4.5B km<br>
+                            <strong>Diameter:</strong> 49,244 km<br>
+                            <strong>Feature:</strong> Strongest winds, blue color, 16 moons
+                        </div>
+                    </div>
                 </div>
-                <p>Saturn is famous for its spectacular and extensive ring system, making it the most visually striking planet.</p>
-                
-                <div class="key-facts">
-                    <h4>Saturn's Characteristics:</h4>
-                    <ul>
-                        <li>Ring system spans 170,000 miles but only 30 feet thick</li>
-                        <li>Rings composed of billions of ice and rock particles</li>
-                        <li>82 known moons, including massive Titan</li>
-                        <li>Lowest density of all planets - would float in water</li>
-                        <li>Hexagonal storm at the north pole</li>
-                        <li>Wind speeds up to 1,100 mph</li>
-                    </ul>
+            </div>
+        </div>
+
+        <!-- MOONS SECTION -->
+        <div class="fact-section" id="moons">
+            <h2 class="section-title">🌙 Notable Moons</h2>
+            <p class="section-subtitle">Natural satellites orbiting planets in our solar system</p>
+
+            <div class="expandable" onclick="toggleExpand(this)">
+                <div class="expandable-title">
+                    <span>🌍 Earth's Moon</span>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>Distance:</strong> 384,400 km</p>
+                    <p><strong>Diameter:</strong> 3,474 km</p>
+                    <p><strong>Age:</strong> 4.5 billion years</p>
+                    <p><strong>Features:</strong> Only moon of Earth, causes tides, visited by humans 6 times during Apollo missions</p>
+                </div>
+            </div>
+
+            <div class="expandable" onclick="toggleExpand(this)">
+                <div class="expandable-title">
+                    <span>🔴 Mars' Moons: Phobos & Deimos</span>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>Phobos:</strong></p>
+                    <p>- Diameter: 22.4 km</p>
+                    <p>- Orbits Mars every 7.6 hours</p>
+                    <p>- Will crash into Mars in 50 million years</p>
+                    <p><br><strong>Deimos:</strong></p>
+                    <p>- Diameter: 12.4 km</p>
+                    <p>- Very distant orbit</p>
+                    <p>- One of the smallest moons in solar system</p>
+                </div>
+            </div>
+
+            <div class="expandable" onclick="toggleExpand(this)">
+                <div class="expandable-title">
+                    <span>🟠 Jupiter's Galilean Moons</span>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>Io:</strong> Volcanic moon with 400+ active volcanoes</p>
+                    <p><strong>Europa:</strong> Icy surface with subsurface ocean, potential for life</p>
+                    <p><strong>Ganymede:</strong> Largest moon in solar system (5,268 km), has its own magnetic field</p>
+                    <p><strong>Callisto:</strong> Heavily cratered, old surface</p>
+                </div>
+            </div>
+
+            <div class="expandable" onclick="toggleExpand(this)">
+                <div class="expandable-title">
+                    <span>💫 Saturn's Titan</span>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>Diameter:</strong> 5,150 km (larger than Mercury!)</p>
+                    <p><strong>Atmosphere:</strong> Thick nitrogen atmosphere, only moon with atmosphere</p>
+                    <p><strong>Surface:</strong> Liquid methane lakes and seas</p>
+                    <p><strong>Exploration:</strong> Cassini-Huygens landed on surface in 2005</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ASTEROIDS & METEORS SECTION -->
+        <div class="fact-section" id="asteroids">
+            <h2 class="section-title">🪨 Asteroids, Meteors & Meteorites</h2>
+            <p class="section-subtitle">Rocky debris scattered throughout the solar system</p>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('asteroid-belt')">Asteroid Belt</button>
+                <button class="tab-btn" onclick="switchTab('meteors')">Meteors</button>
+                <button class="tab-btn" onclick="switchTab('impacts')">Famous Impacts</button>
+            </div>
+
+            <!-- ASTEROID BELT -->
+            <div id="asteroid-belt" class="tab-content active">
+                <div class="fact-card">
+                    <h3>🪐 The Asteroid Belt</h3>
+                    <p>Located between Mars and Jupiter, the asteroid belt contains millions of rocky objects left over from the formation of the solar system.</p>
+                    
+                    <div class="key-facts">
+                        <h4>Asteroid Belt Facts:</h4>
+                        <ul>
+                            <li>Location: Between Mars and Jupiter orbits</li>
+                            <li>Contains: Millions of asteroids</li>
+                            <li>Largest object: Ceres (dwarf planet, 945 km diameter)</li>
+                            <li>Total mass: Less than our Moon</li>
+                            <li>Spacing: Asteroids are far apart (avg 600,000 km apart)</li>
+                            <li>Age: 4.6 billion years</li>
+                            <li>Composition: Rock and metal</li>
+                        </ul>
+                    </div>
+
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-title">🪨 Ceres</div>
+                            <div class="card-content">
+                                Dwarf planet, largest object in asteroid belt, 25% of belt's mass
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">💫 Vesta</div>
+                            <div class="card-content">
+                                Second largest, about 530 km diameter, brightest asteroid
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">🔴 Pallas</div>
+                            <div class="card-content">
+                                Third largest, irregular shape, 510 km diameter
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">⭐ Juno</div>
+                            <div class="card-content">
+                                About 250 km diameter, unusual composition
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- METEORS -->
+            <div id="meteors" class="tab-content">
+                <div class="fact-card">
+                    <h3>🌠 Meteors & Meteorites</h3>
+                    
+                    <div class="key-facts">
+                        <h4>Understanding the Difference:</h4>
+                        <ul>
+                            <li><strong>Meteoroid:</strong> Small rocky object in space</li>
+                            <li><strong>Meteor:</strong> Meteoroid burning up in atmosphere (shooting star)</li>
+                            <li><strong>Meteorite:</strong> Meteor that reaches Earth's surface</li>
+                        </ul>
+                    </div>
+
+                    <div class="expandable" onclick="toggleExpand(this)">
+                        <div class="expandable-title">
+                            <span>🌟 Major Meteor Showers</span>
+                            <span class="expand-icon">▼</span>
+                        </div>
+                        <div class="expandable-content">
+                            <p><strong>Quadrantids:</strong> January (40 meteors/hour)</p>
+                            <p><strong>Perseids:</strong> August (100+ meteors/hour) - Most popular</p>
+                            <p><strong>Geminids:</strong> December (150 meteors/hour)</p>
+                            <p><strong>Leonids:</strong> November (20 meteors/hour)</p>
+                            <p><strong>Lyrids:</strong> April (20 meteors/hour)</p>
+                        </div>
+                    </div>
+
+                    <div class="key-facts">
+                        <h4>Meteorite Types:</h4>
+                        <ul>
+                            <li><strong>Chondrites:</strong> Most common (86%), contain chondrules</li>
+                            <li><strong>Achondrites:</strong> Iron and stone composition</li>
+                            <li><strong>Iron Meteorites:</strong> 90% iron, 10% nickel</li>
+                            <li><strong>Stony-Iron:</strong> Mix of iron and stone</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAMOUS IMPACTS -->
+            <div id="impacts" class="tab-content">
+                <div class="fact-card">
+                    <h3>💥 Famous Impacts & Craters</h3>
+                    
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-title">🦕 Chicxulub Impact</div>
+                            <div class="card-content">
+                                <strong>65 million years ago</strong><br>
+                                Killed the dinosaurs, 10 km asteroid, Mexico impact
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">🏜️ Tunguska Event</div>
+                            <div class="card-content">
+                                <strong>1908</strong><br>
+                                Siberia explosion, 80 million trees flattened, 10 MT explosion
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">🌍 Sudbury Basin</div>
+                            <div class="card-content">
+                                <strong>1.8 billion years ago</strong><br>
+                                Canada, second largest impact crater (250 km)
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">⭐ Vredefort Dome</div>
+                            <div class="card-content">
+                                <strong>2 billion years ago</strong><br>
+                                South Africa, largest impact crater (300 km)
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- STARS SECTION -->
         <div class="fact-section" id="stars">
-            <h2 class="section-title">⭐ Stars & Black Holes</h2>
-            <p class="section-subtitle">Understanding the cosmic objects that define our universe</p>
+            <h2 class="section-title">⭐ Stars & Stellar Objects</h2>
+            <p class="section-subtitle">Massive spheres of plasma powering the universe</p>
 
             <div class="fact-card">
-                <h3><span class="fact-emoji">⭐</span> What Are Stars?</h3>
-                <div class="media-container">
-                    <img src="/images/stars.jpg" alt="Stars in the night sky">
-                    <div class="media-caption">Stars: Cosmic Furnaces of Light and Energy</div>
-                </div>
-                <p>Stars are massive luminous spheres of plasma held together by gravity, powered by nuclear fusion in their cores.</p>
+                <h3>💫 Types of Stars</h3>
                 
-                <div class="key-facts">
-                    <h4>Star Characteristics:</h4>
-                    <ul>
-                        <li>Powered by hydrogen fusion into helium</li>
-                        <li>Life cycle spans billions of years</li>
-                        <li>Mass determines lifespan and fate</li>
-                        <li>Surface temperature affects color and brightness</li>
-                        <li>Most stars are in binary systems</li>
-                        <li>Our Sun is a medium-sized yellow dwarf</li>
-                    </ul>
-                </div>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Mass (relative)</th>
+                            <th>Temperature</th>
+                            <th>Color</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Red Dwarf</td>
+                            <td>0.08 - 0.5 M☉</td>
+                            <td>2,400 - 3,700K</td>
+                            <td>Red</td>
+                            <td>Proxima Centauri</td>
+                        </tr>
+                        <tr>
+                            <td>Yellow Dwarf</td>
+                            <td>0.8 - 1.04 M☉</td>
+                            <td>5,200 - 6,000K</td>
+                            <td>Yellow</td>
+                            <td>Our Sun</td>
+                        </tr>
+                        <tr>
+                            <td>White Dwarf</td>
+                            <td>0.5 - 1.4 M☉</td>
+                            <td>8,000 - 16,000K</td>
+                            <td>White</td>
+                            <td>Sirius B</td>
+                        </tr>
+                        <tr>
+                            <td>Blue Giant</td>
+                            <td>5 - 90 M☉</td>
+                            <td>10,000 - 50,000K</td>
+                            <td>Blue</td>
+                            <td>Rigel</td>
+                        </tr>
+                        <tr>
+                            <td>Red Giant</td>
+                            <td>1 - 8 M☉</td>
+                            <td>3,000 - 4,500K</td>
+                            <td>Red</td>
+                            <td>Betelgeuse</td>
+                        </tr>
+                        <tr>
+                            <td>Neutron Star</td>
+                            <td>1.4 - 2.1 M☉</td>
+                            <td>1,000,000K+</td>
+                            <td>White</td>
+                            <td>Pulsars</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="fact-card">
-                <h3><span class="fact-emoji">⚫</span> Black Holes</h3>
-                <div class="media-container">
-                    <img src="/images/black-hole.jpg" alt="Black Hole">
-                    <div class="media-caption">Black Holes: Points of No Return</div>
+            <div class="expandable" onclick="toggleExpand(this)">
+                <div class="expandable-title">
+                    <span>🔴 Brightest Stars Visible</span>
+                    <span class="expand-icon">▼</span>
                 </div>
-                <p>Black holes are the most extreme objects in the universe - regions where gravity is so strong that nothing, not even light, can escape.</p>
-                
-                <div class="key-facts">
-                    <h4>Black Hole Facts:</h4>
-                    <ul>
-                        <li>Form from collapse of massive stars</li>
-                        <li>Event horizon is the point of no return</li>
-                        <li>Supermassive black holes at centers of galaxies</li>
-                        <li>First image captured in 2019</li>
-                        <li>Time behaves differently near black holes</li>
-                        <li>Detected through X-ray emissions</li>
-                    </ul>
+                <div class="expandable-content">
+                    <p><strong>Sirius (α Canis Majoris)</strong><br>
+                    Brightest star, 8.6 light-years away, double star system</p>
+                    <p><strong>Canopus (α Carinae)</strong><br>
+                    Second brightest, 310 light-years away, yellow supergiant</p>
+                    <p><strong>Alpha Centauri (α Centauri)</strong><br>
+                    Third brightest, closest star system (4.37 ly), triple star</p>
+                    <p><strong>Arcturus (α Boötis)</strong><br>
+                    Orange giant, 37 light-years away</p>
                 </div>
             </div>
         </div>
 
-        <!-- GALAXIES SECTION -->
-        <div class="fact-section" id="galaxies">
-            <h2 class="section-title">🌌 Galaxies</h2>
-            <p class="section-subtitle">Island universes containing billions of stars</p>
+        <!-- CONSTELLATIONS SECTION -->
+        <div class="fact-section" id="constellations">
+            <h2 class="section-title">✨ Constellations</h2>
+            <p class="section-subtitle">88 recognized star patterns visible from Earth</p>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('zodiac')">Zodiac</button>
+                <button class="tab-btn" onclick="switchTab('northern')">Northern Sky</button>
+                <button class="tab-btn" onclick="switchTab('southern')">Southern Sky</button>
+            </div>
+
+            <!-- ZODIAC -->
+            <div id="zodiac" class="tab-content active">
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">The 12 zodiac constellations that lie along the ecliptic (the Sun's path across the sky)</p>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">♈ Aries</div>
+                        <div class="card-content">Ram constellation, marks vernal equinox, brightest star: Hamal</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">♉ Taurus</div>
+                        <div class="card-content">Bull constellation, contains Pleiades star cluster, red giant Aldebaran</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">♊ Gemini</div>
+                        <div class="card-content">Twins constellation, bright stars Castor and Pollux</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">♋ Cancer</div>
+                        <div class="card-content">Crab constellation, contains Beehive Cluster, faintest zodiac constellation</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">♌ Leo</div>
+                        <div class="card-content">Lion constellation, bright star Regulus, contains Leo Triplet galaxies</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">♍ Virgo</div>
+                        <div class="card-content">Virgin constellation, largest zodiac constellation, contains Virgo Cluster</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">♎ Libra</div>
+                        <div class="card-content">Scales constellation, only inanimate zodiac sign, contains bright star Zubeneschamali</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">♏ Scorpius</div>
+                        <div class="card-content">Scorpion constellation, contains red supergiant Antares, near Galactic center</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">♐ Sagittarius</div>
+                        <div class="card-content">Archer constellation, points toward Galactic center, contains many nebulae</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">♑ Capricornus</div>
+                        <div class="card-content">Goat constellation, faintest zodiac constellation, double star Algedi</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">♒ Aquarius</div>
+                        <div class="card-content">Water carrier constellation, contains Saturn nebula, Helix nebula</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">♓ Pisces</div>
+                        <div class="card-content">Fish constellation, marks vernal equinox end, spring equinox starting point</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NORTHERN SKY -->
+            <div id="northern" class="tab-content">
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Major constellations visible from Northern Hemisphere</p>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">🐻 Ursa Major</div>
+                        <div class="card-content">Great Bear, contains Big Dipper asterism, seven bright stars</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🐻 Ursa Minor</div>
+                        <div class="card-content">Little Bear, contains North Star (Polaris), shows true north</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">👑 Cassiopeia</div>
+                        <div class="card-content">Queen constellation, W-shaped pattern, easily recognizable</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🦅 Aquila</div>
+                        <div class="card-content">Eagle constellation, contains bright star Altair</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🦢 Cygnus</div>
+                        <div class="card-content">Swan constellation, contains bright star Deneb, forms Summer Triangle</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🎸 Lyra</div>
+                        <div class="card-content">Lyre constellation, contains bright star Vega, forms Summer Triangle</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOUTHERN SKY -->
+            <div id="southern" class="tab-content">
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Major constellations visible from Southern Hemisphere</p>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-title">✝️ Crux</div>
+                        <div class="card-content">Southern Cross, smallest constellation, marks south celestial pole</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🐕 Canis Major</div>
+                        <div class="card-content">Great Dog, contains Sirius brightest star, visible from both hemispheres</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🐦 Centaurus</div>
+                        <div class="card-content">Centaur constellation, second largest, contains Alpha Centauri</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">🐟 Piscis Austrinus</div>
+                        <div class="card-content">Southern Fish, contains bright star Fomalhaut</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLACK HOLES SECTION -->
+        <div class="fact-section" id="black-holes">
+            <h2 class="section-title">⚫ Black Holes & Extreme Objects</h2>
+            <p class="section-subtitle">The most extreme objects in the universe</p>
 
             <div class="fact-card">
-                <h3><span class="fact-emoji">🌌</span> The Milky Way</h3>
-                <div class="media-container">
-                    <img src="/images/milky-way.jpg" alt="The Milky Way galaxy">
-                    <div class="media-caption">The Milky Way: Our Home Galaxy</div>
-                </div>
-                <p>Our home galaxy is a large barred spiral galaxy containing between 100 and 400 billion stars.</p>
+                <h3>🌌 What Are Black Holes?</h3>
+                <p>Black holes are regions in space where gravity is so strong that nothing, not even light, can escape. They form when massive stars collapse at the end of their lives.</p>
                 
                 <div class="key-facts">
-                    <h4>Milky Way Facts:</h4>
+                    <h4>Black Hole Facts:</h4>
                     <ul>
-                        <li>Diameter: approximately 100,000 light-years</li>
-                        <li>Age: 13.6 billion years old</li>
-                        <li>Our Sun: 26,000 light-years from galactic center</li>
-                        <li>Orbital period: 225-250 million years</li>
-                        <li>Location: Orion Arm of the galaxy</li>
-                        <li>Supermassive black hole at center: Sagittarius A*</li>
+                        <li>Event Horizon: Point of no return around black hole</li>
+                        <li>Singularity: Infinitely dense point at black hole center</li>
+                        <li>Time Dilation: Time moves slower near black holes</li>
+                        <li>Hawking Radiation: Black holes slowly evaporate over time</li>
+                        <li>Supermassive: Found at centers of most galaxies</li>
+                        <li>Detection: Observed through X-rays and gravitational waves</li>
                     </ul>
                 </div>
             </div>
 
-            <div class="fact-card">
-                <h3><span class="fact-emoji">🌀</span> Andromeda Galaxy</h3>
-                <div class="media-container">
-                    <img src="/images/andromeda.jpg" alt="Andromeda Galaxy">
-                    <div class="media-caption">Andromeda: Our Nearest Major Galaxy</div>
+            <div class="expandable" onclick="toggleExpand(this)">
+                <div class="expandable-title">
+                    <span>🔭 Notable Black Holes</span>
+                    <span class="expand-icon">▼</span>
                 </div>
-                <p>Our nearest major galaxy is on a collision course with the Milky Way and will merge with us in about 4.5 billion years.</p>
-                
-                <div class="key-facts">
-                    <h4>Andromeda Facts:</h4>
-                    <ul>
-                        <li>Distance: 2.5 million light-years away</li>
-                        <li>Contains approximately 1 trillion stars</li>
-                        <li>Larger than the Milky Way</li>
-                        <li>Most distant object visible to naked eye</li>
-                        <li>Moving toward us at 110 kilometers per second</li>
-                        <li>Will create a new elliptical galaxy after collision</li>
-                    </ul>
+                <div class="expandable-content">
+                    <p><strong>Sagittarius A*</strong><br>
+                    Supermassive black hole at center of Milky Way, 4.1 million solar masses</p>
+                    <p><strong>M87</strong><br>
+                    First image captured (2019), 6.5 billion solar masses, in Virgo galaxy</p>
+                    <p><strong>Cygnus X-1</strong><br>
+                    Stellar black hole, 15 solar masses, feeds on companion star</p>
                 </div>
             </div>
         </div>
 
         <!-- SPACE MISSIONS SECTION -->
         <div class="fact-section" id="missions">
-            <h2 class="section-title">🛸 Space Exploration</h2>
-            <p class="section-subtitle">Humanity's journey into the cosmos</p>
+            <h2 class="section-title">🛸 Space Exploration & Missions</h2>
+            <p class="section-subtitle">Humanity's journey into space</p>
 
-            <div class="fact-card">
-                <h3><span class="fact-emoji">🚀</span> Apollo 11: First Moon Landing</h3>
-                <div class="media-container">
-                    <img src="/images/apollo-11.jpg" alt="Apollo 11 Moon Landing">
-                    <div class="media-caption">Apollo 11: Humanity's First Steps on the Moon</div>
+            <div class="expandable" onclick="toggleExpand(this)">
+                <div class="expandable-title">
+                    <span>🚀 Apollo Missions (Moon Landing)</span>
+                    <span class="expand-icon">▼</span>
                 </div>
-                <p>On July 20, 1969, humans set foot on the Moon for the first time, achieving one of humanity's greatest accomplishments.</p>
-                
-                <div class="key-facts">
-                    <h4>Apollo 11 Highlights:</h4>
-                    <ul>
-                        <li>Neil Armstrong: First person to walk on the Moon</li>
-                        <li>Buzz Aldrin: Second person to walk on the Moon</li>
-                        <li>Michael Collins: Command module pilot</li>
-                        <li>Journey time: 102 hours to the Moon</li>
-                        <li>Moon surface time: 21.5 hours</li>
-                        <li>Collected 47.5 pounds of lunar samples</li>
-                    </ul>
+                <div class="expandable-content">
+                    <p><strong>Apollo 11 (July 20, 1969)</strong><br>
+                    Neil Armstrong and Buzz Aldrin first humans on Moon<br>
+                    Collected 21.5 kg of moon rock</p>
+                    <p><strong>Apollo 13</strong><br>
+                    Oxygen tank explosion, successful return to Earth</p>
+                    <p><strong>Total:</strong> 12 astronauts walked on Moon across 6 missions (Apollo 11, 12, 14, 15, 16, 17)</p>
                 </div>
             </div>
 
-            <div class="fact-card">
-                <h3><span class="fact-emoji">🛸</span> Voyager Missions</h3>
-                <p>The Voyager 1 and 2 spacecraft, launched in 1977, continue to transmit data from interstellar space.</p>
-                
-                <div class="key-facts">
-                    <h4>Voyager Facts:</h4>
-                    <ul>
-                        <li>Voyager 1: 14.5+ billion miles from Earth</li>
-                        <li>Still transmitting data after 45+ years</li>
-                        <li>Golden Records aboard: messages from Earth</li>
-                        <li>Fastest human-made objects</li>
-                        <li>Visited all four giant planets</li>
-                        <li>Now in interstellar space</li>
-                    </ul>
+            <div class="expandable" onclick="toggleExpand(this)">
+                <div class="expandable-title">
+                    <span>🛰️ Space Probes & Rovers</span>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>Voyager 1</strong> (1977)<br>
+                    - 14.5+ billion miles from Earth<br>
+                    - Still transmitting data<br>
+                    - Fastest spacecraft ever launched</p>
+                    <p><strong>Mars Rovers</strong><br>
+                    - Curiosity: Exploring Mars surface since 2012<br>
+                    - Perseverance: Looking for signs of ancient life (2021)</p>
+                    <p><strong>New Horizons</strong> (2006)<br>
+                    - Flew by Pluto in 2015<br>
+                    - Now exploring Kuiper Belt</p>
+                </div>
+            </div>
+
+            <div class="expandable" onclick="toggleExpand(this)">
+                <div class="expandable-title">
+                    <span>🔭 Space Telescopes</span>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <p><strong>Hubble Space Telescope</strong><br>
+                    - Launched: 1990<br>
+                    - Revealed universe expansion<br>
+                    - Still operational after 30+ years</p>
+                    <p><strong>James Webb Space Telescope</strong><br>
+                    - Launched: December 2021<br>
+                    - Observes oldest galaxies<br>
+                    - Infrared observations</p>
                 </div>
             </div>
         </div>
@@ -1311,8 +1327,8 @@
     <script>
         // SCROLL TO TOP
         window.addEventListener('scroll', () => {
-            document.getElementById('scrollToTop').style.display =
-                window.scrollY > 300 ? 'flex' : 'none';
+            const btn = document.getElementById('scrollToTop');
+            btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
         });
 
         document.getElementById('scrollToTop').addEventListener('click', () => {
@@ -1332,34 +1348,40 @@
             toggleBtn.textContent = isLight ? "☀️" : "🌙";
         });
 
+        // TAB SWITCHING
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            const selectedContent = document.getElementById(tabName);
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            }
+
+            // Activate corresponding button
+            event.target.classList.add('active');
+        }
+
+        // EXPANDABLE BOXES
+        function toggleExpand(element) {
+            element.classList.toggle('expanded');
+        }
+
         // SMOOTH SCROLL FOR TOC
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
-        });
-
-        // Intersection Observer for scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fact-section').forEach(section => {
-            observer.observe(section);
         });
     </script>
 </body>
