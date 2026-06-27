@@ -145,16 +145,6 @@ body{
     color:var(--text);
 }
 
-/* Admin Badge */
-.admin-indicator{
-    background:rgba(239,68,68,.2);
-    color:#fca5a5;
-    padding:4px 12px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
-}
-
 /* Mobile hamburger */
 .hamburger{
     display:none;
@@ -331,105 +321,9 @@ button:hover{
     display:block;
 }
 
-.caption-section{
-    padding:12px;
-    padding-top:50px;
-    border-bottom:1px solid var(--border);
-    position:relative;
-    min-height:60px;
-}
-
 .caption{
+    padding:12px;
     color:var(--text-secondary);
-    word-break:break-word;
-    display:none;
-}
-
-.caption.show{
-    display:block;
-}
-
-.caption-input-edit{
-    width:100% !important;
-    padding:10px 12px !important;
-    border:1px solid var(--border) !important;
-    border-radius:6px !important;
-    background:var(--input-bg) !important;
-    color:var(--text) !important;
-    font-size:13px !important;
-    margin:0 0 8px 0 !important;
-    min-height:50px !important;
-    display:none;
-    resize:vertical;
-    font-family:Segoe UI, sans-serif !important;
-}
-
-.caption-input-edit.editing{
-    display:block !important;
-}
-
-.caption-actions{
-    display:none;
-    gap:8px;
-    margin-top:8px;
-}
-
-.caption-actions.editing{
-    display:flex !important;
-}
-
-.caption-edit-save, .caption-edit-cancel{
-    padding:6px 12px !important;
-    font-size:12px !important;
-    border-radius:4px !important;
-    border:none !important;
-    cursor:pointer !important;
-    width:auto !important;
-    margin:0 !important;
-}
-
-.caption-edit-save{
-    background:#10b981 !important;
-    color:white !important;
-}
-
-.caption-edit-save:hover{
-    background:#059669 !important;
-}
-
-.caption-edit-cancel{
-    background:#6b7280 !important;
-    color:white !important;
-}
-
-.caption-edit-cancel:hover{
-    background:#4b5563 !important;
-}
-
-.caption-edit-btn{
-    position:absolute;
-    top:10px;
-    right:10px;
-    background:rgba(37,99,235,.3);
-    border:none;
-    color:var(--accent);
-    padding:6px 12px;
-    border-radius:6px;
-    font-size:12px;
-    cursor:pointer;
-    display:none;
-    z-index:10;
-    backdrop-filter:blur(4px);
-    transition:0.2s;
-}
-
-.caption-edit-btn.show{
-    display:block;
-}
-
-.caption-edit-btn:hover{
-    background:rgba(37,99,235,.4);
-    transform:scale(1.05);
 }
 
 /* Engagement Section */
@@ -439,7 +333,6 @@ button:hover{
     display:flex;
     align-items:center;
     gap:12px;
-    flex-wrap:wrap;
 }
 
 .like-section{
@@ -1123,17 +1016,7 @@ fetch("/user")
 
     currentUser = user;
 
-    // Check if user is admin (by email)
-    const isAdmin = user.email === "aryanverma05694@gmail.com";
-    currentUser.isAdmin = isAdmin;
-
-    const profileDiv = document.getElementById("profile");
-    let adminBadge = '';
-    if(isAdmin) {
-        adminBadge = '<span class="admin-indicator">👑 ADMIN</span>';
-    }
-
-    profileDiv.innerHTML = `
+    document.getElementById("profile").innerHTML = `
     <img
     class="profile-image"
     src="${user.photo}?sz=200"
@@ -1142,7 +1025,6 @@ fetch("/user")
     onerror="this.src='/logo_1.png'">
     <h3 style="margin-top:12px;">${user.displayName}</h3>
     <p class="profile-email">${user.email}</p>
-    ${adminBadge}
     `;
     
     setTimeout(() => {
@@ -1156,7 +1038,6 @@ fetch("/user")
 
 let currentModalImageId = null;
 let allComments = {};
-let imageData = {}; // Store image data for reference
 
 fetch("/images")
 .then(res => res.json())
@@ -1175,27 +1056,12 @@ fetch("/images")
 
     images.forEach(img => {
 
-        // Store image data
-        imageData[img._id] = img;
-
         const card = document.createElement("div");
         card.className = "card";
 
         card.innerHTML = `
         <img src="${img.imageUrl}" loading="lazy">
-        <div class="caption-section">
-            <button class="caption-edit-btn" id="caption-edit-btn-${img._id}" onclick="toggleCaptionEdit('${img._id}')">✏️ Edit</button>
-            <div class="caption show" id="caption-text-${img._id}">${img.caption || "No caption"}</div>
-            <textarea 
-                class="caption-input-edit" 
-                id="caption-input-${img._id}"
-                placeholder="Enter caption..."
-            >${img.caption || ""}</textarea>
-            <div class="caption-actions" id="caption-actions-${img._id}">
-                <button class="caption-edit-save" onclick="saveCaptionEdit('${img._id}')">Save</button>
-                <button class="caption-edit-cancel" onclick="cancelCaptionEdit('${img._id}')">Cancel</button>
-            </div>
-        </div>
+        <div class="caption">${img.caption || "No caption"}</div>
         <div class="engagement-section">
             <div class="like-section">
                 <button class="like-btn" onclick="toggleLike('${img._id}', event)">♡</button>
@@ -1213,7 +1079,6 @@ fetch("/images")
 
         loadLikes(img._id);
         loadComments(img._id);
-        updateCaptionEditButton(img._id);
     });
 
 })
@@ -1224,85 +1089,6 @@ fetch("/images")
 </script>
 
 <script>
-
-function updateCaptionEditButton(imageId) {
-    const btn = document.getElementById(`caption-edit-btn-${imageId}`);
-    if(!btn) return;
-
-    const img = imageData[imageId];
-    if(!img) {
-        btn.style.display = "none";
-        return;
-    }
-
-    // Check if current user is owner or admin
-    const isOwner = currentUser && (img.userId === currentUser.id);
-    const isAdmin = currentUser && currentUser.isAdmin;
-
-    if(isOwner || isAdmin) {
-        btn.classList.add("show");
-    } else {
-        btn.classList.remove("show");
-    }
-}
-
-function toggleCaptionEdit(imageId) {
-    const textDiv = document.getElementById(`caption-text-${imageId}`);
-    const input = document.getElementById(`caption-input-${imageId}`);
-    const actions = document.getElementById(`caption-actions-${imageId}`);
-    
-    if(input.classList.contains('editing')) {
-        input.classList.remove('editing');
-        textDiv.classList.remove('show');
-        actions.classList.remove('editing');
-    } else {
-        input.classList.add('editing');
-        textDiv.classList.remove('show');
-        actions.classList.add('editing');
-        input.focus();
-    }
-}
-
-function cancelCaptionEdit(imageId) {
-    toggleCaptionEdit(imageId);
-}
-
-async function saveCaptionEdit(imageId) {
-    const input = document.getElementById(`caption-input-${imageId}`);
-    const newCaption = input.value.trim();
-
-    if(newCaption === undefined || newCaption === null) {
-        alert("Caption cannot be empty");
-        return;
-    }
-
-    try {
-        const response = await fetch(`/api/images/${imageId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ caption: newCaption })
-        });
-
-        if (!response.ok) {
-            alert("Error updating caption. Make sure you're the owner or an admin.");
-            return;
-        }
-
-        const data = await response.json();
-        imageData[imageId] = data;
-
-        const textDiv = document.getElementById(`caption-text-${imageId}`);
-        textDiv.textContent = newCaption || "No caption";
-        
-        toggleCaptionEdit(imageId);
-
-    } catch (err) {
-        console.log(err);
-        alert("Error updating caption");
-    }
-}
 
 async function toggleLike(imageId, event) {
     try {
@@ -1446,7 +1232,7 @@ function createCommentElement(comment, allCommentsArr, imageId) {
     
     // FIX: properly check ownership and admin using _id from backend
     const isOwner = currentUser && (comment.userId === currentUser.id);
-    // FIX: use isAdmin from currentUser
+    // FIX: use isAdmin from /user endpoint
     const isAdmin = currentUser && currentUser.isAdmin;
     const canEdit = isOwner;           // only owner can edit
     const canDelete = isOwner || isAdmin;
