@@ -388,6 +388,60 @@ app.get("/image-count", async (req, res) => {
 });
 
 /* =======================
+   EDIT IMAGE CAPTION
+======================= */
+app.put("/api/images/:id/caption", isLoggedIn, async (req, res) => {
+
+    try {
+        const image = await Image.findById(req.params.id);
+
+        if (!image) {
+            return res.status(404).json({
+                success: false,
+                message: "Image not found"
+            });
+        }
+
+        // Check admin status from database
+        const isAdmin = await isUserAdmin(req.user.id);
+        if (image.userId !== req.user.id && !isAdmin) {
+            return res.status(403).json({
+                success: false,
+                message: "Not authorized"
+            });
+        }
+
+        const { caption } = req.body;
+
+        if (caption === undefined || caption === null) {
+            return res.status(400).json({
+                success: false,
+                message: "Caption is required"
+            });
+        }
+
+        image.caption = caption.trim();
+        await image.save();
+
+        res.json({
+            success: true,
+            message: "Caption updated successfully",
+            imageId: image._id,
+            newCaption: image.caption
+        });
+
+    } catch (err) {
+
+        console.log(err);
+
+        res.status(500).json({
+            success: false,
+            message: "Error updating caption"
+        });
+    }
+});
+
+/* =======================
    DELETE IMAGE
 ======================= */
 app.delete("/images/:id", isLoggedIn, async (req, res) => {

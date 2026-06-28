@@ -324,6 +324,8 @@ button:hover{
 .caption{
     padding:12px;
     color:var(--text-secondary);
+    min-height:40px;
+    word-break:break-word;
 }
 
 /* Engagement Section */
@@ -332,7 +334,8 @@ button:hover{
     border-top:1px solid var(--border);
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:8px;
+    flex-wrap:wrap;
 }
 
 .like-section{
@@ -397,10 +400,34 @@ button:hover{
     color:var(--accent);
 }
 
+/* Edit Caption Button */
+.edit-caption-btn{
+    width:auto;
+    margin:0;
+    padding:8px 12px;
+    background:rgba(96,165,250,.1);
+    color:var(--accent);
+    border:none;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+    display:none;
+}
+
+.edit-caption-btn:hover{
+    background:rgba(96,165,250,.2);
+}
+
+.edit-caption-btn.visible{
+    display:block;
+}
+
 .delete-btn{
     width:auto;
     margin:0 0 0 auto;
-    display:block;
+    display:none;
     background:#dc2626;
     color:white;
     border:none;
@@ -414,6 +441,137 @@ button:hover{
 
 .delete-btn:hover{
     background:#b91c1c;
+}
+
+.delete-btn.visible{
+    display:block;
+}
+
+/* EDIT CAPTION MODAL */
+.edit-caption-modal-overlay{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(4px);
+    z-index:1001;
+    align-items:center;
+    justify-content:center;
+    animation:fadeIn .2s;
+}
+
+.edit-caption-modal-overlay.active{
+    display:flex;
+}
+
+.edit-caption-modal{
+    background:var(--modal-bg);
+    border-radius:16px;
+    border:1px solid var(--border);
+    width:90%;
+    max-width:500px;
+    padding:0;
+    animation:slideUp .3s;
+}
+
+.edit-caption-header{
+    padding:20px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.edit-caption-title{
+    font-size:18px;
+    font-weight:600;
+    color:var(--text);
+}
+
+.edit-caption-close{
+    background:none;
+    border:none;
+    color:var(--text);
+    font-size:24px;
+    cursor:pointer;
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    transition:.2s;
+    padding:0;
+    margin:0;
+}
+
+.edit-caption-close:hover{
+    background:rgba(255,255,255,.08);
+}
+
+.edit-caption-body{
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.edit-caption-input{
+    width:100% !important;
+    padding:12px !important;
+    border:1px solid var(--border) !important;
+    border-radius:8px !important;
+    background:var(--input-bg) !important;
+    color:var(--text) !important;
+    font-size:14px !important;
+    margin:0 !important;
+    min-height:80px !important;
+    font-family:Segoe UI,sans-serif !important;
+    resize:vertical !important;
+}
+
+.edit-caption-input::placeholder{
+    color:var(--text-secondary);
+}
+
+.edit-caption-footer{
+    padding:0 20px 20px 20px;
+    display:flex;
+    gap:12px;
+    justify-content:flex-end;
+}
+
+.edit-caption-save, .edit-caption-cancel{
+    padding:10px 20px !important;
+    border:none !important;
+    border-radius:8px !important;
+    font-weight:600 !important;
+    cursor:pointer !important;
+    font-size:14px !important;
+    width:auto !important;
+    margin:0 !important;
+    transition:.2s !important;
+}
+
+.edit-caption-save{
+    background:#10b981 !important;
+    color:white !important;
+}
+
+.edit-caption-save:hover{
+    background:#059669 !important;
+}
+
+.edit-caption-cancel{
+    background:#6b7280 !important;
+    color:white !important;
+}
+
+.edit-caption-cancel:hover{
+    background:#4b5563 !important;
 }
 
 /* COMMENTS MODAL */
@@ -941,6 +1099,23 @@ Latest Space Uploads
 Loading images...
 </div>
 
+<!-- EDIT CAPTION MODAL -->
+<div class="edit-caption-modal-overlay" id="editCaptionModal">
+    <div class="edit-caption-modal">
+        <div class="edit-caption-header">
+            <h2 class="edit-caption-title">Edit Caption</h2>
+            <button class="edit-caption-close" onclick="closeEditCaptionModal()">✕</button>
+        </div>
+        <div class="edit-caption-body">
+            <textarea class="edit-caption-input" id="caption-input" placeholder="Enter new caption..."></textarea>
+        </div>
+        <div class="edit-caption-footer">
+            <button class="edit-caption-cancel" onclick="closeEditCaptionModal()">Cancel</button>
+            <button class="edit-caption-save" onclick="saveCaption()">Save Caption</button>
+        </div>
+    </div>
+</div>
+
 <!-- COMMENTS MODAL -->
 <div class="modal-overlay" id="commentsModal">
     <div class="modal">
@@ -1037,6 +1212,7 @@ fetch("/user")
 <script>
 
 let currentModalImageId = null;
+let currentEditImageId = null;
 let allComments = {};
 
 fetch("/images")
@@ -1061,7 +1237,7 @@ fetch("/images")
 
         card.innerHTML = `
         <img src="${img.imageUrl}" loading="lazy">
-        <div class="caption">${img.caption || "No caption"}</div>
+        <div class="caption" id="caption-${img._id}">${img.caption || "No caption"}</div>
         <div class="engagement-section">
             <div class="like-section">
                 <button class="like-btn" onclick="toggleLike('${img._id}', event)">♡</button>
@@ -1071,11 +1247,17 @@ fetch("/images")
                 <span>💬</span>
                 <span class="comment-count-badge" id="comment-count-${img._id}">0</span>
             </button>
-            <button class="delete-btn" onclick="deleteImage('${img._id}')">🗑 Delete</button>
+            <button class="edit-caption-btn" id="edit-btn-${img._id}" onclick="openEditCaptionModal('${img._id}', '${escapeHtml(img.caption || '')}')">✏️ Edit</button>
+            <button class="delete-btn" id="delete-btn-${img._id}" onclick="deleteImage('${img._id}')">🗑 Delete</button>
         </div>
         `;
 
         gallery.appendChild(card);
+
+        // Check if current user is admin or owner, then show/hide buttons
+        setTimeout(() => {
+            checkImagePermissions(img._id, img.userId);
+        }, 100);
 
         loadLikes(img._id);
         loadComments(img._id);
@@ -1085,6 +1267,22 @@ fetch("/images")
 .catch(() => {
     document.getElementById("loading").innerText = "Failed to load images";
 });
+
+// Check image permissions and show/hide edit and delete buttons
+function checkImagePermissions(imageId, imageOwnerId) {
+    const editBtn = document.getElementById(`edit-btn-${imageId}`);
+    const deleteBtn = document.getElementById(`delete-btn-${imageId}`);
+
+    if (!currentUser) return;
+
+    const isOwner = currentUser.id === imageOwnerId;
+    const isAdmin = currentUser.isAdmin;
+
+    if (isOwner || isAdmin) {
+        if (editBtn) editBtn.classList.add("visible");
+        if (deleteBtn) deleteBtn.classList.add("visible");
+    }
+}
 
 </script>
 
@@ -1141,6 +1339,67 @@ async function loadLikes(imageId) {
     }
 }
 
+// EDIT CAPTION FUNCTIONS
+function openEditCaptionModal(imageId, currentCaption) {
+    currentEditImageId = imageId;
+    document.getElementById("caption-input").value = currentCaption;
+    document.getElementById("editCaptionModal").classList.add("active");
+    setTimeout(() => document.getElementById("caption-input").focus(), 300);
+}
+
+function closeEditCaptionModal() {
+    document.getElementById("editCaptionModal").classList.remove("active");
+    currentEditImageId = null;
+}
+
+async function saveCaption() {
+    if (!currentEditImageId) return;
+
+    const newCaption = document.getElementById("caption-input").value.trim();
+
+    try {
+        const response = await fetch(`/api/images/${currentEditImageId}/caption`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ caption: newCaption })
+        });
+
+        if (!response.ok) {
+            alert("Error updating caption");
+            return;
+        }
+
+        // Update the caption in the DOM
+        document.getElementById(`caption-${currentEditImageId}`).textContent = newCaption || "No caption";
+        closeEditCaptionModal();
+        alert("Caption updated successfully!");
+
+    } catch (err) {
+        console.log(err);
+        alert("Error updating caption");
+    }
+}
+
+// Close edit caption modal when clicking outside
+document.addEventListener("DOMContentLoaded", function() {
+    const editCaptionModal = document.getElementById("editCaptionModal");
+    editCaptionModal.addEventListener("click", function(e) {
+        if (e.target === this) {
+            closeEditCaptionModal();
+        }
+    });
+});
+
+// Close with Escape key
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+        closeEditCaptionModal();
+        closeCommentsModal();
+    }
+});
+
 async function openCommentsModal(imageId) {
     currentModalImageId = imageId;
     const modal = document.getElementById("commentsModal");
@@ -1148,7 +1407,6 @@ async function openCommentsModal(imageId) {
     document.getElementById("comment-search").value = "";
     loadCommentsForModal(imageId);
     document.getElementById("modal-comment-input").value = "";
-    // FIX: focus input when modal opens
     setTimeout(() => document.getElementById("modal-comment-input").focus(), 300);
 }
 
@@ -1160,12 +1418,6 @@ function closeCommentsModal() {
 
 document.getElementById("commentsModal").addEventListener("click", function(e) {
     if (e.target === this) {
-        closeCommentsModal();
-    }
-});
-
-document.addEventListener("keydown", function(e) {
-    if (e.key === "Escape") {
         closeCommentsModal();
     }
 });
@@ -1230,11 +1482,9 @@ function createCommentElement(comment, allCommentsArr, imageId) {
     const replies = allCommentsArr.filter(c => c.parentCommentId === comment._id) || [];
     const userLiked = comment.userLiked || false;
     
-    // FIX: properly check ownership and admin using _id from backend
     const isOwner = currentUser && (comment.userId === currentUser.id);
-    // FIX: use isAdmin from /user endpoint
     const isAdmin = currentUser && currentUser.isAdmin;
-    const canEdit = isOwner;           // only owner can edit
+    const canEdit = isOwner;
     const canDelete = isOwner || isAdmin;
 
     const editedBadge = comment.isEdited ? `<span class="comment-edited-badge">(edited)</span>` : '';
@@ -1290,7 +1540,6 @@ function createCommentElement(comment, allCommentsArr, imageId) {
     return commentDiv;
 }
 
-// FIX: pass imageId to toggleReplies so it can use the right comments array
 function toggleReplies(commentId, imageId) {
     const repliesDiv = document.getElementById(`replies-${commentId}`);
     const isVisible = repliesDiv.style.display !== 'none';
@@ -1420,7 +1669,6 @@ async function toggleCommentLike(imageId, commentId, button) {
 
         if (data.liked) {
             button.classList.add('liked');
-            // FIX: update heart icon as well
             button.childNodes[0].textContent = '❤ ';
         } else {
             button.classList.remove('liked');
@@ -1479,7 +1727,6 @@ async function loadComments(imageId) {
         const response = await fetch(`/api/images/${imageId}/comments`);
         const comments = await response.json();
 
-        // FIX: count all top-level comments only
         const topLevelCount = comments.filter(c => !c.parentCommentId).length;
         const badge = document.getElementById(`comment-count-${imageId}`);
         if (badge) badge.textContent = topLevelCount;
