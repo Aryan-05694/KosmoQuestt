@@ -1181,106 +1181,121 @@ for(let i=0;i<220;i++){
 
 <script>
 
+/* =======================
+   FIXED: Load User First, Then Images
+   This prevents race condition where images load before currentUser is set
+======================= */
+
 let currentUser = null;
-
-fetch("/user")
-.then(res => res.json())
-.then(user => {
-
-    if(!user) return;
-
-    currentUser = user;
-
-    document.getElementById("profile").innerHTML = `
-    <img
-    class="profile-image"
-    src="${user.photo}?sz=200"
-    alt="Profile"
-    referrerpolicy="no-referrer"
-    onerror="this.src='/logo_1.png'">
-    <h3 style="margin-top:12px;">${user.displayName}</h3>
-    <p class="profile-email">${user.email}</p>
-    `;
-    
-    setTimeout(() => {
-        document.getElementById("modal-your-avatar").src = `${user.photo}?sz=40`;
-    }, 500);
-});
-
-</script>
-
-<script>
-
-let currentModalImageId = null;
-let currentEditImageId = null;
 let allComments = {};
 
-fetch("/images")
-.then(res => res.json())
-.then(images => {
+// Step 1: Get current user FIRST
+fetch("/user")
+    .then(res => res.json())
+    .then(user => {
+        if (!user) return;
 
-    const gallery = document.getElementById("gallery");
-    const loading = document.getElementById("loading");
+        currentUser = user;  // NOW currentUser is set
 
-    loading.style.display = "none";
-
-    if(images.length === 0){
-        loading.style.display = "block";
-        loading.innerText = "No images uploaded yet";
-        return;
-    }
-
-    images.forEach(img => {
-
-        const card = document.createElement("div");
-        card.className = "card";
-
-        card.innerHTML = `
-        <img src="${img.imageUrl}" loading="lazy">
-        <div class="caption" id="caption-${img._id}">${img.caption || "No caption"}</div>
-        <div class="engagement-section">
-            <div class="like-section">
-                <button class="like-btn" onclick="toggleLike('${img._id}', event)">♡</button>
-                <span class="like-count" id="like-count-${img._id}">Loading...</span>
-            </div>
-            <button class="comments-btn" onclick="openCommentsModal('${img._id}')">
-                <span>💬</span>
-                <span class="comment-count-badge" id="comment-count-${img._id}">0</span>
-            </button>
-            <button class="edit-caption-btn" id="edit-btn-${img._id}" onclick="openEditCaptionModal('${img._id}', '${escapeHtml(img.caption || '')}')">✏️ Edit</button>
-            <button class="delete-btn" id="delete-btn-${img._id}" onclick="deleteImage('${img._id}')">🗑 Delete</button>
-        </div>
+        document.getElementById("profile").innerHTML = `
+        <img
+        class="profile-image"
+        src="${user.photo}?sz=200"
+        alt="Profile"
+        referrerpolicy="no-referrer"
+        onerror="this.src='/logo_1.png'">
+        <h3 style="margin-top:12px;">${user.displayName}</h3>
+        <p class="profile-email">${user.email}</p>
         `;
-
-        gallery.appendChild(card);
-
-        // Check if current user is admin or owner, then show/hide buttons
+        
         setTimeout(() => {
-            checkImagePermissions(img._id, img.userId);
-        }, 100);
+            document.getElementById("modal-your-avatar").src = `${user.photo}?sz=40`;
+        }, 500);
 
-        loadLikes(img._id);
-        loadComments(img._id);
+        // Step 2: THEN load images (after currentUser is set)
+        loadGallery();
+    })
+    .catch(err => {
+        console.log("Error loading user:", err);
+        loadGallery();  // Load gallery anyway if user fetch fails
     });
 
-})
-.catch(() => {
-    document.getElementById("loading").innerText = "Failed to load images";
-});
+// Step 3: Function to load gallery
+function loadGallery() {
+    fetch("/images")
+        .then(res => res.json())
+        .then(images => {
+
+            const gallery = document.getElementById("gallery");
+            const loading = document.getElementById("loading");
+
+            loading.style.display = "none";
+
+            if (images.length === 0) {
+                loading.style.display = "block";
+                loading.innerText = "No images uploaded yet";
+                return;
+            }
+
+            images.forEach(img => {
+
+                const card = document.createElement("div");
+                card.className = "card";
+
+                card.innerHTML = `
+                <img src="${img.imageUrl}" loading="lazy">
+                <div class="caption" id="caption-${img._id}">${img.caption || "No caption"}</div>
+                <div class="engagement-section">
+                    <div class="like-section">
+                        <button class="like-btn" onclick="toggleLike('${img._id}', event)">♡</button>
+                        <span class="like-count" id="like-count-${img._id}">Loading...</span>
+                    </div>
+                    <button class="comments-btn" onclick="openCommentsModal('${img._id}')">
+                        <span>💬</span>
+                        <span class="comment-count-badge" id="comment-count-${img._id}">0</span>
+                    </button>
+                    <button class="edit-caption-btn" id="edit-btn-${img._id}" onclick="openEditCaptionModal('${img._id}', '${escapeHtml(img.caption || '')}')">✏️ Edit</button>
+                    <button class="delete-btn" id="delete-btn-${img._id}" onclick="deleteImage('${img._id}')">🗑 Delete</button>
+                </div>
+                `;
+
+                gallery.appendChild(card);
+
+                // NOW currentUser is guaranteed to be set!
+                checkImagePermissions(img._id, img.userId);
+
+                loadLikes(img._id);
+                loadComments(img._id);
+            });
+
+        })
+        .catch(() => {
+            document.getElementById("loading").innerText = "Failed to load images";
+        });
+}
 
 // Check image permissions and show/hide edit and delete buttons
 function checkImagePermissions(imageId, imageOwnerId) {
     const editBtn = document.getElementById(`edit-btn-${imageId}`);
     const deleteBtn = document.getElementById(`delete-btn-${imageId}`);
 
-    if (!currentUser) return;
+    // FIX: Check if currentUser exists before comparing
+    if (!currentUser) {
+        console.log("currentUser not set yet for image:", imageId);
+        return;
+    }
 
     const isOwner = currentUser.id === imageOwnerId;
     const isAdmin = currentUser.isAdmin;
 
+    console.log(`Image ${imageId}: isOwner=${isOwner}, isAdmin=${isAdmin}`);
+
     if (isOwner || isAdmin) {
         if (editBtn) editBtn.classList.add("visible");
         if (deleteBtn) deleteBtn.classList.add("visible");
+    } else {
+        if (editBtn) editBtn.classList.remove("visible");
+        if (deleteBtn) deleteBtn.classList.remove("visible");
     }
 }
 
