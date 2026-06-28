@@ -269,7 +269,15 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             // FIX: Check admin status from database instead of hardcoded email
-            const isAdmin = await isUserAdmin(profile.id);
+            console.log("Google profile.id:", profile.id);
+
+            const adminDoc = await Admin.findOne({ userId: profile.id });
+
+            console.log("Admin document found:", adminDoc);
+
+            const isAdmin = !!adminDoc;
+
+            console.log("Calculated isAdmin:", isAdmin);
 
             const user = {
                 id: profile.id,
