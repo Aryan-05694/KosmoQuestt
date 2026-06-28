@@ -135,22 +135,6 @@ const Comment = mongoose.model("Comment", commentSchema);
 const CommentLike = mongoose.model("CommentLike", commentLikeSchema);
 const Admin = mongoose.model("Admin", adminSchema);
 
-(async () => {
-    const ownerEmail = "aryanverma05694@gmail.com";
-
-    const existing = await Admin.findOne({ email: ownerEmail });
-
-    if (!existing) {
-        await Admin.create({
-            userId: "110093322120943329870",
-            email: ownerEmail,
-            displayName: "Aryan Verma"
-        });
-
-        console.log("✅ Owner added as admin");
-    }
-})();
-
 /* =======================
    HELPER FUNCTIONS
 ======================= */
@@ -269,15 +253,7 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             // FIX: Check admin status from database instead of hardcoded email
-            console.log("Google profile.id:", profile.id);
-
-            const adminDoc = await Admin.findOne({ userId: profile.id });
-
-            console.log("Admin document found:", adminDoc);
-
-            const isAdmin = !!adminDoc;
-
-            console.log("Calculated isAdmin:", isAdmin);
+            const isAdmin = await isUserAdmin(profile.id);
 
             const user = {
                 id: profile.id,
@@ -407,60 +383,6 @@ app.get("/image-count", async (req, res) => {
 
         res.status(500).json({
             count: 0
-        });
-    }
-});
-
-/* =======================
-   EDIT IMAGE CAPTION
-======================= */
-app.put("/api/images/:id/caption", isLoggedIn, async (req, res) => {
-
-    try {
-        const image = await Image.findById(req.params.id);
-
-        if (!image) {
-            return res.status(404).json({
-                success: false,
-                message: "Image not found"
-            });
-        }
-
-        // Check admin status from database
-        const isAdmin = await isUserAdmin(req.user.id);
-        if (image.userId !== req.user.id && !isAdmin) {
-            return res.status(403).json({
-                success: false,
-                message: "Not authorized"
-            });
-        }
-
-        const { caption } = req.body;
-
-        if (caption === undefined || caption === null) {
-            return res.status(400).json({
-                success: false,
-                message: "Caption is required"
-            });
-        }
-
-        image.caption = caption.trim();
-        await image.save();
-
-        res.json({
-            success: true,
-            message: "Caption updated successfully",
-            imageId: image._id,
-            newCaption: image.caption
-        });
-
-    } catch (err) {
-
-        console.log(err);
-
-        res.status(500).json({
-            success: false,
-            message: "Error updating caption"
         });
     }
 });
