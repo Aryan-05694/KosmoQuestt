@@ -135,6 +135,22 @@ const Comment = mongoose.model("Comment", commentSchema);
 const CommentLike = mongoose.model("CommentLike", commentLikeSchema);
 const Admin = mongoose.model("Admin", adminSchema);
 
+(async () => {
+    const ownerEmail = "aryanverma05694@gmail.com";
+
+    const existing = await Admin.findOne({ email: ownerEmail });
+
+    if (!existing) {
+        await Admin.create({
+            userId: "110093322120943329870",
+            email: ownerEmail,
+            displayName: "Aryan Verma"
+        });
+
+        console.log("✅ Owner added as admin");
+    }
+})();
+
 /* =======================
    HELPER FUNCTIONS
 ======================= */
